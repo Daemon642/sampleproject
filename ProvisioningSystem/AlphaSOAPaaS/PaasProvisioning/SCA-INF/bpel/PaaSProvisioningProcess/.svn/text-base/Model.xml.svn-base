@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="PaaSProvisioningProcess" targetNamespace="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/PaaSProvisioningProcess" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:client="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/PaaSProvisioningProcess" xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:bpelx="http://schemas.oracle.com/bpel/extension" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:ns1="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/UpdProvStatusProcess" xmlns:ns2="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/GetRequestStatus" xmlns:ns3="http://xmlns.oracle.com/BusinessServiceRules/BusinessServiceRules_DecisionService_1" xmlns:ns4="http://xmlns.oracle.com/pcbpel/adapter/jms/AlphaSOAPaaS/PaasProvisioning/EMIaaSJMS" xmlns:ns5="http://xmlns.oracle.com/bpmn/bpmnProcess/PaasApprovalProcess" xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:ns7="http://xmlns.oracle.com/AlphaOffice/BusinesServiceStatus" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns8="http://xmlns.oracle.com/pcbpel/adapter/db/top/DequeueBusinesService" xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20" xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc" xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue" xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath" xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath" xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk" xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions" xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap" xmlns:ns9="http://xmlns.oracle.com/pcbpel/adapter/db/top/GetBusinessService" xmlns:ns18="http://www.example.org" xmlns:ns23="http://xmlns.oracle.com/ns/CostSelection" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns10="http://xmlns.oracle.com/ias/pcbpel/NotificationService" xmlns:ns11="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/GetBSProvisioningCodeProcess" xmlns:ns12="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/GetBSValuesProcess" xmlns:ns13="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/InsertPBusinessValuesProcess" xmlns:ns6="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/GetBusinessService" id="BpPrc0">
+   <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="paasprovisioningprocess_client" partnerLinkType="client:PaaSProvisioningProcess" myRole="PaaSProvisioningProcessProvider" partnerRole="PaaSProvisioningProcessRequester"/>
+        <partnerLink name="UpdProvStatusProcess.updprovstatusprocess_client" partnerLinkType="ns1:UpdProvStatusProcess" partnerRole="UpdProvStatusProcessProvider"/>
+        <partnerLink name="GetRequestStatus.getrequeststatus_client" partnerLinkType="ns2:GetRequestStatus" partnerRole="GetRequestStatusProvider"/>
+        <partnerLink name="BusinessServiceRules.BusinessServiceRules_DecisionService_1" partnerLinkType="ns3:IDecisionService_PL" partnerRole="IDecisionService_Role"/>
+        <partnerLink name="EMIaaSJMS" partnerLinkType="ns4:Produce_Message_plt" partnerRole="Produce_Message_role"/>
+        <partnerLink name="PaaSApprovalProcess" partnerLinkType="ns5:PaaSApprovalProcess" partnerRole="PaasApprovalProcessPortType" myRole="PaasApprovalProcessPortTypeCallBack"/>
+    <partnerLink name="NotificationService1" partnerLinkType="ns10:NotificationServiceLink" partnerRole="NotificationServiceProvider"/>
+    <partnerLink name="GetBSProvisioningCodeProcess.getbsprovisioningcodeprocess_client" partnerLinkType="ns11:GetBSProvisioningCodeProcess" partnerRole="GetBSProvisioningCodeProcessProvider"/>
+    <partnerLink name="GetBSValuesProcess.getbsvaluesprocess_client" partnerLinkType="ns12:GetBSValuesProcess" partnerRole="GetBSValuesProcessProvider"/>
+    <partnerLink name="NotificationService2" partnerLinkType="ns10:NotificationServiceLink" partnerRole="NotificationServiceProvider"/>
+    <partnerLink name="NotificationService3" partnerLinkType="ns10:NotificationServiceLink" partnerRole="NotificationServiceProvider"/>
+    <partnerLink name="InsertPBusinessValuesProcess.insertpbusinessvaluesprocess_client" partnerLinkType="ns13:InsertPBusinessValuesProcess" partnerRole="InsertPBusinessValuesProcessProvider"/>
+    <partnerLink name="GetBusinessService" partnerLinkType="ns6:GetBusinessService_plt" partnerRole="GetBusinessService_role"/>
+  </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:PaaSProvisioningProcessRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:PaaSProvisioningProcessResponseMessage"/>
+        <variable name="StatusLineProvMsg" type="xsd:string"/>
+        <variable name="StatusProvStarted" type="xsd:string"/>
+        <variable name="StatusPendingApproval" type="xsd:string"/>
+        <variable name="StatusApprovalReceived" type="xsd:string"/>
+        <variable name="StatusApprovalDenied" type="xsd:string"/>
+        <variable name="ProvStatusUpd_InputVariable" messageType="ns1:UpdProvStatusProcessRequestMessage"/>
+        <variable name="ProvStatusUpd_OutputVariable" messageType="ns1:UpdProvStatusProcessResponseMessage"/>
+        <variable name="ServiceCount" type="xsd:int"/>
+        <variable name="loopCnt" type="xsd:int"/>
+        <variable name="ListOrder" type="xsd:int"/>
+        <variable name="selector" type="xsd:string"/>
+        <variable name="InvokeEMIaaSJMS_InputVariable" messageType="ns4:Produce_Message_msg"/>
+        <variable name="totalCost" type="xsd:double"/>
+        <variable name="costValue" type="xsd:string"/>
+        <variable name="InvokeGetRequestStatus_InputVariable" messageType="ns2:GetRequestStatusRequestMessage"/>
+        <variable name="InvokeGetRequestStatus_OutputVariable" messageType="ns2:GetRequestStatusResponseMessage"/>
+        <variable name="RequestStatus" type="xsd:string"/>
+        <variable name="StatusProvisioningCompleted" type="xsd:string"/>
+        <variable name="ApprovalRequired" type="xsd:boolean"/>
+        <variable name="InvokePaaSApprovalProcess_InputVariable" messageType="ns5:start"/>
+        <variable name="ReceivePaaSApproval_InputVariable" messageType="ns5:endResponse"/>
+    <variable name="BusinessServiceId" type="xsd:string"/>
+    <variable name="ImageName" type="xsd:string"/>
+    <variable name="InvokeBSGetProvisioningCode_InputVariable" messageType="ns11:GetBSProvisioningCodeProcessRequestMessage"/>
+    <variable name="InvokeBSGetProvisioningCode_OutputVariable" messageType="ns11:GetBSProvisioningCodeProcessResponseMessage"/>
+    <variable name="emailBody" type="xsd:string"/>
+    <variable name="provisionCode" type="xsd:string"/>
+    <variable name="InvokeGetBSValues_InputVariable" messageType="ns12:GetBSValuesProcessRequestMessage"/>
+    <variable name="InvokeGetBSValues_OutputVariable" messageType="ns12:GetBSValuesProcessResponseMessage"/>
+    <variable name="InvokeInsertPBusinessValuesProcess_InputVariable" messageType="ns13:InsertPBusinessValuesProcessRequestMessage"/>
+    <variable name="InvokeInsertPBusinessValuesProcess_OutputVariable" messageType="ns13:InsertPBusinessValuesProcessResponseMessage"/>
+    <variable name="sQueueId" type="xsd:string"/>
+    <variable name="InvokeGetBusinessService_InputVariable" messageType="ns6:GetBusinessServiceSelect_inputParameters"/>
+    <variable name="InvokeGetBusinessService_OutputVariable" messageType="ns6:PBusinessServiceCollection_msg"/>
+    <variable name="StatusProvisioningRunning" type="xsd:string"/>
+  </variables>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main" id="BpSeq0">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in PaaSProvisioningProcess.wsdl) -->
+        <receive name="receiveInput" partnerLink="paasprovisioningprocess_client" portType="client:PaaSProvisioningProcess" operation="process" variable="inputVariable" createInstance="yes" id="BpRcv0"/>
+
+    <assign name="InitStatusVariables" id="BpAss0">
+      <copy>
+        <from expression="'ProvisioningMsg'"/>
+        <to variable="StatusLineProvMsg"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload" query="/ns8:SQueueCollection/ns8:SQueue/ns8:sBusinessServiceId"/>
+        <to variable="BusinessServiceId"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload" query="/ns8:SQueueCollection/ns8:SQueue/ns8:id"/>
+        <to variable="sQueueId"/>
+      </copy>
+      <copy>
+        <from expression="&quot;ProvisioningCompleted&quot;"/>
+        <to variable="StatusProvisioningCompleted"/>
+      </copy>
+      <copy>
+        <from expression="&quot;ProvisioningInitiated&quot;"/>
+        <to variable="StatusProvisioningRunning"/>
+      </copy>
+      <copy>
+        <from expression="'ProvisioningStarted'"/>
+        <to variable="StatusProvStarted"/>
+      </copy>
+      <copy>
+        <from expression="'PendingApproval'"/>
+        <to variable="StatusPendingApproval"/>
+      </copy>
+      <copy>
+        <from expression="'ApprovalReceived'"/>
+        <to variable="StatusApprovalReceived"/>
+      </copy>
+      <copy>
+        <from expression="'ApprovalDenied'"/>
+        <to variable="StatusApprovalDenied"/>
+      </copy>
+      <copy>
+        <from expression="0"/>
+        <to variable="ListOrder"/>
+      </copy>
+    </assign>
+    <assign name="AssignProvStartedInput" id="BpAss1">
+      <copy>
+        <from expression="bpws:getVariableData('ListOrder') + 1"/>
+        <to variable="ListOrder"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload" query="/ns8:SQueueCollection/ns8:SQueue/ns8:id"/>
+        <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:SQueueId"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload" query="/ns8:SQueueCollection/ns8:SQueue/ns8:sBusinessServiceId"/>
+        <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:BusinessServiceId"/>
+      </copy>
+      <copy>
+        <from expression="&quot;Business Service Provisioning Started&quot;"/>
+        <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningMsg"/>
+      </copy>
+      <copy>
+        <from variable="StatusProvStarted"/>
+        <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningStatus"/>
+      </copy>
+      <copy>
+        <from variable="ListOrder"/>
+        <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ListOrder"/>
+      </copy>
+    </assign>
+    <invoke name="StatusProvStarted" inputVariable="ProvStatusUpd_InputVariable" outputVariable="ProvStatusUpd_OutputVariable" partnerLink="UpdProvStatusProcess.updprovstatusprocess_client" portType="ns1:UpdProvStatusProcess" operation="process" bpelx:invokeAsDetail="no" id="BpInv0"/>
+    <assign name="AssignSQueueId" id="BpAss2">
+      <copy>
+        <from variable="sQueueId"/>
+        <to variable="InvokeGetBusinessService_InputVariable" part="GetBusinessServiceSelect_inputParameters" query="/ns9:GetBusinessServiceSelect_sQueueIdInputParameters/ns9:sQueueId"/>
+      </copy>
+    </assign>
+    <invoke name="InvokeGetBusinessService" bpelx:invokeAsDetail="no" inputVariable="InvokeGetBusinessService_InputVariable" outputVariable="InvokeGetBusinessService_OutputVariable" partnerLink="GetBusinessService" portType="ns6:GetBusinessService_ptt" operation="GetBusinessServiceSelect" id="BpInv1"/>
+    <switch name="Switch1" id="BpSwt0">
+      <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;ApprovalRequired&quot;)">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[Approval Required]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <sequence name="Sequence2" id="BpSeq1">
+          <assign name="AssignApprovalRequired" id="BpAss3">
+            <copy>
+              <from expression="true()"/>
+              <to variable="ApprovalRequired"/>
+            </copy>
+          </assign>
+        </sequence>
+      </case>
+      <otherwise>
+        <sequence id="BpSeq2">
+          <switch name="Switch2" id="BpSwt1">
+            <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'),&quot;CheckCost&quot;)">
+              <bpelx:annotation>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[Check Cost]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <sequence id="BpSeq3">
+                <assign name="AssignTotalCost" id="BpAss4">
+                  <copy>
+                    <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:totalCost"/>
+                    <to variable="totalCost"/>
+                  </copy>
+                </assign>
+                <scope name="Rule1" variableAccessSerializable="no" id="BpScp0">
+                  <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:decide"/>
+                  </bpelx:annotation>
+                  <variables>
+                    <variable name="dsIn" messageType="ns3:callFunctionStatelessMessage"/>
+                    <variable name="dsOut" messageType="ns3:callFunctionStatelessDecisionMessage"/>
+                  </variables>
+                  <sequence name="Sequence1" id="BpSeq4">
+                    <assign name="Facts_To_Rule_Service" id="BpAss5">
+                      <copy>
+                        <from variable="totalCost"/>
+                        <to variable="dsIn" part="payload" query="/ns3:callFunctionStateless/ns3:parameterList/ns23:Cost/ns23:CostIn"/>
+                      </copy>
+                    </assign>
+                    <assign name="BPEL_Header" id="BpAss6">
+                      <copy>
+                        <from expression="&quot;BusinessServiceRules_DecisionService_1&quot;"/>
+                        <to variable="dsIn" part="payload" query="@name"/>
+                      </copy>
+                    </assign>
+                    <invoke name="Invoke" partnerLink="BusinessServiceRules.BusinessServiceRules_DecisionService_1" portType="ns3:IDecisionService" operation="callFunctionStateless" inputVariable="dsIn" outputVariable="dsOut" id="BpInv2"/>
+                    <assign name="Rule_Service_To_Facts" id="BpAss7">
+                      <copy>
+                        <from variable="dsOut" part="payload" query="/ns3:callFunctionStatelessDecision/ns3:resultList/ns23:CostSelection/ns23:CostRet"/>
+                        <to variable="costValue"/>
+                      </copy>
+                    </assign>
+                  </sequence>
+                </scope>
+                <switch name="Switch7" id="BpSwt2">
+                  <case condition="contains(bpws:getVariableData('costValue'), 'Auto Approve')">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userLabel">
+                          <![CDATA[Auto Approve]]>
+                        </bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <assign name="Assign3" id="BpAss8">
+                      <copy>
+                        <from expression="false()"/>
+                        <to variable="ApprovalRequired"/>
+                      </copy>
+                    </assign>
+                  </case>
+                  <otherwise>
+                    <assign name="Assign1" id="BpAss9">
+                      <copy>
+                        <from expression="true()"/>
+                        <to variable="ApprovalRequired"/>
+                      </copy>
+                    </assign>
+                  </otherwise>
+                </switch>
+              </sequence>
+            </case>
+            <otherwise>
+              <sequence id="BpSeq5">
+                <assign name="ApprovalNotRequired" id="BpAss10">
+                  <copy>
+                    <from expression="false()"/>
+                    <to variable="ApprovalRequired"/>
+                  </copy>
+                </assign>
+              </sequence>
+            </otherwise>
+          </switch>
+        </sequence>
+      </otherwise>
+    </switch>
+    <switch name="Switch3" id="BpSwt3">
+      <case condition="bpws:getVariableData('ApprovalRequired') = true()">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[Invoke Approval Process]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <sequence name="Sequence4" id="BpSeq6">
+          <assign name="AssignStatusWaitingApproval" id="BpAss11">
+            <copy>
+              <from variable="StatusPendingApproval"/>
+              <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningStatus"/>
+            </copy>
+            <copy>
+              <from expression="&quot;Pending Approval from Manager&quot;"/>
+              <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningMsg"/>
+            </copy>
+          </assign>
+          <invoke name="InvokeStatusWaitingApproval" bpelx:invokeAsDetail="no" inputVariable="ProvStatusUpd_InputVariable" outputVariable="ProvStatusUpd_OutputVariable" partnerLink="UpdProvStatusProcess.updprovstatusprocess_client" portType="ns1:UpdProvStatusProcess" operation="process" id="BpInv3"/>
+          <assign name="TransformBusinessService" id="BpAss12">
+            <bpelx:annotation>
+              <bpelx:pattern>transformation</bpelx:pattern>
+            </bpelx:annotation>
+            <copy>
+              <from expression="ora:doXSLTransformForDoc('xsl/Transformation_1.xsl', $InvokeGetBusinessService_OutputVariable.PBusinessServiceCollection)"/>
+              <to part="parameters" variable="InvokePaaSApprovalProcess_InputVariable"/>
+            </copy>
+          </assign>
+          <invoke name="InvokePaaSApprovalProcess" bpelx:invokeAsDetail="no" inputVariable="InvokePaaSApprovalProcess_InputVariable" partnerLink="PaaSApprovalProcess" portType="ns5:PaasApprovalProcessPortType" operation="start" id="BpInv4"/>
+          <receive name="ReceivePaaSApproval" createInstance="no" variable="ReceivePaaSApproval_InputVariable" partnerLink="PaaSApprovalProcess" portType="ns5:PaasApprovalProcessPortTypeCallBack" operation="end" id="BpRcv1"/>
+          <assign name="AssignStatusApproved" id="BpAss13">
+            <copy>
+              <from variable="StatusApprovalReceived"/>
+              <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningStatus"/>
+            </copy>
+            <copy>
+              <from expression="'Approval Received from IT Manager'"/>
+              <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningMsg"/>
+            </copy>
+          </assign>
+          <invoke name="StatusApproval" bpelx:invokeAsDetail="no" inputVariable="ProvStatusUpd_InputVariable" outputVariable="ProvStatusUpd_OutputVariable" partnerLink="UpdProvStatusProcess.updprovstatusprocess_client" portType="ns1:UpdProvStatusProcess" operation="process" id="BpInv5"/>
+        </sequence>
+      </case>
+      <otherwise>
+        <sequence name="Sequence6" id="BpSeq7">
+          <assign name="AssignApproved" id="BpAss14">
+            <copy>
+              <from expression="&quot;APPROVE&quot;"/>
+              <to variable="ReceivePaaSApproval_InputVariable" part="parameters" query="/ns5:endResponse/approvalOutcome"/>
+            </copy>
+          </assign>
+        </sequence>
+      </otherwise>
+    </switch>
+    <switch name="Switch8" id="BpSwt4">
+      <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionCode'), 'NoProvisioningDemo')">
+        <bpelx:annotation>
+          <bpelx:general>
+            <bpelx:property name="userLabel">
+              <![CDATA[No Provisioning]]>
+            </bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <sequence name="Sequence10" id="BpSeq8">
+          <assign name="Assign10" id="BpAss15">
+            <copy>
+              <from expression="&quot;Provisioning of environment running&quot;"/>
+              <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningMsg"/>
+            </copy>
+            <copy>
+              <from variable="StatusProvisioningRunning"/>
+              <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningStatus"/>
+            </copy>
+          </assign>
+          <invoke name="InvokeProvisioningRunning" partnerLink="UpdProvStatusProcess.updprovstatusprocess_client" portType="ns1:UpdProvStatusProcess" operation="process" bpelx:invokeAsDetail="no" inputVariable="ProvStatusUpd_InputVariable" outputVariable="ProvStatusUpd_OutputVariable" id="BpInv6"/>
+          <wait name="Wait3" for="'PT2M'" id="BpWai0"/>
+          <switch name="Switch9" id="BpSwt5">
+            <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;MWaaS&quot;)">
+              <bpelx:annotation>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[MWaaS]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <assign name="Assign11" id="BpAss16">
+                <copy>
+                  <from expression="concat ('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested is ready.  Below you will find details on how to connect to your environment.  If you have any question please contact IT support.&lt;br>&lt;br>Thank you IT.&lt;br>&lt;br>Oracle Weblogic Server: &lt;UL>&lt;LI>Console URL: http://esgpaas-mwaas.us.oracle.com:8013/console&lt;LI>Application URL: http://esgpaas-mwaas.us.oracle.com:8034/AlphaOffice&lt;/UL>&lt;br>Oracle Database: &lt;UL>&lt;LI>Connect String = (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=pool1-pool2-scan)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=AlphaDBaaS_1002.us.oracle.com)))&lt;LI>Schema = ALPHA1002&lt;/UL>')"/>
+                  <to variable="emailBody"/>
+                </copy>
+                <copy>
+                  <from variable="StatusProvisioningCompleted"/>
+                  <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningStatus"/>
+                </copy>
+                <copy>
+                  <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name"/>
+                  <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningMsg"/>
+                </copy>
+              </assign>
+            </case>
+            <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;Assembly=AlphaBase&quot;)">
+              <bpelx:annotation>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[AlphaBase]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <assign name="Assign6" id="BpAss17">
+                <copy>
+                  <from expression="concat ('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested is ready.  You are now able to access the following images.   Oracle Weblogic Server environment and Oracle Database.  Below you will find details on how to connect and use these environment.  If you have any question please contact IT support.&lt;br>&lt;br>Thank you IT.&lt;br>&lt;br>Oracle Weblogic Server IP: 10.146.91.117&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;LI>JDeveloper environment is available at /u01/middleware/JDev11124/jdeveloper.&lt;/UL>&lt;br>Oracle Database IP: 10.146.91.210&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;LI>ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1 ORACLE_SID=ORCL&lt;/UL>')"/>
+                  <to variable="emailBody"/>
+                </copy>
+                <copy>
+                  <from variable="StatusProvisioningCompleted"/>
+                  <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningStatus"/>
+                </copy>
+                <copy>
+                  <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name"/>
+                  <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningMsg"/>
+                </copy>
+              </assign>
+            </case>
+            <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;Assembly=AlphaSOA&quot;)">
+              <bpelx:annotation>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[AlphaSOA]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <assign name="Assign5" id="BpAss18">
+                <copy>
+                  <from expression="concat('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested is ready.  You are now able to access the following images.   Oracle Weblogic Server environment, Oracle SOA Suite environment and Oracle Database.  Below you will find details on how to connect and use these environment.  If you have any question please contact IT support.&lt;br>&lt;br>Thank you IT.&lt;br>&lt;br>Oracle Weblogic Server IP: 10.146.91.253&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;LI>JDeveloper environment is available at /u01/middleware/JDevHome/jdeveloper.&lt;/UL>&lt;br>&lt;br>Oracle SOA Suite IP: 10.146.91.222&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;/UL>&lt;br>Oracle Database IP: 10.146.91.104&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;LI>ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1 ORACLE_SID=ORCL&lt;/UL>')"/>
+                  <to variable="emailBody"/>
+                </copy>
+                <copy>
+                  <from variable="StatusProvisioningCompleted"/>
+                  <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningStatus"/>
+                </copy>
+                <copy>
+                  <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name"/>
+                  <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningMsg"/>
+                </copy>
+              </assign>
+            </case>
+            <otherwise>
+              <assign name="Assign7" id="BpAss19">
+                <copy>
+                  <from expression="concat('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested is ready. Below you will find details on how to connect to your database.  If you have any question please contact IT support.&lt;br>&lt;br> Thank you IT.&lt;br>&lt;br>&lt;br>Connect String = (DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=esgpaas-sclone3)(PORT=1521)))(CONNECT_DATA=(SID=SSA00000)))&lt;br>&lt;br>Database Schema = alpha / oracle')"/>
+                  <to variable="emailBody"/>
+                </copy>
+                <copy>
+                  <from variable="StatusProvisioningCompleted"/>
+                  <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningStatus"/>
+                </copy>
+                <copy>
+                  <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name"/>
+                  <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningMsg"/>
+                </copy>
+              </assign>
+            </otherwise>
+          </switch>
+          <invoke name="InvokeProvisioningDone" inputVariable="ProvStatusUpd_InputVariable" outputVariable="ProvStatusUpd_OutputVariable" partnerLink="UpdProvStatusProcess.updprovstatusprocess_client" portType="ns1:UpdProvStatusProcess" operation="process" bpelx:invokeAsDetail="no" id="BpInv7"/>
+          <assign name="Assign8" id="BpAss20">
+            <copy>
+              <from expression="&quot;Email&quot;"/>
+              <to variable="InvokeBSGetProvisioningCode_InputVariable" part="payload" query="/ns11:process/ns11:ProvisionCode"/>
+            </copy>
+            <copy>
+              <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:id"/>
+              <to variable="InvokeBSGetProvisioningCode_InputVariable" part="payload" query="/ns11:process/ns11:BusinessServiceId"/>
+            </copy>
+          </assign>
+          <invoke name="Invoke1" bpelx:invokeAsDetail="no" inputVariable="InvokeBSGetProvisioningCode_InputVariable" outputVariable="InvokeBSGetProvisioningCode_OutputVariable" partnerLink="GetBSProvisioningCodeProcess.getbsprovisioningcodeprocess_client" portType="ns11:GetBSProvisioningCodeProcess" operation="process" id="BpInv8"/>
+          <scope name="Email3" id="BpScp1">
+            <bpelx:annotation>
+              <bpelx:pattern patternName="bpelx:email"/>
+            </bpelx:annotation>
+            <variables>
+              <variable name="varNotificationReq" messageType="ns10:EmailNotificationRequest"/>
+              <variable name="varNotificationResponse" messageType="ns10:ArrayOfResponse"/>
+              <variable name="NotificationServiceFaultVariable" messageType="ns10:NotificationServiceErrorMessage"/>
+            </variables>
+            <sequence name="Sequence12" id="BpSeq9">
+              <assign name="EmailParamsAssign" id="BpAss21">
+                <copy>
+                  <from expression="string('Default')"/>
+                  <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:FromAccountName"/>
+                </copy>
+                <copy>
+                  <from expression="string('')"/>
+                  <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:FromUserName"/>
+                </copy>
+                <copy>
+                  <from expression="string('')"/>
+                  <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Bcc"/>
+                </copy>
+                <copy>
+                  <from expression="string('')"/>
+                  <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Cc"/>
+                </copy>
+                <copy>
+                  <from expression="string('')"/>
+                  <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:ReplyToAddress"/>
+                </copy>
+                <copy>
+                  <from expression="concat(&quot;Your &quot;, bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'), &quot; is Ready!&quot;)"/>
+                  <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Subject"/>
+                </copy>
+                <copy>
+                  <from expression="bpws:getVariableData('InvokeBSGetProvisioningCode_OutputVariable','payload','/ns11:processResponse/ns11:ProvisionValue')"/>
+                  <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:To"/>
+                </copy>
+                <copy>
+                  <from expression="bpws:getVariableData('emailBody')"/>
+                  <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Content/ns10:ContentBody"/>
+                </copy>
+                <copy>
+                  <from expression="string('text/html; charset=UTF-8')"/>
+                  <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Content/ns10:MimeType"/>
+                </copy>
+              </assign>
+              <invoke name="InvokeNotificationService" portType="ns10:NotificationService" partnerLink="NotificationService3" inputVariable="varNotificationReq" outputVariable="varNotificationResponse" operation="sendEmailNotification" id="BpInv9"/>
+            </sequence>
+          </scope>
+          <assign name="Assign9" id="BpAss22">
+            <copy>
+              <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:id"/>
+              <to variable="InvokeInsertPBusinessValuesProcess_InputVariable" part="payload" query="/ns13:process/ns13:BusinessServiceId"/>
+            </copy>
+            <copy>
+              <from variable="emailBody"/>
+              <to variable="InvokeInsertPBusinessValuesProcess_InputVariable" part="payload" query="/ns13:process/ns13:Value"/>
+            </copy>
+            <copy>
+              <from expression="'EmailBody'"/>
+              <to variable="InvokeInsertPBusinessValuesProcess_InputVariable" part="payload" query="/ns13:process/ns13:Name"/>
+            </copy>
+          </assign>
+          <invoke name="Invoke2" bpelx:invokeAsDetail="no" inputVariable="InvokeInsertPBusinessValuesProcess_InputVariable" outputVariable="InvokeInsertPBusinessValuesProcess_OutputVariable" partnerLink="InsertPBusinessValuesProcess.insertpbusinessvaluesprocess_client" portType="ns13:InsertPBusinessValuesProcess" operation="process" id="BpInv10"/>
+        </sequence>
+      </case>
+      <otherwise>
+        <sequence id="BpSeq10">
+          <switch name="Switch4" id="BpSwt6">
+            <case condition="contains(bpws:getVariableData('ReceivePaaSApproval_InputVariable','parameters','/ns5:endResponse/approvalOutcome'),'APPROVE')">
+              <bpelx:annotation>
+                <bpelx:general>
+                  <bpelx:property name="userLabel">
+                    <![CDATA[Create Image]]>
+                  </bpelx:property>
+                </bpelx:general>
+              </bpelx:annotation>
+              <sequence id="BpSeq11">
+                <switch name="Switch5" id="BpSwt7">
+                  <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;Assembly=AlphaSOA&quot;)">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userLabel">
+                          <![CDATA[AlphaSOA]]>
+                        </bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <assign name="AssignAlphaSOA" id="BpAss23">
+                      <copy>
+                        <from expression="&quot;AlphaSOA&quot;"/>
+                        <to variable="ImageName"/>
+                      </copy>
+                    </assign>
+                  </case>
+                  <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;Assembly=AlphaBase&quot;)">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userLabel">
+                          <![CDATA[AlphaBase]]>
+                        </bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <assign name="AssignAlphaBase" id="BpAss24">
+                      <copy>
+                        <from expression="&quot;AlphaBase&quot;"/>
+                        <to variable="ImageName"/>
+                      </copy>
+                    </assign>
+                  </case>
+                  <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;Assembly=AlphaWLS&quot;)">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userLabel">
+                          <![CDATA[AlphaWLS]]>
+                        </bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <assign name="AssignAlphaWLS" id="BpAss25">
+                      <copy>
+                        <from expression="&quot;AlphaWLS&quot;"/>
+                        <to variable="ImageName"/>
+                      </copy>
+                    </assign>
+                  </case>
+                  <otherwise>
+                    <assign name="AssignDefaultName" id="BpAss26">
+                      <copy>
+                        <from expression="&quot;AlphaWLS&quot;"/>
+                        <to variable="ImageName"/>
+                      </copy>
+                    </assign>
+                  </otherwise>
+                </switch>
+                <assign name="AssignJMSInput" id="BpAss27">
+                  <copy>
+                    <from expression="&quot;CreateImage&quot;"/>
+                    <to variable="InvokeEMIaaSJMS_InputVariable" part="body" query="/ns18:EMIaaSMessage/ns18:Method"/>
+                  </copy>
+                  <copy>
+                    <from variable="inputVariable" part="payload" query="/ns8:SQueueCollection/ns8:SQueue/ns8:sBusinessServiceId"/>
+                    <to variable="InvokeEMIaaSJMS_InputVariable" part="body" query="/ns18:EMIaaSMessage/ns18:SBusinessServiceId"/>
+                  </copy>
+                  <copy>
+                    <from variable="ImageName"/>
+                    <to variable="InvokeEMIaaSJMS_InputVariable" part="body" query="/ns18:EMIaaSMessage/ns18:ImageName"/>
+                  </copy>
+                  <copy>
+                    <from variable="sQueueId"/>
+                    <to variable="InvokeEMIaaSJMS_InputVariable" part="body" query="/ns18:EMIaaSMessage/ns18:SQueueId"/>
+                  </copy>
+                </assign>
+                <invoke name="InvokeEMIaaSJMS" bpelx:invokeAsDetail="no" inputVariable="InvokeEMIaaSJMS_InputVariable" partnerLink="EMIaaSJMS" portType="ns4:Produce_Message_ptt" operation="Produce_Message" id="BpInv11"/>
+                <while name="While1" condition="xp20:compare(bpws:getVariableData('RequestStatus'),bpws:getVariableData('StatusProvisioningCompleted') ) != 0" id="BpWhl0">
+                  <sequence id="BpSeq12">
+                    <wait name="Wait1" for="'PT2M'" id="BpWai1"/>
+                    <assign name="AssignUpdateStatus" id="BpAss28">
+                      <copy>
+                        <from variable="sQueueId"/>
+                        <to variable="InvokeGetRequestStatus_InputVariable" part="payload" query="/ns2:process/ns2:input"/>
+                      </copy>
+                    </assign>
+                    <invoke name="InvokeGetRequestStatus" bpelx:invokeAsDetail="no" inputVariable="InvokeGetRequestStatus_InputVariable" outputVariable="InvokeGetRequestStatus_OutputVariable" partnerLink="GetRequestStatus.getrequeststatus_client" portType="ns2:GetRequestStatus" operation="process" id="BpInv12"/>
+                    <assign name="AssignRequestStatus" id="BpAss29">
+                      <copy>
+                        <from variable="InvokeGetRequestStatus_OutputVariable" part="payload" query="/ns2:processResponse/ns2:result"/>
+                        <to variable="RequestStatus"/>
+                      </copy>
+                    </assign>
+                  </sequence>
+                </while>
+                <assign name="AssignProvisioningCodeInput" id="BpAss30">
+                  <copy>
+                    <from expression="&quot;Email&quot;"/>
+                    <to variable="InvokeBSGetProvisioningCode_InputVariable" part="payload" query="/ns11:process/ns11:ProvisionCode"/>
+                  </copy>
+                  <copy>
+                    <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:id"/>
+                    <to variable="InvokeBSGetProvisioningCode_InputVariable" part="payload" query="/ns11:process/ns11:BusinessServiceId"/>
+                  </copy>
+                </assign>
+                <invoke name="InvokeBSGetProvisioningCode" bpelx:invokeAsDetail="no" inputVariable="InvokeBSGetProvisioningCode_InputVariable" outputVariable="InvokeBSGetProvisioningCode_OutputVariable" partnerLink="GetBSProvisioningCodeProcess.getbsprovisioningcodeprocess_client" portType="ns11:GetBSProvisioningCodeProcess" operation="process" id="BpInv13"/>
+                <assign name="AssignProvisionCode" id="BpAss31">
+                  <copy>
+                    <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionCode"/>
+                    <to variable="provisionCode"/>
+                  </copy>
+                </assign>
+                <wait name="Wait4" for="'PT30S'" id="BpWai2"/>
+                <assign name="AssignGetBSValuesInput" id="BpAss32">
+                  <copy>
+                    <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:id"/>
+                    <to variable="InvokeGetBSValues_InputVariable" part="payload" query="/ns12:process/ns12:BusinessServiceId"/>
+                  </copy>
+                </assign>
+                <invoke name="InvokeGetBSValues" bpelx:invokeAsDetail="no" inputVariable="InvokeGetBSValues_InputVariable" outputVariable="InvokeGetBSValues_OutputVariable" partnerLink="GetBSValuesProcess.getbsvaluesprocess_client" portType="ns12:GetBSValuesProcess" operation="process" id="BpInv14"/>
+                <switch name="Switch6" id="BpSwt8">
+                  <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionCode'), &quot;MWaaS&quot;)">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userLabel">
+                          <![CDATA[MWaaS]]>
+                        </bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <assign name="AssignMWaaSEmail" id="BpAss33">
+                      <copy>
+                        <from expression="concat ('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested is ready.  Below you will find details on how to connect to your environment.  If you have any question please contact IT support.&lt;br>&lt;br>Thank you IT.&lt;br>&lt;br>Oracle Weblogic Server: &lt;UL>&lt;LI>Console URL: ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:consoleURL'),'&lt;LI>Application URL: ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:applicationURL'),'&lt;/UL>&lt;br>Oracle Database: &lt;UL>&lt;LI>Connect String = ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:connectString'),'&lt;LI>Schema = ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:username'),'&lt;/UL>')"/>
+                        <to variable="emailBody"/>
+                      </copy>
+                    </assign>
+                  </case>
+                  <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;Assembly=ExaEBS&quot;)">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userLabel">
+                          <![CDATA[ExaEBS]]>
+                        </bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <assign name="AssignExaEBSEmail" id="BpAss34">
+                      <copy>
+                        <from expression="concat ('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested is ready.  You are now able to access your E-Business Suite environment.  Below you will find details on how to connect and use these environment.  If you have any question please contact IT support.&lt;br>&lt;br>Thank you IT.&lt;br>&lt;br>Oracle E-Business Suite Login: &lt;UL>&lt;LI>Login URL: ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:appsLoginURL'),'&lt;LI>Default Username/Password: sysadmin/sysadmin&lt;/UL>&lt;br>Oracle RAC Database: &lt;UL>&lt;LI>Connect String: (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=exa10db07.us.oracle.com)(PORT=1529))(CONNECT_DATA=(SERVICE_NAME=R1TST)(INSTANCE_NAME=R1TST)))&lt;/UL>')"/>
+                        <to variable="emailBody"/>
+                      </copy>
+                    </assign>
+                  </case>                
+                  <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;Assembly=AlphaSOA&quot;)">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userLabel">
+                          <![CDATA[AlphSOA]]>
+                        </bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <assign name="AssignAlphaSOAEmail" id="BpAss35">
+                      <copy>
+                        <from expression="concat('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested is ready.  You are now able to access the following images.   Oracle Weblogic Server environment, Oracle SOA Suite environment and Oracle Database.  Below you will find details on how to connect and use these environment.  If you have any question please contact IT support.&lt;br>&lt;br>Thank you IT.&lt;br>&lt;br>Oracle Weblogic Server IP: ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:wlsIP'),'&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;LI>JDeveloper environment is available at /u01/middleware/JDevHome/jdeveloper.&lt;/UL>&lt;br>&lt;br>Oracle SOA Suite IP: ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:SOAIP'),'&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;/UL>&lt;br>Oracle Database IP: ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:dbIP'),'&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;LI>ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1 ORACLE_SID=ORCL&lt;/UL>')"/>
+                        <to variable="emailBody"/>
+                      </copy>
+                    </assign>
+                  </case>
+                  <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:provisionValue'), &quot;Assembly=AlphaBase&quot;)">
+                    <bpelx:annotation>
+                      <bpelx:general>
+                        <bpelx:property name="userLabel">
+                          <![CDATA[AlphaBase]]>
+                        </bpelx:property>
+                      </bpelx:general>
+                    </bpelx:annotation>
+                    <assign name="AssignAlphaBaseEmail" id="BpAss36">
+                      <copy>
+                        <from expression="concat ('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested is ready.  You are now able to access the following images.   Oracle Weblogic Server environment and Oracle Database.  Below you will find details on how to connect and use these environment.  If you have any question please contact IT support.&lt;br>&lt;br>Thank you IT.&lt;br>&lt;br>Oracle Weblogic Server IP: ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:wlsIP'),'&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;LI>JDeveloper environment is available at /u01/middleware/JDev11124/jdeveloper.&lt;/UL>&lt;br>Oracle Database IP: ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:dbIP'),'&lt;UL>&lt;LI>User accounts root/Welcome1 and oracle/oracle.  Please change default passwords apond first connection.&lt;LI>ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1 ORACLE_SID=ORCL&lt;/UL>')"/>
+                        <to variable="emailBody"/>
+                      </copy>
+                    </assign>
+                  </case>
+                  <otherwise>
+                    <assign name="AssignAlphaDBaaSEmail" id="BpAss37">
+                      <copy>
+                        <from expression="concat('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested is ready. Below you will find details on how to connect to your database.  If you have any question please contact IT support.&lt;br>&lt;br> Thank you IT.&lt;br>&lt;br>&lt;br>Connect String = ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:connectString'),'&lt;br>&lt;br>Database Schema = ', bpws:getVariableData('InvokeGetBSValues_OutputVariable','payload','/ns12:processResponse/ns12:username'),' / Welcome1')"/>
+                        <to variable="emailBody"/>
+                      </copy>
+                    </assign>
+                  </otherwise>
+                </switch>
+                <scope name="Email1" id="BpScp2">
+                  <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:email"/>
+                  </bpelx:annotation>
+                  <variables>
+                    <variable name="varNotificationReq" messageType="ns10:EmailNotificationRequest"/>
+                    <variable name="varNotificationResponse" messageType="ns10:ArrayOfResponse"/>
+                    <variable name="NotificationServiceFaultVariable" messageType="ns10:NotificationServiceErrorMessage"/>
+                  </variables>
+                  <sequence name="Sequence8" id="BpSeq13">
+                    <assign name="EmailParamsAssign" id="BpAss38">
+                      <copy>
+                        <from expression="string('Default')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:FromAccountName"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:FromUserName"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Bcc"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Cc"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:ReplyToAddress"/>
+                      </copy>
+                      <copy>
+                        <from expression="concat(&quot;Your &quot;, bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'), &quot; is Ready!&quot;)"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Subject"/>
+                      </copy>
+                      <copy>
+                        <from expression="bpws:getVariableData('InvokeBSGetProvisioningCode_OutputVariable','payload','/ns11:processResponse/ns11:ProvisionValue')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:To"/>
+                      </copy>
+                      <copy>
+                        <from expression="bpws:getVariableData('emailBody')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Content/ns10:ContentBody"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('text/html; charset=UTF-8')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Content/ns10:MimeType"/>
+                      </copy>
+                    </assign>
+                    <invoke name="InvokeNotificationService" portType="ns10:NotificationService" partnerLink="NotificationService1" inputVariable="varNotificationReq" outputVariable="varNotificationResponse" operation="sendEmailNotification" id="BpInv15"/>
+                  </sequence>
+                </scope>
+                <assign name="AssignPBusinessValuesInput" id="BpAss39">
+                  <copy>
+                    <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:id"/>
+                    <to variable="InvokeInsertPBusinessValuesProcess_InputVariable" part="payload" query="/ns13:process/ns13:BusinessServiceId"/>
+                  </copy>
+                  <copy>
+                    <from variable="emailBody"/>
+                    <to variable="InvokeInsertPBusinessValuesProcess_InputVariable" part="payload" query="/ns13:process/ns13:Value"/>
+                  </copy>
+                  <copy>
+                    <from expression="'EmailBody'"/>
+                    <to variable="InvokeInsertPBusinessValuesProcess_InputVariable" part="payload" query="/ns13:process/ns13:Name"/>
+                  </copy>
+                </assign>
+                <invoke name="InvokeInsertPBusinessValuesProcess" bpelx:invokeAsDetail="no" inputVariable="InvokeInsertPBusinessValuesProcess_InputVariable" outputVariable="InvokeInsertPBusinessValuesProcess_OutputVariable" partnerLink="InsertPBusinessValuesProcess.insertpbusinessvaluesprocess_client" portType="ns13:InsertPBusinessValuesProcess" operation="process" id="BpInv16"/>
+              </sequence>
+            </case>
+            <otherwise>
+              <sequence name="Sequence7" id="BpSeq14">
+                <assign name="Assign2" id="BpAss40">
+                  <copy>
+                    <from variable="StatusApprovalDenied"/>
+                    <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningStatus"/>
+                  </copy>
+                  <copy>
+                    <from expression="&quot;Approval Denied&quot;"/>
+                    <to variable="ProvStatusUpd_InputVariable" part="payload" query="/ns7:BusinessServiceStatus/ns7:ProvisioningMsg"/>
+                  </copy>
+                </assign>
+                <invoke name="InvokeStatusApprovalDenied" bpelx:invokeAsDetail="no" inputVariable="ProvStatusUpd_InputVariable" outputVariable="ProvStatusUpd_OutputVariable" partnerLink="UpdProvStatusProcess.updprovstatusprocess_client" portType="ns1:UpdProvStatusProcess" operation="process" id="BpInv17"/>
+                <assign name="AssignDeniedEmail" id="BpAss41">
+                  <copy>
+                    <from expression="concat('Dear ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:firstName'), ' ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:lastName'), '&lt;br>&lt;br>The ', bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'),' that you have requested was denied. If you have any questions please contact IT.&lt;br>&lt;br> Thank you IT')"/>
+                    <to variable="emailBody"/>
+                  </copy>
+                </assign>
+                <assign name="AssignGetProvisioningCode2" id="BpAss42">
+                  <copy>
+                    <from expression="&quot;Email&quot;"/>
+                    <to variable="InvokeBSGetProvisioningCode_InputVariable" part="payload" query="/ns11:process/ns11:ProvisionCode"/>
+                  </copy>
+                  <copy>
+                    <from variable="InvokeGetBusinessService_OutputVariable" part="PBusinessServiceCollection" query="/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:id"/>
+                    <to variable="InvokeBSGetProvisioningCode_InputVariable" part="payload" query="/ns11:process/ns11:BusinessServiceId"/>
+                  </copy>
+                </assign>
+                <invoke name="InvokeBSGetProvisioningCode2" bpelx:invokeAsDetail="no" inputVariable="InvokeBSGetProvisioningCode_InputVariable" outputVariable="InvokeBSGetProvisioningCode_OutputVariable" partnerLink="GetBSProvisioningCodeProcess.getbsprovisioningcodeprocess_client" portType="ns11:GetBSProvisioningCodeProcess" operation="process" id="BpInv18"/>
+                <scope name="Email2" id="BpScp3">
+                  <bpelx:annotation>
+                    <bpelx:pattern patternName="bpelx:email"/>
+                  </bpelx:annotation>
+                  <variables>
+                    <variable name="varNotificationReq" messageType="ns10:EmailNotificationRequest"/>
+                    <variable name="varNotificationResponse" messageType="ns10:ArrayOfResponse"/>
+                    <variable name="NotificationServiceFaultVariable" messageType="ns10:NotificationServiceErrorMessage"/>
+                  </variables>
+                  <sequence name="Sequence11" id="BpSeq15">
+                    <assign name="EmailParamsAssign" id="BpAss43">
+                      <copy>
+                        <from expression="string('Default')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:FromAccountName"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:FromUserName"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Bcc"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Cc"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:ReplyToAddress"/>
+                      </copy>
+                      <copy>
+                        <from expression="concat(&quot;Your &quot;, bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns9:PBusinessServiceCollection/ns9:PBusinessService/ns9:name'), &quot; has been denied&quot;)"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Subject"/>
+                      </copy>
+                      <copy>
+                        <from expression="bpws:getVariableData('InvokeBSGetProvisioningCode_OutputVariable','payload','/ns11:processResponse/ns11:ProvisionValue')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:To"/>
+                      </copy>
+                      <copy>
+                        <from expression="bpws:getVariableData('emailBody')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Content/ns10:ContentBody"/>
+                      </copy>
+                      <copy>
+                        <from expression="string('text/html; charset=UTF-8')"/>
+                        <to variable="varNotificationReq" part="EmailPayload" query="/EmailPayload/ns10:Content/ns10:MimeType"/>
+                      </copy>
+                    </assign>
+                    <invoke name="InvokeNotificationService" portType="ns10:NotificationService" partnerLink="NotificationService2" inputVariable="varNotificationReq" outputVariable="varNotificationResponse" operation="sendEmailNotification" id="BpInv19"/>
+                  </sequence>
+                </scope>
+              </sequence>
+            </otherwise>
+          </switch>
+        </sequence>
+      </otherwise>
+    </switch>
+    <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="paasprovisioningprocess_client" portType="client:PaaSProvisioningProcessCallback" operation="processResponse" inputVariable="outputVariable" id="BpInv20"/>
+    </sequence>
+</process><!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Jan 30 15:01:12 EST 2014
+  Author:  oracle
+  Type: BPEL 1.1 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->

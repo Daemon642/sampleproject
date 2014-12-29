@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/esg-engSystemDemos/!svn/ver/581/trunk/CatalogProvisioning/ProvisioningSystem/AlphaEMPaaS/src/META-INF
+END
+BusinessServiceDBConnection-jdbc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaEMPaaS/src/META-INF/BusinessServiceDBConnection-jdbc.xml
+END
+BusinessCatalog-jdbc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaEMPaaS/src/META-INF/BusinessCatalog-jdbc.xml
+END
+cwallet.sso
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/esg-engSystemDemos/!svn/ver/581/trunk/CatalogProvisioning/ProvisioningSystem/AlphaEMPaaS/src/META-INF/cwallet.sso
+END
+jps-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaEMPaaS/src/META-INF/jps-config.xml
+END

@@ -1,0 +1,8 @@
+oracle.cloud.storage
+oracle.cloud.storage.exception
+oracle.cloud.storage.filters
+oracle.cloud.storage.internal
+oracle.cloud.storage.javaservice
+oracle.cloud.storage.model
+oracle.cloud.storage.nls
+oracle.cloud.storage.spi

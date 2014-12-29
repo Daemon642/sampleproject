@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<JavaBean xmlns="http://xmlns.oracle.com/adfm/beanmodel" version="11.1.1.64.93"
+          id="BusinessServiceHumanTaskPayloadType"
+          Package="BusinessServiceApprovalUI_BusinessServiceHumanTask"
+          BeanClass="BusinessServiceApprovalUI_BusinessServiceHumanTask.BusinessServiceHumanTaskPayloadType"
+          isJavaBased="false">
+  <AccessorAttribute id="BusinessService" IsCollection="true"
+                     BeanClass="BusinessServiceApprovalUI_BusinessServiceHumanTask.BusinessServiceType"
+                     CollectionBeanClass="BusinessServiceApprovalUI_BusinessServiceHumanTask.BusinessServiceType_BusinessService_Operations">
+    <Properties>
+      <Property Name="minOccurs" Value="1"/>
+      <Property Name="maxOccurs" Value="1"/>
+      <Property Name="LABEL" Value="Business Service"/>
+      <Property Name="nillable" Value="false"/>
+      <Property Name="originalName" Value="BusinessService"/>
+      <Property Name="targetNamespace"
+                Value="http://www.alphaoffice.com/ns/BusinesService"/>
+    </Properties>
+  </AccessorAttribute>
+</JavaBean>

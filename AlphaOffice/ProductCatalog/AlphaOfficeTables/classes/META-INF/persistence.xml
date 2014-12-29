@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+  <persistence-unit name="AlphaOfficeTables">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/AlphaOfficeAccessDS</jta-data-source>
+    <non-jta-data-source>jdbc/AlphaOfficeAccessDS</non-jta-data-source>
+    <class>oracle.alpha.Customers</class>
+    <class>oracle.alpha.CustomerIdentifications</class>
+    <class>oracle.alpha.Discounts</class>
+    <class>oracle.alpha.PaymentOptions</class>
+    <class>oracle.alpha.Products</class>
+    <class>oracle.alpha.ProductCategories</class>
+    <class>oracle.alpha.ProductStockLevels</class>
+    <class>oracle.alpha.SalesOrderHeader</class>
+    <class>oracle.alpha.SalesOrderLineItem</class>
+    <class>oracle.alpha.CustomerInformation</class>
+    <class>oracle.alpha.Addresses</class>
+    <class>oracle.alpha.AddressUsages</class>
+    <class>oracle.alpha.CouponUsages</class>
+    <class>oracle.alpha.Customers</class>
+    <class>oracle.alpha.CustomerIdentifications</class>
+    <class>oracle.alpha.CustomerInterests</class>
+    <class>oracle.alpha.Discounts</class>
+    <class>oracle.alpha.Orders</class>
+    <class>oracle.alpha.OrderItems</class>
+    <class>oracle.alpha.PaymentOptions</class>
+    <class>oracle.alpha.Products</class>
+    <class>oracle.alpha.ProductCategories</class>
+    <class>oracle.alpha.ProductStockLevels</class>
+    <class>oracle.alpha.SalesOrderHeader</class>
+    <class>oracle.alpha.SalesOrderLineItem</class>
+    <properties>
+      <property name="javax.persistence.jtaDataSource"
+                value="java:/app/jdbc/jdbc/AlphaOfficeAccessDS"/>
+      <property name="eclipselink.target-server" value="WebLogic"/>
+    </properties>
+  </persistence-unit>
+</persistence>

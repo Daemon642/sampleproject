@@ -1,0 +1,215 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/esg-engSystemDemos/!svn/ver/578/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd
+END
+PaaSReprovisionProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/esg-engSystemDemos/!svn/ver/537/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/PaaSReprovisionProcess.xsd
+END
+GetBSValuesProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/esg-engSystemDemos/!svn/ver/578/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetBSValuesProcess.xsd
+END
+TechnicalServiceStatus_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/TechnicalServiceStatus_table.xsd
+END
+InsertPBusinessValues_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/InsertPBusinessValues_table.xsd
+END
+GetGUIDProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetGUIDProcess.xsd
+END
+TaskStateMachine.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/TaskStateMachine.xsd
+END
+GetGUID.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetGUID.xsd
+END
+BusinessServiceRules_DecisionService_1Types.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/BusinessServiceRules_DecisionService_1Types.xsd
+END
+GetRequestStatus.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetRequestStatus.xsd
+END
+DecisionServicePrimitiveTypes.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/DecisionServicePrimitiveTypes.xsd
+END
+BusinessServiceRules_DecisionService_1MessageTypes.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/BusinessServiceRules_DecisionService_1MessageTypes.xsd
+END
+UpdProvStatusProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/UpdProvStatusProcess.xsd
+END
+ParseProvisionValues.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/ParseProvisionValues.xsd
+END
+PaaSDeprovisioningProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/PaaSDeprovisioningProcess.xsd
+END
+BusinesServiceStatus_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/BusinesServiceStatus_table.xsd
+END
+EMIaaSMessage.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/esg-engSystemDemos/!svn/ver/532/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/EMIaaSMessage.xsd
+END
+UpdTSProvStatusProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/UpdTSProvStatusProcess.xsd
+END
+TechnicalServiceProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/TechnicalServiceProcess.xsd
+END
+TechnicalStatusLine_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/TechnicalStatusLine_table.xsd
+END
+GetBSProvisioningCode_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetBSProvisioningCode_table.xsd
+END
+DequeueBusinesService_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/DequeueBusinesService_table.xsd
+END
+TechnicalServiceStatus.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/TechnicalServiceStatus.xsd
+END
+InsertPBusinessValuesProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/InsertPBusinessValuesProcess.xsd
+END
+BusinessServiceStatus.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/esg-engSystemDemos/!svn/ver/532/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/BusinessServiceStatus.xsd
+END
+GetBusinessService_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/esg-engSystemDemos/!svn/ver/532/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetBusinessService_table.xsd
+END
+PaaSProvisioningProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/PaaSProvisioningProcess.xsd
+END
+BusinessServiceApprovalPayload.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/BusinessServiceApprovalPayload.xsd
+END
+GetBSValues_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetBSValues_table.xsd
+END
+GetBusinessServiceEmail_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetBusinessServiceEmail_table.xsd
+END
+updateProvisioningStatus_sp.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/esg-engSystemDemos/!svn/ver/532/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/updateProvisioningStatus_sp.xsd
+END
+GetPBusinessService_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetPBusinessService_table.xsd
+END
+GetBSProvisioningCodeProcess.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/GetBSProvisioningCodeProcess.xsd
+END
+TechnicalService.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/TechnicalService.xsd
+END
+BusinessStatusLine_table.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/BusinessStatusLine_table.xsd
+END
+costSelection.xsd
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaasProvisioning/xsd/costSelection.xsd
+END

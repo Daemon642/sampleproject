@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/esg-engSystemDemos/!svn/ver/534/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval
+END
+default.bpmn
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/default.bpmn
+END
+activityGuide.agdl
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/activityGuide.agdl
+END
+PaasApprovalProcess.wsdl
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/PaasApprovalProcess.wsdl
+END
+PaasApprovalProcessDocumentation.xml
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/PaasApprovalProcessDocumentation.xml
+END
+composite.xml
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/composite.xml
+END
+organization.xml
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/organization.xml
+END
+measurementActions.xml
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/measurementActions.xml
+END
+measurements.xml
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/measurements.xml
+END
+BusinessServiceHumanTask.task
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/BusinessServiceHumanTask.task
+END
+project_properties.wsdl
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/project_properties.wsdl
+END
+PaaSProvisioningApproval.jpr
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/esg-engSystemDemos/!svn/ver/534/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/PaaSProvisioningApproval.jpr
+END
+BusinessServiceHumanTask.componentType
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/BusinessServiceHumanTask.componentType
+END
+PaasApprovalProcess.componentType
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/PaaSProvisioningApproval/PaasApprovalProcess.componentType
+END

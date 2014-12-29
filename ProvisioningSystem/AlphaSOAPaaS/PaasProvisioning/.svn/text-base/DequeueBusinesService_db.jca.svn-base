@@ -1,0 +1,18 @@
+<adapter-config name="DequeueBusinesService" adapter="Database Adapter" wsdlLocation="DequeueBusinesService.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/DB/BusinessServiceDBConnection" UIConnectionName="BusinessServiceDBConnection" adapterRef=""/>
+  <endpoint-activation portType="DequeueBusinesService_ptt" operation="receive">
+    <activation-spec className="oracle.tip.adapter.db.DBActivationSpec">
+      <property name="DescriptorName" value="DequeueBusinesService.SQueue"/>
+      <property name="QueryName" value="DequeueBusinesServiceSelect"/>
+      <property name="MappingsMetaDataURL" value="DequeueBusinesService-or-mappings.xml"/>
+      <property name="PollingStrategy" value="DeletePollingStrategy"/>
+      <property name="PollingInterval" value="5"/>
+      <property name="MaxRaiseSize" value="1"/>
+      <property name="MaxTransactionSize" value="10"/>
+      <property name="NumberOfThreads" value="1"/>
+      <property name="ReturnSingleResultSet" value="false"/>
+    </activation-spec>
+  </endpoint-activation>
+
+</adapter-config>

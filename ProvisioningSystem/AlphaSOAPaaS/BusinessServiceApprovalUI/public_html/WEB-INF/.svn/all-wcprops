@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI/public_html/WEB-INF
+END
+adfc-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI/public_html/WEB-INF/adfc-config.xml
+END
+trinidad-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI/public_html/WEB-INF/trinidad-config.xml
+END
+BusinessServiceHumanTask_TaskFlow.xml
+K 25
+svn:wc:ra_dav:version-url
+V 178
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI/public_html/WEB-INF/BusinessServiceHumanTask_TaskFlow.xml
+END
+faces-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI/public_html/WEB-INF/faces-config.xml
+END
+weblogic.xml
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI/public_html/WEB-INF/weblogic.xml
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI/public_html/WEB-INF/web.xml
+END

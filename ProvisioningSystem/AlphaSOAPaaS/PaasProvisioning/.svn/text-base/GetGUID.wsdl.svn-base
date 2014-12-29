@@ -1,0 +1,25 @@
+<?binding.jca GetGUID_db.jca?>
+<wsdl:definitions name="GetGUID" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/GetGUID" xmlns:db="http://xmlns.oracle.com/pcbpel/adapter/db/GetGUID" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/GetGUID" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+    <plt:partnerLinkType name="GetGUID_plt">
+        <plt:role name="GetGUID_role">
+            <plt:portType name="tns:GetGUID_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/GetGUID" schemaLocation="xsd/GetGUID.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="GetGUIDInput_msg">
+        <wsdl:part name="GetGUIDInput_msg" element="db:GetGUIDInput"/>
+    </wsdl:message>
+    <wsdl:message name="GetGUIDOutputCollection_msg">
+        <wsdl:part name="GetGUIDOutputCollection" element="db:GetGUIDOutputCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="GetGUID_ptt">
+        <wsdl:operation name="GetGUID">
+            <wsdl:input message="tns:GetGUIDInput_msg"/>
+            <wsdl:output message="tns:GetGUIDOutputCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

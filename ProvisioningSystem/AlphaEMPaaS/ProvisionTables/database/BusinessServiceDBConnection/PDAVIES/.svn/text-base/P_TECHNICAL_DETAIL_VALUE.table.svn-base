@@ -1,0 +1,785 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
+  <ID class="oracle.javatools.db.IdentifierBasedID">
+    <identifier class="java.lang.String">16858660-562e-48c1-aaf3-6f0ab58f49a0</identifier>
+  </ID>
+  <name>P_TECHNICAL_DETAIL_VALUE</name>
+  <columns>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">26531b0e-e7d6-411f-a1c8-57c8a6020f8b</identifier>
+      </ID>
+      <name>ID</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">90b03630-e1b1-4db4-a5b5-049da417b25e</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">50</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.Oracle9i</providerClass>
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>ID</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>ID</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">d8fb3145-eb13-4e18-a908-a72c7f31c170</identifier>
+      </ID>
+      <name>P_TECHNICAL_DETAIL_ID</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">4d6a9b26-2426-4076-8021-a395cd7d4494</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">50</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.Oracle9i</providerClass>
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>P_TECHNICAL_DETAIL_ID</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>P_TECHNICAL_DETAIL_ID</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">c49431ae-b2b8-4224-80d9-e9eb9221a8df</identifier>
+      </ID>
+      <name>PROVISION_TYPE</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">1410a718-56d1-49f8-be20-1ab257d21b6f</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">40</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.Oracle9i</providerClass>
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>PROVISION_TYPE</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>PROVISION_TYPE</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">2c3df9fc-8421-4436-af31-a32c944216e2</identifier>
+      </ID>
+      <name>PROVISION_CODE</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">cfe04119-104d-4539-8ecf-085b77a18297</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">40</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.Oracle9i</providerClass>
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>PROVISION_CODE</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>PROVISION_CODE</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">f53bdfe7-77ce-49b9-9319-5d7169276a75</identifier>
+      </ID>
+      <name>PROVISION_VALUE</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">0e73d985-01c5-4fc3-a674-c53d9e59fc8b</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">4000</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.Oracle9i</providerClass>
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>PROVISION_VALUE</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>PROVISION_VALUE</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">1ea3b7f4-d8c0-48ff-b999-69f27248085c</identifier>
+      </ID>
+      <name>PROVISIONING_STATUS</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">275ba6f1-7346-40da-b2dd-19bb9b4b2d94</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">50</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.Oracle9i</providerClass>
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>PROVISIONING_STATUS</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>PROVISIONING_STATUS</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">c4cb8d02-8dd3-40e7-a850-e89a3ac29737</identifier>
+      </ID>
+      <name>PROVISIONING_STATUS_MSG</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">4bf29bca-b770-4658-bef4-3631a7c14ae7</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">4000</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.Oracle9i</providerClass>
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>PROVISIONING_STATUS_MSG</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>PROVISIONING_STATUS_MSG</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">210ed85e-b8f4-41d4-b4b0-49a4092bd380</identifier>
+      </ID>
+      <name>STATUS_CHANGE_DATE</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">2409b868-41d1-4114-bad4-40d93a6f4914</identifier>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.OracleDatabaseImpl</providerClass>
+          <typeName>DATE</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>STATUS_CHANGE_DATE</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>STATUS_CHANGE_DATE</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">881e223c-f81d-4825-a4ac-a0d9a08caea7</identifier>
+      </ID>
+      <name>COST</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">cf5aa35b-fa4c-4f3c-ad52-545df9d5853f</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">10</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Long">2</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.OracleDatabaseImpl</providerClass>
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>COST</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>COST</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">d76f0dcb-63d0-49c4-8329-ce1466fc11a8</identifier>
+      </ID>
+      <name>LIST_ORDER</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">7140f6a5-8a70-4a68-96b3-6d5f26faa2e3</identifier>
+        </ID>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.OracleDatabaseImpl</providerClass>
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>LIST_ORDER</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>LIST_ORDER</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">8c7752db-ff66-46f9-902c-22e7b9b25d34</identifier>
+      </ID>
+      <name>TXT</name>
+      <dataTypeUsage class="oracle.javatools.db.datatypes.PredefinedDataTypeUsage">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">8fdc87ab-9f78-48fb-869b-00386918e3f5</identifier>
+        </ID>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">400</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <providerClass>oracle.javatools.db.ora.Oracle9i</providerClass>
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>TXT</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>P_TECHNICAL_DETAIL_VALUE</name>
+                  <identifier class="java.math.BigDecimal">102568</identifier>
+                  <schemaName>PDAVIES</schemaName>
+                  <type>TABLE</type>
+                </parent>
+                <type>COLUMN</type>
+              </parent>
+              <type>DataTypeUsage</type>
+            </value>
+          </entry>
+        </properties>
+      </dataTypeUsage>
+      <notNull>false</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>TXT</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">eb1e5b9c-642d-42eb-b2d3-1454eca1057a</identifier>
+      </ID>
+      <name>P_TECHNICAL_DETAIL_VALUE__FK1</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>P_TECHNICAL_DETAIL_ID</name>
+          <identifier class="java.lang.String">d8fb3145-eb13-4e18-a908-a72c7f31c170</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>P_TECHNICAL_DETAIL_VALUE</name>
+            <identifier class="java.lang.String">16858660-562e-48c1-aaf3-6f0ab58f49a0</identifier>
+            <schemaName>PDAVIES</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>PDAVIES</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <deleteMode>1</deleteMode>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>P_TECHNICAL_DETAIL_VALUE__FK1</name>
+            <childObjectNames>
+              <childObjectName>P_TECHNICAL_DETAIL_ID</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.IdentifierBasedID">
+        <name>P_TECHNICAL_DETAIL_PK</name>
+        <identifier class="java.lang.String">c3b2e014-2a06-47dd-a81a-7dbec0b6771d</identifier>
+        <parent class="oracle.javatools.db.IdentifierBasedID">
+          <name>P_TECHNICAL_DETAIL</name>
+          <identifier class="java.lang.String">28a35b14-8bcd-4f71-b5db-0ea5f66ade9b</identifier>
+          <schemaName>PDAVIES</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>PDAVIES</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <ID class="oracle.javatools.db.IdentifierBasedID">
+        <identifier class="java.lang.String">d1829ddd-e722-4532-910a-58596263271e</identifier>
+      </ID>
+      <name>P_TECHNICAL_DETAIL_VALUE_PK</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.IdentifierBasedID">
+          <name>ID</name>
+          <identifier class="java.lang.String">26531b0e-e7d6-411f-a1c8-57c8a6020f8b</identifier>
+          <parent class="oracle.javatools.db.IdentifierBasedID">
+            <name>P_TECHNICAL_DETAIL_VALUE</name>
+            <identifier class="java.lang.String">16858660-562e-48c1-aaf3-6f0ab58f49a0</identifier>
+            <schemaName>PDAVIES</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>PDAVIES</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>P_TECHNICAL_DETAIL_VALUE_PK</name>
+            <childObjectNames>
+              <childObjectName>ID</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>P_TECHNICAL_DETAIL_VALUE</name>
+              <identifier class="java.math.BigDecimal">102568</identifier>
+              <schemaName>PDAVIES</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>P_TECHNICAL_DETAIL_VALUE</name>
+        <identifier class="java.math.BigDecimal">102568</identifier>
+        <schemaName>PDAVIES</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>OracleStorageProperties</key>
+      <value class="oracle.javatools.db.ora.OracleStorageProperties">
+        <ID class="oracle.javatools.db.IdentifierBasedID">
+          <identifier class="java.lang.String">821c2314-2786-459a-aa83-4552b0250f6a</identifier>
+        </ID>
+        <bufferMode>DEFAULT</bufferMode>
+        <initialExtent>65536</initialExtent>
+        <initrans>1</initrans>
+        <logging>true</logging>
+        <maxExtent>2147483645</maxExtent>
+        <minExtent>1</minExtent>
+        <nextExtent>1048576</nextExtent>
+        <percentFree>10</percentFree>
+        <properties>
+          <entry>
+            <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+            <value class="oracle.javatools.db.ReferenceID">
+              <parent class="oracle.javatools.db.ReferenceID">
+                <name>P_TECHNICAL_DETAIL_VALUE</name>
+                <identifier class="java.math.BigDecimal">102568</identifier>
+                <schemaName>PDAVIES</schemaName>
+                <type>TABLE</type>
+              </parent>
+              <type>OracleStorageProperties</type>
+            </value>
+          </entry>
+        </properties>
+        <tablespaceID class="oracle.javatools.db.ReferenceID">
+          <name>USERS</name>
+          <type>TABLESPACE</type>
+        </tablespaceID>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <name>PDAVIES</name>
+  </schema>
+</table>

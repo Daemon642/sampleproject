@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/esg-engSystemDemos/!svn/ver/534/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI
+END
+ADF_Library_Dependencies.library
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI/ADF_Library_Dependencies.library
+END
+BusinessServiceApprovalUI.jpr
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/esg-engSystemDemos/!svn/ver/534/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/BusinessServiceApprovalUI/BusinessServiceApprovalUI.jpr
+END

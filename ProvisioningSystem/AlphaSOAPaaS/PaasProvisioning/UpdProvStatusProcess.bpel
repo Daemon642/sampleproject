@@ -1,0 +1,234 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Nov 25 10:45:54 EST 2013
+  Author:  oracle
+  Type: BPEL 1.1 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="UpdProvStatusProcess"
+               targetNamespace="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/UpdProvStatusProcess"
+               xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+               xmlns:client="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/UpdProvStatusProcess"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/GetGUID"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/BusinesServiceStatus"
+         xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/BusinessStatusLine"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns5="http://xmlns.oracle.com/pcbpel/adapter/db/GetGUID"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns4="http://xmlns.oracle.com/pcbpel/adapter/db/top/BusinessStatusLine"
+         xmlns:ns6="http://xmlns.oracle.com/AlphaOffice/BusinesServiceStatus"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns7="http://xmlns.oracle.com/pcbpel/adapter/db/top/BusinesServiceStatus"
+         xmlns:ns8="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/GetGUIDProcess"
+         xmlns:ns9="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/updateProvisioningStatus"
+         xmlns:ns10="http://xmlns.oracle.com/pcbpel/adapter/db/sp/updateProvisioningStatus">
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="updprovstatusprocess_client" partnerLinkType="client:UpdProvStatusProcess" myRole="UpdProvStatusProcessProvider"/>
+    <partnerLink name="BusinesServiceStatus"
+                 partnerLinkType="ns2:BusinesServiceStatus_plt"
+                 partnerRole="BusinesServiceStatus_role"/>
+    <partnerLink name="BusinessStatusLine"
+                 partnerLinkType="ns3:BusinessStatusLine_plt"
+                 partnerRole="BusinessStatusLine_role"/>
+    <partnerLink name="GetGUIDProcess.getguidprocess_client"
+                 partnerLinkType="ns8:GetGUIDProcess"
+                 partnerRole="GetGUIDProcessProvider"/>
+    <partnerLink name="updateProvisioningStatus"
+                 partnerLinkType="ns9:updateProvisioningStatus_plt"
+                 partnerRole="updateProvisioningStatus_role"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:UpdProvStatusProcessRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:UpdProvStatusProcessResponseMessage"/>
+    <variable name="StatusLineProvMsg" type="xsd:string"/>
+    <variable name="StatusProvStarted" type="xsd:string"/>
+    <variable name="StatusPendingApproval" type="xsd:string"/>
+    <variable name="InvokeBusinessStatusLine_InputVariable"
+              messageType="ns3:SBusinessStatusLineCollection_msg"/>
+    <variable name="InvokeBSStatusUpd_InputVariable"
+              messageType="ns2:SBusinessServiceCollection_msg"/>
+    <variable name="InvokeGUIDProcess_InputVariable"
+              messageType="ns8:GetGUIDProcessRequestMessage"/>
+    <variable name="InvokeGUIDProcess_OutputVariable"
+              messageType="ns8:GetGUIDProcessResponseMessage"/>
+    <variable name="InvokeUpdateProvStatus_InputVariable"
+              messageType="ns9:args_in_msg"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in UpdProvStatusProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="updprovstatusprocess_client" portType="client:UpdProvStatusProcess" operation="process" variable="inputVariable" createInstance="yes"/>
+    <assign name="InitStatusVariables">
+      <copy>
+        <from expression="'ProvisioningMsg'"/>
+        <to variable="StatusLineProvMsg"/>
+      </copy>
+      <copy>
+        <from expression="'ProvisioningStarted'"/>
+        <to variable="StatusProvStarted"/>
+      </copy>
+      <copy>
+        <from expression="'PendingApproval'"/>
+        <to variable="StatusPendingApproval"/>
+      </copy>
+    </assign>
+    <invoke name="InvokeGUIDProcess" bpelx:invokeAsDetail="no"
+            inputVariable="InvokeGUIDProcess_InputVariable"
+            outputVariable="InvokeGUIDProcess_OutputVariable"
+            partnerLink="GetGUIDProcess.getguidprocess_client"
+            portType="ns8:GetGUIDProcess" operation="process"/>
+    <assign name="AssignStatusLineInput">
+      <copy>
+        <from variable="InvokeGUIDProcess_OutputVariable" part="payload"
+              query="/ns8:processResponse/ns8:result"/>
+        <to variable="InvokeBusinessStatusLine_InputVariable"
+            part="SBusinessStatusLineCollection"
+            query="/ns4:SBusinessStatusLineCollection/ns4:SBusinessStatusLine/ns4:id"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/ns6:BusinessServiceStatus/ns6:ListOrder"/>
+        <to variable="InvokeBusinessStatusLine_InputVariable"
+            part="SBusinessStatusLineCollection"
+            query="/ns4:SBusinessStatusLineCollection/ns4:SBusinessStatusLine/ns4:listOrder"/>
+      </copy>
+      <copy>
+        <from expression="concat('Business Service Provisioning Status Changed to ', bpws:getVariableData('inputVariable','payload','/ns6:BusinessServiceStatus/ns6:ProvisioningStatus'))"/>
+        <to variable="InvokeBusinessStatusLine_InputVariable"
+            part="SBusinessStatusLineCollection"
+            query="/ns4:SBusinessStatusLineCollection/ns4:SBusinessStatusLine/ns4:statusLine"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/ns6:BusinessServiceStatus/ns6:BusinessServiceId"/>
+        <to variable="InvokeBusinessStatusLine_InputVariable"
+            part="SBusinessStatusLineCollection"
+            query="/ns4:SBusinessStatusLineCollection/ns4:SBusinessStatusLine/ns4:sBusinessServiceId"/>
+      </copy>
+      <copy>
+        <from variable="StatusLineProvMsg"/>
+        <to variable="InvokeBusinessStatusLine_InputVariable"
+            part="SBusinessStatusLineCollection"
+            query="/ns4:SBusinessStatusLineCollection/ns4:SBusinessStatusLine/ns4:statusType"/>
+      </copy>
+      <copy>
+        <from expression="xp20:current-dateTime()"/>
+        <to variable="InvokeBusinessStatusLine_InputVariable"
+            part="SBusinessStatusLineCollection"
+            query="/ns4:SBusinessStatusLineCollection/ns4:SBusinessStatusLine/ns4:statusLineDate"/>
+      </copy>
+    </assign>
+    <invoke name="InvokeBusinessStatusLine" bpelx:invokeAsDetail="no"
+            inputVariable="InvokeBusinessStatusLine_InputVariable"
+            partnerLink="BusinessStatusLine"
+            portType="ns3:BusinessStatusLine_ptt" operation="insert"/>
+    <assign name="AssignBSStatusUpdInput">
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/ns6:BusinessServiceStatus/ns6:BusinessServiceId"/>
+        <to variable="InvokeBSStatusUpd_InputVariable"
+            part="SBusinessServiceCollection"
+            query="/ns7:SBusinessServiceCollection/ns7:SBusinessService/ns7:id"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/ns6:BusinessServiceStatus/ns6:ProvisioningStatus"/>
+        <to variable="InvokeBSStatusUpd_InputVariable"
+            part="SBusinessServiceCollection"
+            query="/ns7:SBusinessServiceCollection/ns7:SBusinessService/ns7:provisioningStatus"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/ns6:BusinessServiceStatus/ns6:ProvisioningMsg"/>
+        <to variable="InvokeBSStatusUpd_InputVariable"
+            part="SBusinessServiceCollection"
+            query="/ns7:SBusinessServiceCollection/ns7:SBusinessService/ns7:provisioningMessage"/>
+      </copy>
+      <copy>
+        <from expression="xp20:current-dateTime()"/>
+        <to variable="InvokeBSStatusUpd_InputVariable"
+            part="SBusinessServiceCollection"
+            query="/ns7:SBusinessServiceCollection/ns7:SBusinessService/ns7:statusChangeDate"/>
+      </copy>
+    </assign>
+    <invoke name="InvokeBSStatusUpd" bpelx:invokeAsDetail="no"
+            inputVariable="InvokeBSStatusUpd_InputVariable"
+            partnerLink="BusinesServiceStatus"
+            portType="ns2:BusinesServiceStatus_ptt" operation="update"/>
+    <assign name="AssignUpdateProvInput">
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/ns6:BusinessServiceStatus/ns6:SQueueId"/>
+        <to variable="InvokeUpdateProvStatus_InputVariable"
+            part="InputParameters" query="/ns10:InputParameters/ns10:SQUEUEID"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/ns6:BusinessServiceStatus/ns6:ProvisioningStatus"/>
+        <to variable="InvokeUpdateProvStatus_InputVariable"
+            part="InputParameters"
+            query="/ns10:InputParameters/ns10:PROVSTATUS"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload"
+              query="/ns6:BusinessServiceStatus/ns6:ProvisioningMsg"/>
+        <to variable="InvokeUpdateProvStatus_InputVariable"
+            part="InputParameters"
+            query="/ns10:InputParameters/ns10:PROVSTATUSMSG"/>
+      </copy>
+    </assign>
+    <invoke name="InvokeUpdateProvStatus" bpelx:invokeAsDetail="no"
+            inputVariable="InvokeUpdateProvStatus_InputVariable"
+            partnerLink="updateProvisioningStatus"
+            portType="ns9:updateProvisioningStatus_ptt"
+            operation="updateProvisioningStatus"/>
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="updprovstatusprocess_client" portType="client:UpdProvStatusProcess" operation="process" variable="outputVariable"/>
+  </sequence>
+</process>

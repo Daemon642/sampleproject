@@ -1,0 +1,29 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+   <entry key="S_BUSINESS_STATUS_LINE.STATUS_TYPE:db_column_size">40</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.ID:db_column_type">VARCHAR2</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.S_BUSINESS_SERVICE_ID:db_column_not_null">false</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.STATUS_LINE_DATE:db_column_type">DATE</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.STATUS_LINE:db_column_not_null">false</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.STATUS_LINE:db_column_type">VARCHAR2</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.S_BUSINESS_SERVICE_ID:db_column_size">50</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.STATUS_TYPE:db_column_not_null">false</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.STATUS_LINE_DATE:db_column_not_null">false</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.ID:db_column_size">50</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.LIST_ORDER:db_column_not_null">false</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.STATUS_TYPE:db_column_type">VARCHAR2</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.STATUS_LINE:db_column_size">4000</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.LIST_ORDER:db_column_type">NUMBER</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.LIST_ORDER:db_column_precision">0</entry>
+   <entry key="root_descriptor_alias">S_BUSINESS_STATUS_LINE</entry>
+   <entry key="S_BUSINESS_STATUS_LINE:db_column_5">LIST_ORDER</entry>
+   <entry key="S_BUSINESS_STATUS_LINE:db_column_4">STATUS_LINE</entry>
+   <entry key="S_BUSINESS_STATUS_LINE:db_column_3">STATUS_LINE_DATE</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.ID:db_column_not_null">true</entry>
+   <entry key="S_BUSINESS_STATUS_LINE:db_column_2">STATUS_TYPE</entry>
+   <entry key="S_BUSINESS_STATUS_LINE:db_column_1">S_BUSINESS_SERVICE_ID</entry>
+   <entry key="S_BUSINESS_STATUS_LINE:db_column_0">ID</entry>
+   <entry key="S_BUSINESS_STATUS_LINE.S_BUSINESS_SERVICE_ID:db_column_type">VARCHAR2</entry>
+   <entry key="S_BUSINESS_STATUS_LINE:db_table_type">TABLE</entry>
+</properties>

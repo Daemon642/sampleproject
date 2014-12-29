@@ -1,0 +1,23 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+   <entry key="P_BUSINESS_VALUES.NAME:db_column_not_null">false</entry>
+   <entry key="P_BUSINESS_VALUES.ID:db_column_type">VARCHAR2</entry>
+   <entry key="P_BUSINESS_VALUES.P_BUSINESS_SERVICE_ID:db_column_size">50</entry>
+   <entry key="P_BUSINESS_VALUES.VAL:db_column_type">VARCHAR2</entry>
+   <entry key="P_BUSINESS_VALUES:db_column_3">VAL</entry>
+   <entry key="P_BUSINESS_VALUES.NAME:db_column_type">VARCHAR2</entry>
+   <entry key="P_BUSINESS_VALUES:db_column_2">NAME</entry>
+   <entry key="P_BUSINESS_VALUES.P_BUSINESS_SERVICE_ID:db_column_not_null">false</entry>
+   <entry key="return_single_result_set">false</entry>
+   <entry key="P_BUSINESS_VALUES:db_column_1">P_BUSINESS_SERVICE_ID</entry>
+   <entry key="P_BUSINESS_VALUES:db_column_0">ID</entry>
+   <entry key="P_BUSINESS_VALUES.ID:db_column_size">50</entry>
+   <entry key="P_BUSINESS_VALUES.VAL:db_column_not_null">false</entry>
+   <entry key="P_BUSINESS_VALUES.VAL:db_column_size">4000</entry>
+   <entry key="root_descriptor_alias">P_BUSINESS_VALUES</entry>
+   <entry key="P_BUSINESS_VALUES.P_BUSINESS_SERVICE_ID:db_column_type">VARCHAR2</entry>
+   <entry key="P_BUSINESS_VALUES.ID:db_column_not_null">true</entry>
+   <entry key="P_BUSINESS_VALUES.NAME:db_column_size">100</entry>
+   <entry key="P_BUSINESS_VALUES:db_table_type">TABLE</entry>
+</properties>

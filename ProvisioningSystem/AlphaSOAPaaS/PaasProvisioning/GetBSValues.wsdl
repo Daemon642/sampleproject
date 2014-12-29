@@ -1,0 +1,25 @@
+<?binding.jca GetBSValues_db.jca?>
+<wsdl:definitions name="GetBSValues" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/GetBSValues" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/GetBSValues" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/GetBSValues">
+    <plt:partnerLinkType name="GetBSValues_plt">
+        <plt:role name="GetBSValues_role">
+            <plt:portType name="tns:GetBSValues_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/GetBSValues" schemaLocation="xsd/GetBSValues_table.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="GetBSValuesSelect_inputParameters">
+        <wsdl:part name="GetBSValuesSelect_inputParameters" element="top:GetBSValuesSelect_businessServiceIdInputParameters"/>
+    </wsdl:message>
+    <wsdl:message name="PBusinessValuesCollection_msg">
+        <wsdl:part name="PBusinessValuesCollection" element="top:PBusinessValuesCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="GetBSValues_ptt">
+        <wsdl:operation name="GetBSValuesSelect">
+            <wsdl:input message="tns:GetBSValuesSelect_inputParameters"/>
+            <wsdl:output message="tns:PBusinessValuesCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

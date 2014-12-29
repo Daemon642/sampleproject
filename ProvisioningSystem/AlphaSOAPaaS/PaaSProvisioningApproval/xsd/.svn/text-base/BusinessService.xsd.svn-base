@@ -1,0 +1,24 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:bs="http://www.alphaoffice.com/ns/BusinesService" targetNamespace="http://www.alphaoffice.com/ns/BusinesService"
+     elementFormDefault="qualified">
+    <element name="BusinessService" type="bs:BusinessServiceType"/>
+    <complexType name="BusinessServiceType">
+        <sequence>
+            <element name="TechnicalService" maxOccurs="unbounded" minOccurs="0" type="bs:TechnicalServiceType"/>
+            <element name="BusinessServiceId" type="xsd:string" minOccurs="0"/>
+            <element name="ServiceName" type="xsd:string" minOccurs="0"/>
+            <element name="FirstName" type="xsd:string" minOccurs="0"/>
+            <element name="LastName" type="xsd:string" minOccurs="0"/>
+            <element name="Email" type="xsd:string" minOccurs="0"/>
+            <element name="TotalCost" type="xsd:decimal" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <xsd:complexType name="TechnicalServiceType">
+        <xsd:sequence>
+            <xsd:element name="TechnicalServiceId" maxOccurs="1" type="xsd:string"/>
+            <xsd:element name="ServiceName" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+            <xsd:element name="Cost" maxOccurs="1" type="xsd:double"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</schema>

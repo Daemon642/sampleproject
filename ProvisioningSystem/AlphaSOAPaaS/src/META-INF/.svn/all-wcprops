@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/esg-engSystemDemos/!svn/ver/581/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/src/META-INF
+END
+weblogic-application.xml
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/src/META-INF/weblogic-application.xml
+END
+cwallet.sso
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/esg-engSystemDemos/!svn/ver/581/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/src/META-INF/cwallet.sso
+END
+jps-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/esg-engSystemDemos/!svn/ver/477/trunk/CatalogProvisioning/ProvisioningSystem/AlphaSOAPaaS/src/META-INF/jps-config.xml
+END

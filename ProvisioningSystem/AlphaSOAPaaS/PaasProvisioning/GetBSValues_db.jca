@@ -1,0 +1,14 @@
+<adapter-config name="GetBSValues" adapter="Database Adapter" wsdlLocation="GetBSValues.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/DB/BusinessServiceDBConnection" UIConnectionName="BusinessServiceDBConnection" adapterRef=""/>
+  <endpoint-interaction portType="GetBSValues_ptt" operation="GetBSValuesSelect">
+    <interaction-spec className="oracle.tip.adapter.db.DBReadInteractionSpec">
+      <property name="DescriptorName" value="GetBSValues.PBusinessValues"/>
+      <property name="QueryName" value="GetBSValuesSelect"/>
+      <property name="MappingsMetaDataURL" value="GetBSValues-or-mappings.xml"/>
+      <property name="ReturnSingleResultSet" value="false"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

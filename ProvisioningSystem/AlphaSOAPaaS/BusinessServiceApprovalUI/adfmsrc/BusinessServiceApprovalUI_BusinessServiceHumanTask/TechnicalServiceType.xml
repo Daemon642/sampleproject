@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<JavaBean xmlns="http://xmlns.oracle.com/adfm/beanmodel" version="11.1.1.64.93"
+          id="TechnicalServiceType"
+          Package="BusinessServiceApprovalUI_BusinessServiceHumanTask"
+          BeanClass="BusinessServiceApprovalUI_BusinessServiceHumanTask.TechnicalServiceType"
+          isJavaBased="false">
+  <Attribute Name="TechnicalServiceId" IsUpdateable="0" Type="java.lang.String">
+    <Properties>
+      <CustomProperties>
+        <Property Name="nextSiblingNamespace"
+                  Value="http://www.alphaoffice.com/ns/BusinesService"/>
+        <Property Name="nextSibling" Value="ServiceName"/>
+        <Property Name="minOccurs" Value="1"/>
+        <Property Name="maxOccurs" Value="1"/>
+        <Property Name="LABEL" Value="Technical Service Id"/>
+        <Property Name="LeafElement_hint" Value="LeafElement_no_attribute"/>
+        <Property Name="nillable" Value="false"/>
+        <Property Name="originalName" Value="TechnicalServiceId"/>
+        <Property Name="targetNamespace"
+                  Value="http://www.alphaoffice.com/ns/BusinesService"/>
+        <Property Name="type" Value="java.lang.String"/>
+      </CustomProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="ServiceName" IsUpdateable="0" Type="java.lang.String">
+    <Properties>
+      <CustomProperties>
+        <Property Name="nextSiblingNamespace"
+                  Value="http://www.alphaoffice.com/ns/BusinesService"/>
+        <Property Name="nextSibling" Value="Cost"/>
+        <Property Name="minOccurs" Value="0"/>
+        <Property Name="maxOccurs" Value="1"/>
+        <Property Name="LABEL" Value="Service Name"/>
+        <Property Name="LeafElement_hint" Value="LeafElement_no_attribute"/>
+        <Property Name="nillable" Value="false"/>
+        <Property Name="originalName" Value="ServiceName"/>
+        <Property Name="targetNamespace"
+                  Value="http://www.alphaoffice.com/ns/BusinesService"/>
+        <Property Name="type" Value="java.lang.String"/>
+      </CustomProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="Cost" IsUpdateable="0" Type="java.lang.Double">
+    <Properties>
+      <CustomProperties>
+        <Property Name="minOccurs" Value="1"/>
+        <Property Name="maxOccurs" Value="1"/>
+        <Property Name="LABEL" Value="Cost"/>
+        <Property Name="LeafElement_hint" Value="LeafElement_no_attribute"/>
+        <Property Name="nillable" Value="false"/>
+        <Property Name="originalName" Value="Cost"/>
+        <Property Name="targetNamespace"
+                  Value="http://www.alphaoffice.com/ns/BusinesService"/>
+        <Property Name="type" Value="java.lang.Double"/>
+      </CustomProperties>
+    </Properties>
+  </Attribute>
+</JavaBean>

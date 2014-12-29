@@ -1,0 +1,21 @@
+<?binding.jca BusinessStatusLine_db.jca?>
+<wsdl:definitions name="BusinessStatusLine" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/BusinessStatusLine" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/BusinessStatusLine" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/BusinessStatusLine">
+    <plt:partnerLinkType name="BusinessStatusLine_plt">
+        <plt:role name="BusinessStatusLine_role">
+            <plt:portType name="tns:BusinessStatusLine_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/BusinessStatusLine" schemaLocation="xsd/BusinessStatusLine_table.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="SBusinessStatusLineCollection_msg">
+        <wsdl:part name="SBusinessStatusLineCollection" element="top:SBusinessStatusLineCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="BusinessStatusLine_ptt">
+        <wsdl:operation name="insert">
+            <wsdl:input message="tns:SBusinessStatusLineCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

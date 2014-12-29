@@ -1,0 +1,21 @@
+<?binding.jca InsertPBusinessValues_db.jca?>
+<wsdl:definitions name="InsertPBusinessValues" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/InsertPBusinessValues" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/InsertPBusinessValues" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/InsertPBusinessValues">
+    <plt:partnerLinkType name="InsertPBusinessValues_plt">
+        <plt:role name="InsertPBusinessValues_role">
+            <plt:portType name="tns:InsertPBusinessValues_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/InsertPBusinessValues" schemaLocation="xsd/InsertPBusinessValues_table.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="PBusinessValuesCollection_msg">
+        <wsdl:part name="PBusinessValuesCollection" element="top:PBusinessValuesCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="InsertPBusinessValues_ptt">
+        <wsdl:operation name="insert">
+            <wsdl:input message="tns:PBusinessValuesCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

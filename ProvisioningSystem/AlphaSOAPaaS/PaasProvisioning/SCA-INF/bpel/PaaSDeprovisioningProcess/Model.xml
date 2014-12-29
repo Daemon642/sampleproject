@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="PaaSDeprovisioningProcess" targetNamespace="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/PaaSDeprovisioningProcess" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:client="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/PaaSDeprovisioningProcess" xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:bpelx="http://schemas.oracle.com/bpel/extension" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/jms/AlphaSOAPaaS/PaasProvisioning/EMIaaSJMS" xmlns:bpel2="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/top/DequeueBusinesService" xmlns:ns2="http://www.example.org" xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20" xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc" xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue" xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath" xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath" xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk" xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions" xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap" xmlns:ns4="http://xmlns.oracle.com/AlphaSOAPaaS/PaasProvisioning/UpdProvStatusProcess" xmlns:ns5="http://xmlns.oracle.com/AlphaOffice/BusinesServiceStatus" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns7="http://xmlns.oracle.com/pcbpel/adapter/db/top/GetBusinessService" xmlns:ns6="http://xmlns.oracle.com/pcbpel/adapter/db/AlphaSOAPaaS/PaasProvisioning/GetBusinessService" id="BpPrc0">
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="paasdeprovisioningprocess_client" partnerLinkType="client:PaaSDeprovisioningProcess" myRole="PaaSDeprovisioningProcessProvider" partnerRole="PaaSDeprovisioningProcessRequester"/>
+        <partnerLink name="EMIaaSJMS" partnerLinkType="ns1:Produce_Message_plt" partnerRole="Produce_Message_role"/>
+        <partnerLink name="UpdProvStatusProcess.updprovstatusprocess_client" partnerLinkType="ns4:UpdProvStatusProcess" partnerRole="UpdProvStatusProcessProvider"/>
+        <partnerLink name="GetBusinessService" partnerLinkType="ns6:GetBusinessService_plt" partnerRole="GetBusinessService_role"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:PaaSDeprovisioningProcessRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:PaaSDeprovisioningProcessResponseMessage"/>
+        <variable name="InvokeEMIaaSJMS_InputVariable" messageType="ns1:Produce_Message_msg"/>
+        <variable name="UpdProvStatus_InputVariable" messageType="ns4:UpdProvStatusProcessRequestMessage"/>
+        <variable name="UpdProvStatus_OutputVariable" messageType="ns4:UpdProvStatusProcessResponseMessage"/>
+        <variable name="ListOrder" type="xsd:int"/>
+        <variable name="StatusDeprovisioning" type="xsd:string"/>
+        <variable name="StatusDeprovisioned" type="xsd:string"/>
+        <variable name="ImageName" type="xsd:string"/>
+        <variable name="InvokeGetBusinessService_InputVariable" messageType="ns6:GetBusinessServiceSelect_inputParameters"/>
+        <variable name="InvokeGetBusinessService_OutputVariable" messageType="ns6:PBusinessServiceCollection_msg"/>
+    </variables>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main" id="BpSeq0">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in PaaSDeprovisioningProcess.wsdl) -->
+        <receive name="receiveInput" partnerLink="paasdeprovisioningprocess_client" portType="client:PaaSDeprovisioningProcess" operation="process" variable="inputVariable" createInstance="yes" id="BpRcv0"/>
+        <assign name="InitStatusVariables" id="BpAss0">
+            <copy>
+                <from expression="0"/>
+                <to variable="ListOrder"/>
+            </copy>
+            <copy>
+                <from expression="&quot;Deprovisioning&quot;"/>
+                <to variable="StatusDeprovisioning"/>
+            </copy>
+            <copy>
+                <from expression="&quot;Deprovisioned&quot;"/>
+                <to variable="StatusDeprovisioned"/>
+            </copy>
+        </assign>
+        <assign name="AssignProvStatusInput" id="BpAss1">
+            <copy>
+                <from expression="bpws:getVariableData('ListOrder') + 1"/>
+                <to variable="ListOrder"/>
+            </copy>
+            <copy>
+                <from variable="inputVariable" part="payload" query="/ns3:SQueueCollection/ns3:SQueue/ns3:id"/>
+                <to variable="UpdProvStatus_InputVariable" part="payload" query="/ns5:BusinessServiceStatus/ns5:SQueueId"/>
+            </copy>
+            <copy>
+                <from variable="StatusDeprovisioning"/>
+                <to variable="UpdProvStatus_InputVariable" part="payload" query="/ns5:BusinessServiceStatus/ns5:ProvisioningStatus"/>
+            </copy>
+            <copy>
+                <from expression="&quot;Deprovisioning of environment Started&quot;"/>
+                <to variable="UpdProvStatus_InputVariable" part="payload" query="/ns5:BusinessServiceStatus/ns5:ProvisioningMsg"/>
+            </copy>
+            <copy>
+                <from variable="inputVariable" part="payload" query="/ns3:SQueueCollection/ns3:SQueue/ns3:sBusinessServiceId"/>
+                <to variable="UpdProvStatus_InputVariable" part="payload" query="/ns5:BusinessServiceStatus/ns5:BusinessServiceId"/>
+            </copy>
+            <copy>
+                <from variable="ListOrder"/>
+                <to variable="UpdProvStatus_InputVariable" part="payload" query="/ns5:BusinessServiceStatus/ns5:ListOrder"/>
+            </copy>
+        </assign>
+        <invoke name="InvokeStatusDeprovisioning" bpelx:invokeAsDetail="no" inputVariable="UpdProvStatus_InputVariable" outputVariable="UpdProvStatus_OutputVariable" partnerLink="UpdProvStatusProcess.updprovstatusprocess_client" portType="ns4:UpdProvStatusProcess" operation="process" id="BpInv0"/>
+        <assign name="AssignSQueueId" id="BpAss2">
+            <copy>
+                <from variable="inputVariable" part="payload" query="/ns3:SQueueCollection/ns3:SQueue/ns3:id"/>
+                <to variable="InvokeGetBusinessService_InputVariable" part="GetBusinessServiceSelect_inputParameters" query="/ns7:GetBusinessServiceSelect_sQueueIdInputParameters/ns7:sQueueId"/>
+            </copy>
+        </assign>
+        <invoke name="InvokeGetBusinessService" bpelx:invokeAsDetail="no" inputVariable="InvokeGetBusinessService_InputVariable" outputVariable="InvokeGetBusinessService_OutputVariable" partnerLink="GetBusinessService" portType="ns6:GetBusinessService_ptt" operation="GetBusinessServiceSelect" id="BpInv1"/>
+        <switch name="Switch2" id="BpSwt0">
+            <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns7:PBusinessServiceCollection/ns7:PBusinessService/ns7:provisionCode'), 'NoProvisioningDemo')">
+                <bpelx:annotation>
+                    <bpelx:general>
+                        <bpelx:property name="userLabel">
+                            <![CDATA[No Provisioning]]>
+                        </bpelx:property>
+                    </bpelx:general>
+                </bpelx:annotation>
+                <wait name="Wait2" for="'PT15S'" id="BpWai0"/>
+            </case>
+            <otherwise>
+                <sequence id="BpSeq1">
+                    <switch name="Switch1" id="BpSwt1">
+                        <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns7:PBusinessServiceCollection/ns7:PBusinessService/ns7:provisionValue'), &quot;Assembly=AlphaSOA&quot;)">
+                            <bpelx:annotation>
+                                <bpelx:general>
+                                    <bpelx:property name="userLabel">
+                                        <![CDATA[AlphaSOA]]>
+                                    </bpelx:property>
+                                </bpelx:general>
+                            </bpelx:annotation>
+                            <assign name="AssignAlphaSOA" id="BpAss3">
+                                <copy>
+                                    <from expression="&quot;AlphaSOA&quot;"/>
+                                    <to variable="ImageName"/>
+                                </copy>
+                            </assign>
+                        </case>
+                        <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns7:PBusinessServiceCollection/ns7:PBusinessService/ns7:provisionValue'), &quot;Assembly=AlphaBase&quot;)">
+                            <bpelx:annotation>
+                                <bpelx:general>
+                                    <bpelx:property name="userLabel">
+                                        <![CDATA[AlphaBase]]>
+                                    </bpelx:property>
+                                </bpelx:general>
+                            </bpelx:annotation>
+                            <assign name="AssignAlphaBase" id="BpAss4">
+                                <copy>
+                                    <from expression="&quot;AlphaBase&quot;"/>
+                                    <to variable="ImageName"/>
+                                </copy>
+                            </assign>
+                        </case>
+                        <case condition="contains(bpws:getVariableData('InvokeGetBusinessService_OutputVariable','PBusinessServiceCollection','/ns7:PBusinessServiceCollection/ns7:PBusinessService/ns7:provisionValue'), &quot;Assembly=AlphaWLS&quot;)">
+                            <bpelx:annotation>
+                                <bpelx:general>
+                                    <bpelx:property name="userLabel">
+                                        <![CDATA[AlphaWLS]]>
+                                    </bpelx:property>
+                                </bpelx:general>
+                            </bpelx:annotation>
+                            <assign name="AssignAlphaWLS" id="BpAss5">
+                                <copy>
+                                    <from expression="&quot;AlphaWLS&quot;"/>
+                                    <to variable="ImageName"/>
+                                </copy>
+                            </assign>
+                        </case>
+                        <otherwise>
+                            <assign name="AssignDefaultName" id="BpAss6">
+                                <copy>
+                                    <from expression="&quot;AlphaWLS&quot;"/>
+                                    <to variable="ImageName"/>
+                                </copy>
+                            </assign>
+                        </otherwise>
+                    </switch>
+                    <assign name="AssignEMIaaSInput" id="BpAss7">
+                        <copy>
+                            <from expression="&quot;DeleteImage&quot;"/>
+                            <to variable="InvokeEMIaaSJMS_InputVariable" part="body" query="/ns2:EMIaaSMessage/ns2:Method"/>
+                        </copy>
+                        <copy>
+                            <from variable="inputVariable" part="payload" query="/ns3:SQueueCollection/ns3:SQueue/ns3:sBusinessServiceId"/>
+                            <to variable="InvokeEMIaaSJMS_InputVariable" part="body" query="/ns2:EMIaaSMessage/ns2:SBusinessServiceId"/>
+                        </copy>
+                        <copy>
+                            <from variable="inputVariable" part="payload" query="/ns3:SQueueCollection/ns3:SQueue/ns3:id"/>
+                            <to variable="InvokeEMIaaSJMS_InputVariable" part="body" query="/ns2:EMIaaSMessage/ns2:SQueueId"/>
+                        </copy>
+                        <copy>
+                            <from variable="ImageName"/>
+                            <to variable="InvokeEMIaaSJMS_InputVariable" part="body" query="/ns2:EMIaaSMessage/ns2:ImageName"/>
+                        </copy>
+                    </assign>
+                    <invoke name="InvokeEMIaaSJMS" bpelx:invokeAsDetail="no" inputVariable="InvokeEMIaaSJMS_InputVariable" partnerLink="EMIaaSJMS" portType="ns1:Produce_Message_ptt" operation="Produce_Message" id="BpInv2"/>
+                    <wait name="Wait1" for="'PT2M'" id="BpWai1"/>
+                </sequence>
+            </otherwise>
+        </switch>
+        <assign name="AssignDeprovisionedInput" id="BpAss8">
+            <copy>
+                <from expression="bpws:getVariableData('ListOrder') + 1"/>
+                <to variable="ListOrder"/>
+            </copy>
+            <copy>
+                <from variable="inputVariable" part="payload" query="/ns3:SQueueCollection/ns3:SQueue/ns3:id"/>
+                <to variable="UpdProvStatus_InputVariable" part="payload" query="/ns5:BusinessServiceStatus/ns5:SQueueId"/>
+            </copy>
+            <copy>
+                <from variable="ListOrder"/>
+                <to variable="UpdProvStatus_InputVariable" part="payload" query="/ns5:BusinessServiceStatus/ns5:ListOrder"/>
+            </copy>
+            <copy>
+                <from expression="&quot;Deprovisioning of environment completed&quot;"/>
+                <to variable="UpdProvStatus_InputVariable" part="payload" query="/ns5:BusinessServiceStatus/ns5:ProvisioningMsg"/>
+            </copy>
+            <copy>
+                <from variable="StatusDeprovisioned"/>
+                <to variable="UpdProvStatus_InputVariable" part="payload" query="/ns5:BusinessServiceStatus/ns5:ProvisioningStatus"/>
+            </copy>
+        </assign>
+        <invoke name="InvokeStatusDeprovisioned" bpelx:invokeAsDetail="no" inputVariable="UpdProvStatus_InputVariable" outputVariable="UpdProvStatus_OutputVariable" partnerLink="UpdProvStatusProcess.updprovstatusprocess_client" portType="ns4:UpdProvStatusProcess" operation="process" id="BpInv3"/>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="paasdeprovisioningprocess_client" portType="client:PaaSDeprovisioningProcessCallback" operation="processResponse" inputVariable="outputVariable" id="BpInv4"/>
+    </sequence>
+</process><!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Jan 30 14:31:14 EST 2014
+  Author:  oracle
+  Type: BPEL 1.1 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->

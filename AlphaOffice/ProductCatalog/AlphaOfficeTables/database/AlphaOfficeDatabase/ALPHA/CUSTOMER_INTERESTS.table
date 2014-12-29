@@ -1,0 +1,665 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<table xmlns="http://xmlns.oracle.com/jdeveloper/1211/offlinedb">
+  <name>CUSTOMER_INTERESTS</name>
+  <columns>
+    <column>
+      <name>CUSTOMER_ID</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">15</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Long">0</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CUSTOMER_ID</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <name>CUSTOMER_INTERESTS_ID</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">15</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Long">0</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CUSTOMER_INTERESTS_ID</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <name>CATEGORY_ID</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">15</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Long">0</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CATEGORY_ID</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <name>CREATED_BY</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">60</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CREATED_BY</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <name>CREATION_DATE</name>
+      <dataTypeUsage>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>DATE</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CREATION_DATE</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <name>LAST_UPDATED_BY</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>size</key>
+            <value class="java.lang.Long">60</value>
+          </entry>
+          <entry>
+            <key>unit</key>
+            <value class="java.lang.String">BYTE</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>VARCHAR2</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>LAST_UPDATED_BY</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <name>LAST_UPDATE_DATE</name>
+      <dataTypeUsage>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>DATE</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>LAST_UPDATE_DATE</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+    <column>
+      <name>OBJECT_VERSION_ID</name>
+      <dataTypeUsage>
+        <attributeValues>
+          <entry>
+            <key>precision</key>
+            <value class="java.lang.String">15</value>
+          </entry>
+          <entry>
+            <key>scale</key>
+            <value class="java.lang.Long">0</value>
+          </entry>
+        </attributeValues>
+        <dataTypeID class="oracle.javatools.db.datatypes.DataTypeID">
+          <typeName>NUMBER</typeName>
+        </dataTypeID>
+      </dataTypeUsage>
+      <notNull>true</notNull>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>OBJECT_VERSION_ID</name>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <type>COLUMN</type>
+          </value>
+        </entry>
+      </properties>
+    </column>
+  </columns>
+  <constraints>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <name>CUSTOMER_INTERESTS_CUST_FK1</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>CUSTOMER_ID</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CUSTOMER_INTERESTS</name>
+            <schemaName>ALPHA</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>ALPHA</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <onDeleteAction>NO_ACTION</onDeleteAction>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CUSTOMER_INTERESTS_CUST_FK1</name>
+            <childObjectNames>
+              <childObjectName>CUSTOMER_ID</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.NameBasedID">
+        <name>CUSTOMERS_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>CUSTOMERS</name>
+          <schemaName>ALPHA</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>ALPHA</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.FKConstraint">
+      <name>CUSTOMER_INTERESTS_FK1</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>CATEGORY_ID</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CUSTOMER_INTERESTS</name>
+            <schemaName>ALPHA</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>ALPHA</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <onDeleteAction>NO_ACTION</onDeleteAction>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CUSTOMER_INTERESTS_FK1</name>
+            <childObjectNames>
+              <childObjectName>CATEGORY_ID</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>FKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+      <referenceID class="oracle.javatools.db.NameBasedID">
+        <name>PRODUCT_CATEGORIES_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>PRODUCT_CATEGORIES</name>
+          <schemaName>ALPHA</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>ALPHA</schemaName>
+        <type>CONSTRAINT</type>
+      </referenceID>
+    </constraint>
+    <constraint class="oracle.javatools.db.PKConstraint">
+      <name>CUSTOMER_INTERESTS_PK</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>CUSTOMER_INTERESTS_ID</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CUSTOMER_INTERESTS</name>
+            <schemaName>ALPHA</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>ALPHA</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <indexID class="oracle.javatools.db.NameBasedID">
+        <name>CUSTOMER_INTERESTS_PK</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>CUSTOMER_INTERESTS</name>
+          <schemaName>ALPHA</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>ALPHA</schemaName>
+        <type>INDEX</type>
+      </indexID>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CUSTOMER_INTERESTS_PK</name>
+            <childObjectNames>
+              <childObjectName>CUSTOMER_INTERESTS_ID</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>PKConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+    <constraint class="oracle.javatools.db.UniqueConstraint">
+      <name>CUSTOMER_CATEGORY_ID_UNIQUE</name>
+      <columnIDs>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>CUSTOMER_ID</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CUSTOMER_INTERESTS</name>
+            <schemaName>ALPHA</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>ALPHA</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+        <columnID class="oracle.javatools.db.NameBasedID">
+          <name>CATEGORY_ID</name>
+          <parent class="oracle.javatools.db.NameBasedID">
+            <name>CUSTOMER_INTERESTS</name>
+            <schemaName>ALPHA</schemaName>
+            <type>TABLE</type>
+          </parent>
+          <schemaName>ALPHA</schemaName>
+          <type>COLUMN</type>
+        </columnID>
+      </columnIDs>
+      <enabled>true</enabled>
+      <indexID class="oracle.javatools.db.NameBasedID">
+        <name>CUSTOMER_CATEGORY_ID_UNIQUE</name>
+        <parent class="oracle.javatools.db.NameBasedID">
+          <name>CUSTOMER_INTERESTS</name>
+          <schemaName>ALPHA</schemaName>
+          <type>TABLE</type>
+        </parent>
+        <schemaName>ALPHA</schemaName>
+        <type>INDEX</type>
+      </indexID>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CUSTOMER_CATEGORY_ID_UNIQUE</name>
+            <childObjectNames>
+              <childObjectName>CUSTOMER_ID</childObjectName>
+              <childObjectName>CATEGORY_ID</childObjectName>
+            </childObjectNames>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <subType>UniqueConstraint</subType>
+            <type>CONSTRAINT</type>
+          </value>
+        </entry>
+      </properties>
+    </constraint>
+  </constraints>
+  <indexes>
+    <index>
+      <name>CUSTOMER_CATEGORY_ID_UNIQUE</name>
+      <columnExpressions>
+        <columnExpression>
+          <expressionSource>CUSTOMER_ID</expressionSource>
+          <orderType>ASC</orderType>
+          <properties>
+            <entry>
+              <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+              <value class="oracle.javatools.db.ReferenceID">
+                <name>CUSTOMER_ID</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>CUSTOMER_CATEGORY_ID_UNIQUE</name>
+                  <identifier class="java.math.BigDecimal">96279</identifier>
+                  <parent class="oracle.javatools.db.ReferenceID">
+                    <name>CUSTOMER_INTERESTS</name>
+                    <identifier class="java.math.BigDecimal">96277</identifier>
+                    <schemaName>ALPHA</schemaName>
+                    <type>TABLE</type>
+                  </parent>
+                  <schemaName>ALPHA</schemaName>
+                  <type>INDEX</type>
+                </parent>
+                <type>IndexObject</type>
+              </value>
+            </entry>
+          </properties>
+        </columnExpression>
+        <columnExpression>
+          <expressionSource>CATEGORY_ID</expressionSource>
+          <orderType>ASC</orderType>
+          <properties>
+            <entry>
+              <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+              <value class="oracle.javatools.db.ReferenceID">
+                <name>CATEGORY_ID</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>CUSTOMER_CATEGORY_ID_UNIQUE</name>
+                  <identifier class="java.math.BigDecimal">96279</identifier>
+                  <parent class="oracle.javatools.db.ReferenceID">
+                    <name>CUSTOMER_INTERESTS</name>
+                    <identifier class="java.math.BigDecimal">96277</identifier>
+                    <schemaName>ALPHA</schemaName>
+                    <type>TABLE</type>
+                  </parent>
+                  <schemaName>ALPHA</schemaName>
+                  <type>INDEX</type>
+                </parent>
+                <type>IndexObject</type>
+              </value>
+            </entry>
+          </properties>
+        </columnExpression>
+      </columnExpressions>
+      <indexType>UNIQUE</indexType>
+      <parallelDegree>1</parallelDegree>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CUSTOMER_CATEGORY_ID_UNIQUE</name>
+            <identifier class="java.math.BigDecimal">96279</identifier>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>ALPHA</schemaName>
+            <type>INDEX</type>
+          </value>
+        </entry>
+        <entry>
+          <key>OracleStorageProperties</key>
+          <value class="oracle.javatools.db.ora.OracleStorageProperties">
+            <bufferMode>DEFAULT</bufferMode>
+            <initialExtent>65536</initialExtent>
+            <initrans>2</initrans>
+            <logging>true</logging>
+            <maxExtent>0</maxExtent>
+            <minExtent>1</minExtent>
+            <nextExtent>1048576</nextExtent>
+            <percentFree>10</percentFree>
+            <tablespaceID class="oracle.javatools.db.ReferenceID">
+              <name>USERS</name>
+              <type>TABLESPACE</type>
+            </tablespaceID>
+          </value>
+        </entry>
+      </properties>
+      <schema>
+        <name>ALPHA</name>
+      </schema>
+      <systemGenerated>false</systemGenerated>
+    </index>
+    <index>
+      <name>CUSTOMER_INTERESTS_PK</name>
+      <columnExpressions>
+        <columnExpression>
+          <expressionSource>CUSTOMER_INTERESTS_ID</expressionSource>
+          <orderType>ASC</orderType>
+          <properties>
+            <entry>
+              <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+              <value class="oracle.javatools.db.ReferenceID">
+                <name>CUSTOMER_INTERESTS_ID</name>
+                <parent class="oracle.javatools.db.ReferenceID">
+                  <name>CUSTOMER_INTERESTS_PK</name>
+                  <identifier class="java.math.BigDecimal">96278</identifier>
+                  <parent class="oracle.javatools.db.ReferenceID">
+                    <name>CUSTOMER_INTERESTS</name>
+                    <identifier class="java.math.BigDecimal">96277</identifier>
+                    <schemaName>ALPHA</schemaName>
+                    <type>TABLE</type>
+                  </parent>
+                  <schemaName>ALPHA</schemaName>
+                  <type>INDEX</type>
+                </parent>
+                <type>IndexObject</type>
+              </value>
+            </entry>
+          </properties>
+        </columnExpression>
+      </columnExpressions>
+      <indexType>UNIQUE</indexType>
+      <parallelDegree>1</parallelDegree>
+      <properties>
+        <entry>
+          <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+          <value class="oracle.javatools.db.ReferenceID">
+            <name>CUSTOMER_INTERESTS_PK</name>
+            <identifier class="java.math.BigDecimal">96278</identifier>
+            <parent class="oracle.javatools.db.ReferenceID">
+              <name>CUSTOMER_INTERESTS</name>
+              <identifier class="java.math.BigDecimal">96277</identifier>
+              <schemaName>ALPHA</schemaName>
+              <type>TABLE</type>
+            </parent>
+            <schemaName>ALPHA</schemaName>
+            <type>INDEX</type>
+          </value>
+        </entry>
+        <entry>
+          <key>OracleStorageProperties</key>
+          <value class="oracle.javatools.db.ora.OracleStorageProperties">
+            <bufferMode>DEFAULT</bufferMode>
+            <initialExtent>65536</initialExtent>
+            <initrans>2</initrans>
+            <logging>true</logging>
+            <maxExtent>0</maxExtent>
+            <minExtent>1</minExtent>
+            <nextExtent>1048576</nextExtent>
+            <percentFree>10</percentFree>
+            <tablespaceID class="oracle.javatools.db.ReferenceID">
+              <name>USERS</name>
+              <type>TABLESPACE</type>
+            </tablespaceID>
+          </value>
+        </entry>
+      </properties>
+      <schema>
+        <name>ALPHA</name>
+      </schema>
+      <systemGenerated>false</systemGenerated>
+    </index>
+  </indexes>
+  <properties>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_CONNECTION</key>
+      <value class="java.lang.String">AlphaOfficeDatabase</value>
+    </entry>
+    <entry>
+      <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+      <value class="oracle.javatools.db.ReferenceID">
+        <name>CUSTOMER_INTERESTS</name>
+        <identifier class="java.math.BigDecimal">96277</identifier>
+        <schemaName>ALPHA</schemaName>
+        <type>TABLE</type>
+      </value>
+    </entry>
+    <entry>
+      <key>OracleStorageProperties</key>
+      <value class="oracle.javatools.db.ora.OracleStorageProperties">
+        <bufferMode>DEFAULT</bufferMode>
+        <initialExtent>65536</initialExtent>
+        <initrans>1</initrans>
+        <logging>true</logging>
+        <maxExtent>0</maxExtent>
+        <minExtent>1</minExtent>
+        <nextExtent>1048576</nextExtent>
+        <percentFree>10</percentFree>
+        <tablespaceID class="oracle.javatools.db.ReferenceID">
+          <name>USERS</name>
+          <type>TABLESPACE</type>
+        </tablespaceID>
+      </value>
+    </entry>
+    <entry>
+      <key>OracleTableProperties</key>
+      <value class="oracle.javatools.db.ora.OracleTableProperties">
+        <tableCompression>NOCOMPRESS</tableCompression>
+      </value>
+    </entry>
+    <entry>
+      <key>TableType</key>
+      <value class="oracle.javatools.db.Table$TableType">NORMAL</value>
+    </entry>
+  </properties>
+  <schema>
+    <name>ALPHA</name>
+  </schema>
+</table>

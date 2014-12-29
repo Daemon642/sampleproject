@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<decisionServices xmlns="http://xmlns.oracle.com/bpel/rules" name="BusinessServiceRules">
+    <ruleEngineProvider provider="Oracle_11.0.0.0.0" name="OracleRulesSDK">
+        <repository type="SCA-Archive">
+            <path>PaasProvisioning/oracle/rules/paasprovisioning/BusinessServiceRules.rules</path>
+        </repository>
+    </ruleEngineProvider>
+    <decisionService name="BusinessServiceRules_DecisionService_1" ruleEngineProviderReference="OracleRulesSDK" targetNamespace="http://xmlns.oracle.com/BusinessServiceRules/BusinessServiceRules_DecisionService_1">
+        <catalog>BusinessServiceRules</catalog>
+        <pattern name="CallFunctionStateless">
+            <arguments>
+                <call>paasprovisioning.BusinessServiceRules.BusinessServiceRules_DecisionService_1</call>
+            </arguments>
+        </pattern>
+        <pattern name="CallFunctionStateful">
+            <arguments>
+                <call>paasprovisioning.BusinessServiceRules.BusinessServiceRules_DecisionService_1</call>
+            </arguments>
+        </pattern>
+    </decisionService>
+    <schemaInformation>
+        <dictionary fqnPackage="paasprovisioning" fqnName="BusinessServiceRules" updateNumber="30">
+            <schemaBrowser>
+                <package>com.oracle.xmlns.ns.costselection</package>
+                <namespace>http://xmlns.oracle.com/ns/CostSelection</namespace>
+            </schemaBrowser>
+            <schemaImport namespace="http://xmlns.oracle.com/BusinessServiceRules/BusinessServiceRules_DecisionService_1" localPart="costSelection.xsd" schemaLocation="xsd/BusinessServiceRules_DecisionService_1MessageTypes.xsd" package="">
+                <import namespace="http://xmlns.oracle.com/BusinessServiceRules/BusinessServiceRules_DecisionService_1" localPart="costSelection.xsd"/>
+                <import namespace="http://xmlns.oracle.com/bpel/rules" localPart="DecisionServicePrimitiveTypes.xsd"/>
+                <import namespace="http://xmlns.oracle.com/ns/CostSelection" localPart="costSelection.xsd"/>
+                <import namespace="http://xmlns.oracle.com/bpel" localPart="BpelProcess.xsd"/>
+                <import namespace="http://xmlns.oracle.com/BusinessServiceRules/BusinessServiceRules_DecisionService_1" localPart="BusinessServiceRules_DecisionService_1Types.xsd"/>
+            </schemaImport>
+        </dictionary>
+    </schemaInformation>
+</decisionServices>

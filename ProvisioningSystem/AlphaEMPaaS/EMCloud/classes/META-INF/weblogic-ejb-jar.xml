@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<weblogic-ejb-jar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-ejb-jar http://www.bea.com/ns/weblogic/weblogic-ejb-jar/1.0/weblogic-ejb-jar.xsd"
+                  xmlns="http://www.bea.com/ns/weblogic/weblogic-ejb-jar">
+    <weblogic-enterprise-bean>
+        <ejb-name>EMMessageDrivenEJBBean</ejb-name>
+        <message-driven-descriptor>
+            <pool>
+                <max-beans-in-free-pool>5</max-beans-in-free-pool>
+                <initial-beans-in-free-pool>5</initial-beans-in-free-pool>
+            </pool>
+            <destination-jndi-name>jms/AlphaQueue</destination-jndi-name>
+            <initial-context-factory>weblogic.jndi.WLInitialContextFactory</initial-context-factory>
+            <connection-factory-jndi-name>jms/AlphaJMSConnectionFactory</connection-factory-jndi-name>
+            <jms-polling-interval-seconds>20</jms-polling-interval-seconds>
+        </message-driven-descriptor>
+        <transaction-descriptor>
+            <trans-timeout-seconds>3600</trans-timeout-seconds>
+        </transaction-descriptor>
+    </weblogic-enterprise-bean>
+</weblogic-ejb-jar>
