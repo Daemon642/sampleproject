@@ -1,0 +1,38 @@
+OPC Workshop Commands & URLs
+============================
+
+SSH Tunnel to JCS
+-----------------
+   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/V1/labkey opc@<your-WLS-Admin-IP> -L 9001:<your-WLS-Admin-IP>:9001
+
+SSH Tunnel to DBCS
+------------------
+   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/V1/labkey oracle@<your-DB-IP> -L 1521:<your-DB-IP>:1521
+
+SSH Tunnel to Load Balancer
+------------------
+   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/V1/labkey oracle@<your-LB-IP> -L 1521:<your-LB-IP>:1521
+
+REST Applications
+-----------------
+   SSL Versions:
+     https://<your-LB-IP>:8081/AlphaOffice/jersey/AlphaOfficeAccess/Products/getProducts
+     https://<your-LB-IP>:8081/AlphaOffice/jersey/AlphaOfficeAccess/Student<your-Student-ID>/sayHello
+   Non-SSL Versions:
+     http://<your-LB-IP>/AlphaOffice/jersey/AlphaOfficeAccess/Products/getProducts
+     http://<your-LB-IP>/AlphaOffice/jersey/AlphaOfficeAccess/Student<your-Student-ID>/sayHello
+
+REST Cloud Queries:
+-------------------
+   https://jaas.oraclecloud.com/jaas/api/v1.1/instances/<your-Domain-ID>/Alpha01JCS/servers
+   https://storage.us2.oraclecloud.com/v1/Storage-<your-Domain-ID>
+
+Sample JDBC DataSource URL
+--------------------------
+   jdbc.oracle:thin:@AlphaDBCS:1521/PDB1.<your-Domain-ID>.oraclecloud.internal
+
+GIT Repository URL
+------------------
+   https://developer.us2.oraclecloud.com/developer81763-usoracletrial92622/s/developer81763-usoracletrial92622_alpha01mobileapplication/scm/developer81763-usoracletrial92622_alpha01mobileapplication.git
+
+
