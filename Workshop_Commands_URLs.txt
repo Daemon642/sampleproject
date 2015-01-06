@@ -3,15 +3,15 @@ OPC Workshop Commands & URLs
 
 SSH Tunnel to JCS
 -----------------
-   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/V1/labkey opc@<your-WLS-Admin-IP> -L 9001:<your-WLS-Admin-IP>:9001
+   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/lab/labkey opc@<your-WLS-Admin-IP> -L 9001:<your-WLS-Admin-IP>:9001
 
 SSH Tunnel to DBCS
 ------------------
-   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/V1/labkey oracle@<your-DB-IP> -L 1521:<your-DB-IP>:1521
+   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/lab/labkey oracle@<your-DB-IP> -L 1521:<your-DB-IP>:1521
 
 SSH Tunnel to Load Balancer
 ------------------
-   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/V1/labkey oracle@<your-LB-IP> -L 1521:<your-LB-IP>:1521
+   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/lab/labkey oracle@<your-LB-IP> -L 1521:<your-LB-IP>:1521
 
 REST Applications
 -----------------
