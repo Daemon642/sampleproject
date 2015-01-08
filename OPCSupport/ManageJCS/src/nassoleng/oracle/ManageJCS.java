@@ -31,9 +31,6 @@ public class ManageJCS {
 
     public ManageJCS() {
         super();
-        this.setUsername("dennis.foley@oracle.com");
-        this.setPassword("B@ck3118");
-        this.setIdentityDomain("dfoleyoracle");
         this.setOpcJCSURL("https://jaas.oraclecloud.com/jaas/api/v1.1/instances/");
     }
 
@@ -77,6 +74,30 @@ public class ManageJCS {
         client.addFilter(new HTTPBasicAuthFilter(getUsername(), getPassword()));
 
         return client;
+    }
+
+    public JSONObject getJCSInstances() {
+        String identityDomain = null;
+        JSONObject jcsInstances = null;
+
+        try {
+            Client client = getClient();
+            WebResource webResource =
+                client.resource(getOpcJCSURL() + getIdentityDomain());
+            ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                String output = response.getEntity(String.class);
+                System.out.println ("\nJCS Instance = " + output);
+
+                jcsInstances = new JSONObject(output);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jcsInstances;
     }
 
     public JSONObject getJCSInstanceInfo(String instanceName) {
@@ -166,15 +187,16 @@ public class ManageJCS {
         JSONObject jcsInstance = null;
 
         System.out.println("Test output from Main");
-/*
         if (args.length < 3) {
             System.out.println("Usage: java ManageJCS username password identityDomain\n");
         } else {            
             ManageJCS  opcConnection = new ManageJCS ();
+            opcConnection.setUsername(args[0]);
+            opcConnection.setPassword(args[1]);
+            opcConnection.setIdentityDomain(args[2]);
+            jcsInstance = opcConnection.getJCSInstances();
+            //jcsInstance = opcConnection.getJCSInstanceInfo("Alpha01JCS");
+            //opcConnection.deleteJCS("Alpha01JCS");
         }
-*/
-        ManageJCS  opcConnection = new ManageJCS ();
-        jcsInstance = opcConnection.getJCSInstanceInfo("Alpha01JCS");
-        opcConnection.deleteJCS("Alpha01JCS");
     }
 }

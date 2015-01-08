@@ -67,8 +67,9 @@ public class DeleteStorageContainer {
         myConnection = getStorageConnection ();            
         myContainers = myConnection.listContainers();
             
+        System.out.println ("CloudStorage List of Containers:");
         for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
-            System.out.println ("CloudStorage Container Name = " + myContainers.get(i).getName());
+            System.out.println ("\n   CloudStorage Container Name = " + myContainers.get(i).getName());
         }            
     }
 
@@ -143,8 +144,8 @@ public class DeleteStorageContainer {
             delSC.setOpcPassword(args[1]);
             delSC.setOpcDomain(args[2]);
             delSC.ListContainers ();
-            delSC.DeleteAllContainers();
-            delSC.ListContainers();
+            //delSC.DeleteAllContainers();
+            //delSC.ListContainers();
         }
     }
 }
