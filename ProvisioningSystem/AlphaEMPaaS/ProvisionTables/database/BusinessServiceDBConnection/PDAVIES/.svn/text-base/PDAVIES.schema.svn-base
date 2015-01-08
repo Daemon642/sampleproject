@@ -1,7 +1,0 @@
-<?xml version = '1.0' encoding = 'UTF-8'?>
-<schema xmlns="http://xmlns.oracle.com/jdeveloper/1111/offlinedb">
-  <ID class="oracle.javatools.db.IdentifierBasedID">
-    <identifier class="java.lang.String">1e788e9d-0763-45c4-9978-8ec407f8ea1c</identifier>
-  </ID>
-  <name>PDAVIES</name>
-</schema>
