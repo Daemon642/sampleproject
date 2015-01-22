@@ -27,6 +27,5 @@
    <list n="listOfChildren">
       <hash><url n="URL" path="ManageJCS/ManageJCS.jpr"/></hash>
       <hash><url n="URL" path="ManageStorage/ManageStorage.jpr"/></hash>
-      <hash><url n="URL" path="OPCDriver/OPCDriver.jpr"/></hash>
    </list>
 </jws:workspace>
