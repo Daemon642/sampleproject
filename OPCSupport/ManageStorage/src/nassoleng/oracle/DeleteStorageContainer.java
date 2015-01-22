@@ -109,6 +109,24 @@ public class DeleteStorageContainer {
         }            
     }
 
+    public void paasDemoCleanup () {
+        CloudStorage myConnection = null;
+        java.util.List<Container> myContainers;
+
+        myConnection = getStorageConnection ();            
+        myContainers = myConnection.listContainers();
+            
+        for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
+            if (myContainers.get(i).getName().equals("MyJCS1")) {
+                System.out.println ("Do not Delete " + myContainers.get(i).getName());
+            } else if (myContainers.get(i).getName().equals("MyJCS2")) {
+                System.out.println ("Do not Delete " + myContainers.get(i).getName());                
+            } else {
+                System.out.println ("Delete " + myContainers.get(i).getName());
+            }
+        }            
+    }
+
     public void setOpcUsername(String opcUsername) {
         this.opcUsername = opcUsername;
     }
@@ -132,7 +150,7 @@ public class DeleteStorageContainer {
     public String getOpcDomain() {
         return opcDomain;
     }
-
+    
     public static void main(String[] args) {
         System.out.println("Test output from Main");
         int firstArg;
@@ -143,7 +161,7 @@ public class DeleteStorageContainer {
             delSC.setOpcUsername(args[0]);
             delSC.setOpcPassword(args[1]);
             delSC.setOpcDomain(args[2]);
-            delSC.ListContainers ();
+            delSC.paasDemoCleanup ();
             //delSC.DeleteAllContainers();
             //delSC.ListContainers();
         }

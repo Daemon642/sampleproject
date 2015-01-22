@@ -21,6 +21,8 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 public class ManageJCS {
@@ -90,7 +92,7 @@ public class ManageJCS {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
                 String output = response.getEntity(String.class);
-                System.out.println ("\nJCS Instance = " + output);
+                //System.out.println ("\nJCS Instance = " + output);
 
                 jcsInstances = new JSONObject(output);
             }
@@ -151,6 +153,29 @@ public class ManageJCS {
         }
     }
 
+    public void paasDemoCleanup() {
+        JSONObject jcsInstances = null;
+        JSONObject jcsInstance = null;
+        JSONArray servicesArray = null;
+        
+        jcsInstances = getJCSInstances ();
+
+        try {
+            servicesArray = jcsInstances.getJSONArray("services");
+            for (int i = 0; i < servicesArray.length(); i++) {
+                jcsInstance = servicesArray.getJSONObject(i);
+                //System.out.println ("JCS Name = " + jcsInstance.getString("service_name"));
+                if (jcsInstance.getString("service_name").equals("MyJCS2")) {
+                    System.out.println ("Check for extra nodes " + jcsInstance.getString("service_name"));
+                } else {
+                    System.out.println ("Delete JCS " + jcsInstance.getString("service_name"));
+                }
+            }
+        } catch (JSONException e) {
+        }
+    }
+
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -194,7 +219,7 @@ public class ManageJCS {
             opcConnection.setUsername(args[0]);
             opcConnection.setPassword(args[1]);
             opcConnection.setIdentityDomain(args[2]);
-            jcsInstance = opcConnection.getJCSInstances();
+            opcConnection.paasDemoCleanup();
             //jcsInstance = opcConnection.getJCSInstanceInfo("Alpha01JCS");
             //opcConnection.deleteJCS("Alpha01JCS");
         }
