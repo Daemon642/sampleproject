@@ -160,6 +160,10 @@ public class ManageJCS {
         
         jcsInstances = getJCSInstances ();
 
+        System.out.println ("**************************");
+        System.out.println ("Paas Demo Cleanup for JCS");
+        System.out.println ("**************************\n");
+        
         try {
             servicesArray = jcsInstances.getJSONArray("services");
             for (int i = 0; i < servicesArray.length(); i++) {
@@ -211,7 +215,6 @@ public class ManageJCS {
     public static void main(String[] args) {
         JSONObject jcsInstance = null;
 
-        System.out.println("Test output from Main");
         if (args.length < 3) {
             System.out.println("Usage: java ManageJCS username password identityDomain\n");
         } else {            

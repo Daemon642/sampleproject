@@ -113,6 +113,10 @@ public class DeleteStorageContainer {
         CloudStorage myConnection = null;
         java.util.List<Container> myContainers;
 
+        System.out.println ("*****************************************");
+        System.out.println ("Paas Demo Cleanup for Storage Containers");
+        System.out.println ("*****************************************\n");
+
         myConnection = getStorageConnection ();            
         myContainers = myConnection.listContainers();
             
@@ -152,7 +156,6 @@ public class DeleteStorageContainer {
     }
     
     public static void main(String[] args) {
-        System.out.println("Test output from Main");
         int firstArg;
         if (args.length < 3) {
             System.out.println("Usage: java DeleteStorageContainer username password identityDomain\n");
