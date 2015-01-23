@@ -43,7 +43,8 @@ public class DeleteStorageContainer {
     private String opcDomain;
 
     public DeleteStorageContainer() {
-        super();
+        super();                //System.out.println ("JCS Name = " + jcsInstance.getString("service_name"));
+
     }
 
     public CloudStorage getStorageConnection () {
@@ -90,6 +91,7 @@ public class DeleteStorageContainer {
         java.util.List<Container> myContainers;
         java.util.List<Key> myContainerObjs;
         Container myContainer = null;
+        boolean containerEmpty = false;
         
         myConnection = getStorageConnection ();            
 
@@ -97,11 +99,16 @@ public class DeleteStorageContainer {
 
         for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
             if (myContainers.get(i).getName().equals(containerName)) {
-                myContainer = myContainers.get(i);
-                myContainerObjs = myConnection.listObjects(containerName, null);
-                for ( int j = 0; myContainerObjs != null && j < myContainerObjs.size(); j++ ) {
-                    System.out.println ("Object Key = " + myContainerObjs.get(j).getKey());
-                    myConnection.deleteObject(containerName, myContainerObjs.get(j).getKey());
+                while (!containerEmpty) {
+                    myContainer = myContainers.get(i);
+                    myContainerObjs = myConnection.listObjects(containerName, null);
+                    if (myContainerObjs.size() < 10000) {
+                        containerEmpty = true;
+                    }
+                    for ( int j = 0; myContainerObjs != null && j < myContainerObjs.size(); j++ ) {
+                        System.out.println ("Object Key = " + myContainerObjs.get(j).getKey());
+                        myConnection.deleteObject(containerName, myContainerObjs.get(j).getKey());
+                    }
                 }
                 myConnection.deleteContainer(containerName);
                 i = myContainers.size();
@@ -113,7 +120,7 @@ public class DeleteStorageContainer {
         CloudStorage myConnection = null;
         java.util.List<Container> myContainers;
 
-        System.out.println ("*****************************************");
+        System.out.println ("\n*****************************************");
         System.out.println ("Paas Demo Cleanup for Storage Containers");
         System.out.println ("*****************************************\n");
 
@@ -121,12 +128,11 @@ public class DeleteStorageContainer {
         myContainers = myConnection.listContainers();
             
         for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
-            if (myContainers.get(i).getName().equals("MyJCS1")) {
+            if (myContainers.get(i).getName().equals("MyJCS2")) {
                 System.out.println ("Do not Delete " + myContainers.get(i).getName());
-            } else if (myContainers.get(i).getName().equals("MyJCS2")) {
-                System.out.println ("Do not Delete " + myContainers.get(i).getName());                
             } else {
                 System.out.println ("Delete " + myContainers.get(i).getName());
+                //DeleteContainer (myContainers.get(i).getName());
             }
         }            
     }

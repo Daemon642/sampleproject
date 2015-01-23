@@ -79,7 +79,6 @@ public class ManageJCS {
     }
 
     public JSONObject getJCSInstances() {
-        String identityDomain = null;
         JSONObject jcsInstances = null;
 
         try {
@@ -103,7 +102,6 @@ public class ManageJCS {
     }
 
     public JSONObject getJCSInstanceInfo(String instanceName) {
-        String identityDomain = null;
         JSONObject jcsInstance = null;
 
         try {
@@ -126,8 +124,35 @@ public class ManageJCS {
         return jcsInstance;
     }
 
+    public String getJobStatus(String jobURL) {
+        JSONObject jobResponse = null;
+        String jobStatus = null;
+
+        try {
+            Client client = getClient();
+            WebResource webResource =
+                client.resource(jobURL);
+            ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                String output = response.getEntity(String.class);
+                System.out.println ("\nJob Status = " + output);
+
+                jobResponse = new JSONObject(output);
+                jobStatus = jobResponse.getString("status");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jobStatus;
+    }
+
     public void deleteJCS(String instanceName) {
         ClientResponse response = null;
+        JSONObject jobResponse = null;
+        String jobURL = null;
 
         try {
             Client client = getClient();
@@ -146,6 +171,38 @@ public class ManageJCS {
             if (response.getStatus() != 202) {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
+                String output = response.getEntity(String.class);
+                jobResponse = new JSONObject(output);
+                jobURL = jobResponse.getString("Location");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePaasDemoJCS(String instanceName) {
+        ClientResponse response = null;
+
+        try {
+            Client client = getClient();
+
+            WebResource webResource =
+                client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + instanceName);
+
+            String se =
+                new String("{ \"dbaName\": \"SYSTEM\",\n" + "  \"dbaPassword\": \"JCSDem0#\",\n" +
+                           "  \"forceDelete\": true\n" + "}");
+
+            System.out.println("\nBody = " + se);
+            response =
+                webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).put(ClientResponse.class, se);
+
+            if (response.getStatus() != 202) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                String output = response.getEntity(String.class);
+                System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
             }
 
         } catch (Exception e) {
@@ -157,10 +214,12 @@ public class ManageJCS {
         JSONObject jcsInstances = null;
         JSONObject jcsInstance = null;
         JSONArray servicesArray = null;
+        String serviceName = null;
+        String status = "Terminating";
         
         jcsInstances = getJCSInstances ();
 
-        System.out.println ("**************************");
+        System.out.println ("\n**************************");
         System.out.println ("Paas Demo Cleanup for JCS");
         System.out.println ("**************************\n");
         
@@ -168,15 +227,22 @@ public class ManageJCS {
             servicesArray = jcsInstances.getJSONArray("services");
             for (int i = 0; i < servicesArray.length(); i++) {
                 jcsInstance = servicesArray.getJSONObject(i);
-                //System.out.println ("JCS Name = " + jcsInstance.getString("service_name"));
-                if (jcsInstance.getString("service_name").equals("MyJCS2")) {
-                    System.out.println ("Check for extra nodes " + jcsInstance.getString("service_name"));
+                serviceName = jcsInstance.getString("service_name");
+                if (serviceName.equals("MyJCS2")) {
+                    System.out.println ("Check for extra nodes " + serviceName);
                 } else {
-                    System.out.println ("Delete JCS " + jcsInstance.getString("service_name"));
+                    System.out.println ("Delete JCS " + serviceName);
+                    //deletePaasDemoJCS (serviceName);
+                    System.out.println ("Waiting on JCS to be deleted ....");
+                    Thread.sleep(1000 * 10 * 1); // Sleep for 1 minutes
+                    //Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
                 }
             }
         } catch (JSONException e) {
-        }
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } 
     }
 
 
