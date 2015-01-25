@@ -21,6 +21,8 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -134,14 +136,16 @@ public class ManageJCS {
                 client.resource(jobURL);
             ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
 
-            if (response.getStatus() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-            } else {
+            if (response.getStatus() == 202) {
                 String output = response.getEntity(String.class);
                 System.out.println ("\nJob Status = " + output);
 
                 jobResponse = new JSONObject(output);
                 jobStatus = jobResponse.getString("status");
+            } else if (response.getStatus() == 200) {
+                jobStatus = "Completed";                
+            } else  {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -181,8 +185,10 @@ public class ManageJCS {
         }
     }
 
-    public void deletePaasDemoJCS(String instanceName) {
+    public String deletePaasDemoJCS(String instanceName) {
         ClientResponse response = null;
+        MultivaluedMap<String, String> headers = null;
+        String jobURL = null;
 
         try {
             Client client = getClient();
@@ -201,6 +207,11 @@ public class ManageJCS {
             if (response.getStatus() != 202) {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
+                headers = response.getHeaders();
+                if (headers != null) {
+                    jobURL = headers.getFirst("Location");
+                    System.out.println ("\nDelete PaaS Demo JCS JobURL = " + jobURL);
+                }
                 String output = response.getEntity(String.class);
                 System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
             }
@@ -208,6 +219,7 @@ public class ManageJCS {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return jobURL;
     }
 
     public void paasDemoCleanup() {
@@ -216,6 +228,7 @@ public class ManageJCS {
         JSONArray servicesArray = null;
         String serviceName = null;
         String status = "Terminating";
+        String jobURL = null;
         
         jcsInstances = getJCSInstances ();
 
@@ -228,14 +241,20 @@ public class ManageJCS {
             for (int i = 0; i < servicesArray.length(); i++) {
                 jcsInstance = servicesArray.getJSONObject(i);
                 serviceName = jcsInstance.getString("service_name");
-                if (serviceName.equals("MyJCS2")) {
+                if (serviceName.equals("MyJCS1")) {
                     System.out.println ("Check for extra nodes " + serviceName);
                 } else {
                     System.out.println ("Delete JCS " + serviceName);
-                    //deletePaasDemoJCS (serviceName);
+                    jobURL = deletePaasDemoJCS (serviceName);
                     System.out.println ("Waiting on JCS to be deleted ....");
-                    Thread.sleep(1000 * 10 * 1); // Sleep for 1 minutes
-                    //Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                    Thread.sleep(1000 * 60 * 2); // Sleep for 1 minutes
+                    status = getJobStatus(jobURL);                        
+                    while (status.equals("Terminating")) {
+                        System.out.println ("Waiting on JCS to be deleted ....");
+                        Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                        status = getJobStatus(jobURL);                        
+                    }
+                    System.out.println ("JCS " + serviceName + " has been deleted\n");
                 }
             }
         } catch (JSONException e) {
