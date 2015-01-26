@@ -132,7 +132,7 @@ public class DeleteStorageContainer {
                 System.out.println ("Do not Delete " + myContainers.get(i).getName());
             } else {
                 System.out.println ("Delete " + myContainers.get(i).getName());
-                //DeleteContainer (myContainers.get(i).getName());
+                DeleteContainer (myContainers.get(i).getName());
             }
         }            
     }
