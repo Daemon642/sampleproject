@@ -189,7 +189,7 @@ public class ManageJCS {
                 client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + instanceName + "/servers/" + serverName);
 
             response =
-                webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).delete(ClientResponse.class);
+                webResource.header("Content-Type", "ahttps://csbduser_us%40oracle.com@developer.us2.oraclecloud.com/developer81763-usoracletrial92622/s/developer81763-usoracletrial92622_oracle-fmw-cloud-workshop/scm/developer81763-usoracletrial92622_oracle-fmw-cloud-workshop.gitpplication/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).delete(ClientResponse.class);
 
             if (response.getStatus() != 202) {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
@@ -197,7 +197,7 @@ public class ManageJCS {
                 headers = response.getHeaders();
                 if (headers != null) {
                     jobURL = headers.getFirst("Location");
-                    System.out.println ("\nDelete PaaS Demo JCS JobURL = " + jobURL);
+                    System.out.println ("\nScale Down PaaS Demo JCS JobURL = " + jobURL);
                 }
                 String output = response.getEntity(String.class);
                 System.out.println ("\nScale Down JCS Output = " + output);
