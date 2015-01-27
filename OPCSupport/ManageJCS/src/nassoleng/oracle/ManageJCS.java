@@ -74,7 +74,7 @@ public class ManageJCS {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
                 String output = response.getEntity(String.class);
-                System.out.println ("\n" + instanceName + " Server Detail = " + output);
+                //System.out.println ("\n" + instanceName + " Server Detail = " + output);
 
                 servers = new JSONObject(output);
             }
@@ -97,7 +97,7 @@ public class ManageJCS {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
                 String output = response.getEntity(String.class);
-                System.out.println ("\nJCS Instance = " + output);
+                //System.out.println ("\nJCS Instance = " + output);
 
                 jcsInstance = new JSONObject(output);
             }
@@ -119,7 +119,7 @@ public class ManageJCS {
 
             if (response.getStatus() == 202) {
                 String output = response.getEntity(String.class);
-                System.out.println ("\nJob Status = " + output);
+                //System.out.println ("\nJob Status = " + output);
 
                 jobResponse = new JSONObject(output);
                 jobStatus = jobResponse.getString("status");
@@ -155,10 +155,10 @@ public class ManageJCS {
                 headers = response.getHeaders();
                 if (headers != null) {
                     jobURL = headers.getFirst("Location");
-                    System.out.println ("\nScale Down PaaS Demo JCS JobURL = " + jobURL);
+                    //System.out.println ("\nScale Down PaaS Demo JCS JobURL = " + jobURL);
                 }
                 String output = response.getEntity(String.class);
-                System.out.println ("\nScale Down JCS Output = " + output);
+                //System.out.println ("\nScale Down JCS Output = " + output);
             }
 
         } catch (Exception e) {
@@ -182,7 +182,7 @@ public class ManageJCS {
                 new String("{ \"dbaName\": \"SYSTEM\",\n" + "  \"dbaPassword\": \"Alpha2014_\",\n" +
                            "  \"forceDelete\": true\n" + "}");
 
-            System.out.println("\nBody = " + se);
+            //System.out.println("\nBody = " + se);
             response =
                 webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).put(ClientResponse.class, se);
 
@@ -192,10 +192,10 @@ public class ManageJCS {
                 headers = response.getHeaders();
                 if (headers != null) {
                     jobURL = headers.getFirst("Location");
-                    System.out.println ("\nDelete JCS JobURL = " + jobURL);
+                    //System.out.println ("\nDelete JCS JobURL = " + jobURL);
                 }
                 String output = response.getEntity(String.class);
-                System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
+                //System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
             }
 
         } catch (Exception e) {
@@ -218,7 +218,7 @@ public class ManageJCS {
                 new String("{ \"dbaName\": \"SYSTEM\",\n" + "  \"dbaPassword\": \"JCSDem0#\",\n" +
                            "  \"forceDelete\": true\n" + "}");
 
-            System.out.println("\nBody = " + se);
+            //System.out.println("\nBody = " + se);
             response =
                 webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).put(ClientResponse.class, se);
 
@@ -228,10 +228,10 @@ public class ManageJCS {
                 headers = response.getHeaders();
                 if (headers != null) {
                     jobURL = headers.getFirst("Location");
-                    System.out.println ("\nDelete PaaS Demo JCS JobURL = " + jobURL);
+                    //System.out.println ("\nDelete PaaS Demo JCS JobURL = " + jobURL);
                 }
                 String output = response.getEntity(String.class);
-                System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
+                //System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
             }
 
         } catch (Exception e) {
@@ -269,7 +269,6 @@ public class ManageJCS {
                     for (int j = 0; j < serversArray.length(); j++) {
                         server = serversArray.getJSONObject(j);
                         serverName = server.getString("name");
-                        System.out.println ("ServerName = " + serverName);
                         if (!serverName.equals("MyJCS2_server_1")) {
                             status = "Terminating";
                             jobURL = scaleDown (serviceName, serverName);

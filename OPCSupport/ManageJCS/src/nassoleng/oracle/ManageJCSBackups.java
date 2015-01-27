@@ -23,7 +23,7 @@ public class ManageJCSBackups {
         JSONObject jcsBackups = null;
 
         try {
-            System.out.println ("\nGet JCS Backup Details");
+            //System.out.println ("\nGet JCS Backup Details");
             Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
             WebResource webResource =
                 client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + serviceName + "/backups/" + backupId);
@@ -33,7 +33,7 @@ public class ManageJCSBackups {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
                 String output = response.getEntity(String.class);
-                System.out.println ("\nJCS Backup Details = " + output);
+                //System.out.println ("\nJCS Backup Details = " + output);
 
                 jcsBackups = new JSONObject(output);
             }
@@ -81,6 +81,27 @@ public class ManageJCSBackups {
         }
     }
     
+    public void restoreJCSBackup(String serviceName, String backupId) {
+        try {
+            Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+            WebResource webResource =
+                client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + serviceName + "/restoredbackups");
+
+            String se =
+                new String("{ \"backupId\": \"" + backupId + "\"}");
+
+            ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).header("Content-Type","application/json").post(ClientResponse.class, se);
+
+            if (response.getStatus() != 202) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } 
+            String output = response.getEntity(String.class);
+            System.out.println ("\nRestore Output = " + output);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void paasDemoCleanupBackups () {
         JSONObject jcsBackups = null;
         JSONArray backupsArray = null;
@@ -104,9 +125,13 @@ public class ManageJCSBackups {
                 if (notes != null && notes.equals("Gold Backup for Paas Demo...")) {
                     goldBackupId = jcsBackup.getString("backupId");
                 } else {
-                    System.out.println ("\nDelete backup " + jcsBackup.getString("backupId"));
+                    System.out.println ("Delete backup " + jcsBackup.getString("backupId"));
                     deleteJCSBackup("MyJCS2", jcsBackup.getString("backupId"));                                        
                 }
+            }
+            if (goldBackupId != null) {
+                System.out.println ("Restore to Gold Backup - BackupId = " + goldBackupId);
+                restoreJCSBackup("MyJCS2", goldBackupId);                
             }
         } catch (JSONException e) {
             e.printStackTrace();
