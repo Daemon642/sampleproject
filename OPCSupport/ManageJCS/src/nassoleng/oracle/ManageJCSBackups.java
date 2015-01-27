@@ -81,7 +81,10 @@ public class ManageJCSBackups {
         }
     }
     
-    public void restoreJCSBackup(String serviceName, String backupId) {
+    public String restoreJCSBackup(String serviceName, String backupId) {
+        JSONObject responseBody = null;
+        String jobId = null;
+
         try {
             Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
             WebResource webResource =
@@ -97,9 +100,37 @@ public class ManageJCSBackups {
             } 
             String output = response.getEntity(String.class);
             System.out.println ("\nRestore Output = " + output);
+            responseBody = new JSONObject(output);
+            jobId = responseBody.getString("job_id");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return jobId;
+    }
+    
+    public String getJobStatus(String serviceName, String jobId) {
+        JSONObject jobResponse = null;
+        String jobStatus = null;
+
+        try {
+            Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+            WebResource webResource =
+                client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + serviceName + "/restoredbackups/" + jobId);
+            ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            }
+            String output = response.getEntity(String.class);
+            System.out.println ("\nJob Status = " + output);
+
+            jobResponse = new JSONObject(output);
+            jobStatus = jobResponse.getString("status");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jobStatus;
     }
     
     public void paasDemoCleanupBackups () {
@@ -108,12 +139,13 @@ public class ManageJCSBackups {
         JSONObject jcsBackup = null;
         String notes = null;
         String goldBackupId = null;
+        String jobId = null;
+        String status = null;
 
         System.out.println ("\n**********************************");
         System.out.println ("Paas Demo Cleanup for JCS Backups");
         System.out.println ("**********************************\n");
         
-
         jcsBackups = getJCSBackups("MyJCS2");
         try {
             backupsArray = jcsBackups.getJSONArray("backups");
@@ -131,9 +163,20 @@ public class ManageJCSBackups {
             }
             if (goldBackupId != null) {
                 System.out.println ("Restore to Gold Backup - BackupId = " + goldBackupId);
-                restoreJCSBackup("MyJCS2", goldBackupId);                
+                jobId = restoreJCSBackup("MyJCS2", goldBackupId);
+                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                status = getJobStatus("MyJCS2", jobId);                        
+                while (!status.equals("Completed")) {
+                    System.out.println ("Waiting on JCS Restore to be completed ....");
+                    Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                    status = getJobStatus("MyJCS2",jobId);                        
+                }
+                System.out.println ("JCS MyJCS2 has been restored to gold backup\n");
+
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
