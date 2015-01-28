@@ -274,6 +274,10 @@ public class ManageJCS {
                             jobURL = scaleDown (serviceName, serverName);
                             System.out.println ("Waiting on Scale Down of " + serverName + " ....");
                             Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+                            System.out.println ("Waiting on Scale Down of " + serverName + " ....");
+                            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+                            System.out.println ("Waiting on Scale Down of " + serverName + " ....");
+                            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
                             System.out.println ("Server " + serverName + " has been removed\n");
                         }
                     }
