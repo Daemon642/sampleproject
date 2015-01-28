@@ -99,7 +99,7 @@ public class ManageJCSBackups {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } 
             String output = response.getEntity(String.class);
-            System.out.println ("\nRestore Output = " + output);
+            //System.out.println ("\nRestore Output = " + output);
             responseBody = new JSONObject(output);
             jobId = responseBody.getString("job_id");
 
@@ -123,7 +123,7 @@ public class ManageJCSBackups {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             }
             String output = response.getEntity(String.class);
-            System.out.println ("\nJob Status = " + output);
+            //System.out.println ("\nJob Status = " + output);
 
             jobResponse = new JSONObject(output);
             jobStatus = jobResponse.getString("status");
