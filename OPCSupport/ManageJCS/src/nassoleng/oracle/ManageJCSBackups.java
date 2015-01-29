@@ -154,7 +154,7 @@ public class ManageJCSBackups {
                 if (jcsBackup.has("notes")) {
                     notes = jcsBackup.getString("notes");
                 }
-                if (notes != null && notes.equals("Gold Backup for Paas Demo...")) {
+                if (notes != null && notes.contains("Gold Backup for Paas Demo")) {
                     goldBackupId = jcsBackup.getString("backupId");
                 } else {
                     System.out.println ("Delete backup " + jcsBackup.getString("backupId"));
@@ -166,12 +166,12 @@ public class ManageJCSBackups {
                 jobId = restoreJCSBackup("MyJCS2", goldBackupId);
                 Thread.sleep(1000 * 60 * 2); // Sleep for 1 minutes
                 status = getJobStatus("MyJCS2", jobId);                        
-                while (!status.equals("Completed")) {
+                while (status.equals("Restore In Progress")) {
                     System.out.println ("Waiting on JCS Restore to be completed ....");
                     Thread.sleep(1000 * 60 * 2); // Sleep for 1 minutes
                     status = getJobStatus("MyJCS2",jobId);                        
                 }
-                System.out.println ("JCS MyJCS2 has been restored to gold backup\n");
+                System.out.println ("JCS MyJCS2 has been restored to gold backup - Status = " + status + "\n");
 
             }
         } catch (JSONException e) {
