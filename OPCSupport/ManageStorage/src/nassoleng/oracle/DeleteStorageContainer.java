@@ -106,7 +106,7 @@ public class DeleteStorageContainer {
                         containerEmpty = true;
                     }
                     for ( int j = 0; myContainerObjs != null && j < myContainerObjs.size(); j++ ) {
-                        System.out.println ("Object Key = " + myContainerObjs.get(j).getKey());
+                        //System.out.println ("Object Key = " + myContainerObjs.get(j).getKey());
                         myConnection.deleteObject(containerName, myContainerObjs.get(j).getKey());
                     }
                 }
