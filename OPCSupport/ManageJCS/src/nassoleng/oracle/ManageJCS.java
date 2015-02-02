@@ -136,8 +136,9 @@ public class ManageJCS {
 
     public String scaleDown (String instanceName, String serverName) {
         ClientResponse response = null;
-        MultivaluedMap<String, String> headers = null;
-        String jobURL = null;
+        JSONObject jobResponse = null;
+        JSONObject details = null;
+        String jobId = null;
 
         try {
             Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
@@ -152,19 +153,52 @@ public class ManageJCS {
             if (response.getStatus() != 202) {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
-                headers = response.getHeaders();
-                if (headers != null) {
-                    jobURL = headers.getFirst("Location");
-                    //System.out.println ("\nScale Down PaaS Demo JCS JobURL = " + jobURL);
-                }
                 String output = response.getEntity(String.class);
+                jobResponse = new JSONObject(output);
+                details = jobResponse.getJSONObject("details");
+                jobId = details.getString("jobId");
                 //System.out.println ("\nScale Down JCS Output = " + output);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return jobURL;
+        return jobId;
+    }
+
+    public String getScaleDownStatus (String instanceName, String serverName, String jobId) {
+        ClientResponse response = null;
+        JSONObject job = null;
+        JSONArray jobsArray = null;
+        String inProgress = "true";
+
+        try {
+            Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+            //System.out.println ("\nGet Job Status Instance = " + instanceName + " Server = " + serverName);
+
+            WebResource webResource =
+                client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + instanceName + "/servers/history");
+
+            response =
+                webResource.header("Content-Type", "application/json").header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                String output = response.getEntity(String.class);
+                jobsArray = new JSONArray(output);
+                for (int i = 0; i < jobsArray.length(); i++) {
+                    job = jobsArray.getJSONObject(i);
+                    if (job.getString("jobId").equals(jobId)) {
+                        inProgress = job.getString("inProgress");                        
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return inProgress;
     }
 
     public void deleteJCS(String instanceName) {
@@ -270,14 +304,15 @@ public class ManageJCS {
                         server = serversArray.getJSONObject(j);
                         serverName = server.getString("name");
                         if (!serverName.equals("MyJCS2_server_1")) {
-                            status = "Terminating";
+                            status = "true";
                             jobURL = scaleDown (serviceName, serverName);
                             System.out.println ("Waiting on Scale Down of " + serverName + " ....");
-                            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
-                            System.out.println ("Waiting on Scale Down of " + serverName + " ....");
-                            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
-                            System.out.println ("Waiting on Scale Down of " + serverName + " ....");
-                            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+                            Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                            while (status.equals("true")) {
+                                System.out.println ("Waiting on Scale Down of " + serverName + " ....");
+                                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                                status = getScaleDownStatus (serviceName, serverName, jobURL);
+                            }
                             System.out.println ("Server " + serverName + " has been removed\n");
                         }
                     }
