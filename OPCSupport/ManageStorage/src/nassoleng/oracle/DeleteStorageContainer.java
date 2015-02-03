@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,17 +62,20 @@ public class DeleteStorageContainer {
     }
 
 
-    public void ListContainers () {
+    public List <String> getContainerNames () {
         CloudStorage myConnection = null;
         java.util.List<Container> myContainers;
+        List <String> containerNames = null;
 
         myConnection = getStorageConnection ();            
         myContainers = myConnection.listContainers();
             
-        System.out.println ("CloudStorage List of Containers:");
+        containerNames = new ArrayList<String>();
         for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
-            System.out.println ("\n   CloudStorage Container Name = " + myContainers.get(i).getName());
-        }            
+            containerNames.add(myContainers.get(i).getName());
+        }     
+        
+        return containerNames;
     }
 
     public void DeleteAllContainers () {
@@ -84,6 +88,14 @@ public class DeleteStorageContainer {
         for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
             DeleteContainer (myContainers.get(i).getName());
         }            
+    }
+
+    public void createContainer (String containerName) {
+        CloudStorage myConnection = null;
+        java.util.List<Container> myContainers;
+
+        myConnection = getStorageConnection ();            
+        myConnection.createContainer(containerName);
     }
 
     public void DeleteContainer (String containerName) {
@@ -137,6 +149,15 @@ public class DeleteStorageContainer {
         }            
     }
 
+    public List <String> opcWorkshopCreateContainers () {
+        List <String> containerNames = null;
+
+        createContainer ("AlphaDBCS_SC");
+        createContainer ("Alpha01_SC");
+        containerNames = getContainerNames();
+        
+        return containerNames;
+    }
     public void setOpcUsername(String opcUsername) {
         this.opcUsername = opcUsername;
     }
@@ -162,7 +183,8 @@ public class DeleteStorageContainer {
     }
     
     public static void main(String[] args) {
-        int firstArg;
+        List <String> containerNames = null;
+
         if (args.length < 3) {
             System.out.println("Usage: java DeleteStorageContainer username password identityDomain\n");
         } else {            
@@ -170,7 +192,10 @@ public class DeleteStorageContainer {
             delSC.setOpcUsername(args[0]);
             delSC.setOpcPassword(args[1]);
             delSC.setOpcDomain(args[2]);
-            delSC.paasDemoCleanup ();
+            //containerNames = delSC.getContainerNames();
+            containerNames = delSC.opcWorkshopCreateContainers();
+            System.out.println ("\nStorage Contain Names = " + containerNames);
+            //delSC.paasDemoCleanup ();
             //delSC.DeleteAllContainers();
             //delSC.ListContainers();
         }

@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
@@ -61,6 +62,26 @@ public class ManageJCS {
         return jcsInstances;
     }
 
+    public List <String> getJCSInstanceNames () {
+        JSONObject jcsInstances = null;
+        JSONObject jcsInstance = null;
+        JSONArray servicesArray = null;
+        List <String> jcsNames = null;
+        
+        jcsInstances = getJCSInstances ();
+        jcsNames = new ArrayList<String>();
+        System.out.println ("\nJCS Instance = " + jcsInstances);
+        try {
+            servicesArray = jcsInstances.getJSONArray("services");
+            for (int i = 0; i < servicesArray.length(); i++) {
+                jcsInstance = servicesArray.getJSONObject(i);
+                jcsNames.add(jcsInstance.getString("service_name"));
+            }
+        } catch (JSONException e) {
+        }
+                                             
+        return jcsNames;
+    }
     public JSONObject getJCSServerDetails(String instanceName) {
         JSONObject servers = null;
 
@@ -372,6 +393,7 @@ public class ManageJCS {
     }
 
     public static void main(String[] args) {
+        List <String> jcsNames = null;
         JSONObject jcsInstance = null;
 
         if (args.length < 3) {
@@ -381,7 +403,9 @@ public class ManageJCS {
             opcConnection.setUsername(args[0]);
             opcConnection.setPassword(args[1]);
             opcConnection.setIdentityDomain(args[2]);
-            opcConnection.paasDemoCleanup();
+            jcsNames = opcConnection.getJCSInstanceNames();
+            System.out.println ("\nJCS Instance Name = " + jcsNames);
+            //opcConnection.paasDemoCleanup();
             //jcsInstance = opcConnection.getJCSInstanceInfo("Alpha01JCS");
             //opcConnection.deleteJCS("Alpha01JCS");
         }
