@@ -16,6 +16,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.UUID;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
@@ -155,6 +157,91 @@ public class ManageJCS {
         return jobStatus;
     }
 
+    public void createAlpha01JCS () {
+        ClientResponse response = null;
+        String jobURL = null;
+        String instanceName = null;
+        String domainName = null;
+
+        try {  
+            Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+ 
+            WebResource webResource =
+                client.resource(getOpcJCSURL() + getIdentityDomain());
+
+            instanceName = "Alpha01JCS";
+            domainName = "Alpha01J_domain";
+            String se = new String (
+                "{\n" + 
+                "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+                "    \"level\" : \"PAAS\",\n" + 
+                "    \"subscriptionType\" : \"HOURLY\",\n" + 
+                "    \"description\" : \"Alpha Office Java Cloud Service\",\n" + 
+                "    \"provisionOTD\" : true,\n" + 
+                "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha01_SC\",\n" + 
+                "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+                "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
+                " \n" + 
+                "\"parameters\" : [\n" + 
+                "    {\n" + 
+                "        \"type\" : \"weblogic\",\n" + 
+                "        \"version\" : \"12.1.2.0.3\",\n" + 
+                "        \"edition\" : \"EE\",\n" + 
+                "        \"domainMode\" : \"PRODUCTION\",\n" + 
+                "        \"managedServerCount\" : \"1\",\n" + 
+                "        \"adminPort\" : \"7001\",\n" + 
+                "        \"deploymentChannelPort\" : \"9001\",\n" + 
+                "        \"securedAdminPort\" : \"7002\",\n" + 
+                "        \"contentPort\" : \"7003\",\n" + 
+                "        \"securedContentPort\" : \"7004\",\n" + 
+                "        \"domainName\" : \"" + domainName + "\",\n" + 
+                "        \"clusterName\" : \"Alpha01J_cluster\",\n" + 
+                "        \"adminUserName\" : \"weblogic\",\n" + 
+                "        \"adminPassword\" : \"Alpha2014_\",\n" + 
+                "        \"nodeManagerPort\" : \"6555\",\n" + 
+                "        \"nodeManagerUserName\" : \"weblogic\",\n" + 
+                "        \"nodeManagerPassword\" : \"Alpha2014_\",\n" + 
+                "        \"dbServiceName\" : \"AlphaDBCS\",\n" + 
+                "        \"dbaName\" : \"SYS\",\n" + 
+                "        \"dbaPassword\" : \"Alpha2014_\",\n" + 
+                "        \"shape\" : \"oc3\",\n" + 
+                "        \"domainVolumeSize\" : \"10240M\",\n" + 
+                "        \"backupVolumeSize\" : \"20480M\",\n" + 
+                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDK44PtRnT9HaZE0coQZRhsfh2SSi7nT0DGgUf3u37U2sbQ0QjRFmV9NZ5eIK+u34xfG9jYt1Lxz8dQTCf4pcjOzX65wbcQDEXx2vkAXNUk7trjAiIGs73kKNX//gTIPV4nnyY77lO5NGymx1JP3/6X8paMduEFFEBKkhZkLscAtQ== JCS HOL\"\n" + 
+                "    },\n" + 
+                "    {\n" + 
+                "        \"type\" : \"otd\",\n" + 
+                "        \"adminUserName\" : \"weblogic\",\n" + 
+                "        \"adminPassword\" : \"Alpha2014_\",\n" + 
+                "        \"listenerPortsEnabled\" : true,\n" + 
+                "        \"listenerPort\" : \"8080\",\n" + 
+                "        \"listenerType\" : \"http\",\n" + 
+                "        \"securedListenerPort\" : \"8081\",\n" + 
+                "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
+                "        \"adminPort\" : \"8989\",\n" + 
+                "        \"shape\" : \"oc3\",\n" + 
+                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDK44PtRnT9HaZE0coQZRhsfh2SSi7nT0DGgUf3u37U2sbQ0QjRFmV9NZ5eIK+u34xfG9jYt1Lxz8dQTCf4pcjOzX65wbcQDEXx2vkAXNUk7trjAiIGs73kKNX//gTIPV4nnyY77lO5NGymx1JP3/6X8paMduEFFEBKkhZkLscAtQ== JCS HOL\"\n" + 
+                "    }\n" + 
+                "]\n" + 
+                "}");
+            
+            System.out.println ("\nBody = " + se);
+            response = webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+
+            if (response.getStatus() != 202) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                final MultivaluedMap<String,String> headers = response.getHeaders();
+                if (headers != null) {
+                    jobURL = headers.getFirst("Location");
+                }
+                System.out.println("Output from Server .... \n");                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public String scaleDown (String instanceName, String serverName) {
         ClientResponse response = null;
         JSONObject jobResponse = null;

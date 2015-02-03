@@ -192,12 +192,14 @@ public class DeleteStorageContainer {
             delSC.setOpcUsername(args[0]);
             delSC.setOpcPassword(args[1]);
             delSC.setOpcDomain(args[2]);
-            //containerNames = delSC.getContainerNames();
-            containerNames = delSC.opcWorkshopCreateContainers();
+            containerNames = delSC.getContainerNames();
             System.out.println ("\nStorage Contain Names = " + containerNames);
             //delSC.paasDemoCleanup ();
-            //delSC.DeleteAllContainers();
-            //delSC.ListContainers();
+            delSC.DeleteAllContainers();
+            containerNames = delSC.getContainerNames();
+            System.out.println ("\nStorage Contain Names = " + containerNames);
+            containerNames = delSC.opcWorkshopCreateContainers();
+            System.out.println ("\nStorage Contain Names = " + containerNames);
         }
     }
 }
