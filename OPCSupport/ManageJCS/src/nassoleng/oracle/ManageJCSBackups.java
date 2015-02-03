@@ -164,11 +164,11 @@ public class ManageJCSBackups {
             if (goldBackupId != null) {
                 System.out.println ("Restore to Gold Backup - BackupId = " + goldBackupId);
                 jobId = restoreJCSBackup("MyJCS2", goldBackupId);
-                Thread.sleep(1000 * 60 * 2); // Sleep for 1 minutes
+                Thread.sleep(1000 * 60 * 3); // Sleep for 3 minutes
                 status = getJobStatus("MyJCS2", jobId);                        
-                while (status.equals("Restore In Progress")) {
+                while (status.contains("In Progress")) {
                     System.out.println ("Waiting on JCS Restore to be completed ....");
-                    Thread.sleep(1000 * 60 * 2); // Sleep for 1 minutes
+                    Thread.sleep(1000 * 60 * 3); // Sleep for 3 minutes
                     status = getJobStatus("MyJCS2",jobId);                        
                 }
                 System.out.println ("JCS MyJCS2 has been restored to gold backup - Status = " + status + "\n");
