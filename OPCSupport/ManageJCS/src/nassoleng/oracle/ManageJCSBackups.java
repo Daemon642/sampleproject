@@ -154,7 +154,7 @@ public class ManageJCSBackups {
                 if (jcsBackup.has("notes")) {
                     notes = jcsBackup.getString("notes");
                 }
-                if (notes != null && notes.contains("Gold Backup for Paas Demo")) {
+                if (notes != null && notes.contains("Gold Backup for PaaS Demo")) {
                     goldBackupId = jcsBackup.getString("backupId");
                 } else {
                     System.out.println ("Delete backup " + jcsBackup.getString("backupId"));
