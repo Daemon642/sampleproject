@@ -185,21 +185,24 @@ public class DeleteStorageContainer {
     public static void main(String[] args) {
         List <String> containerNames = null;
 
-        if (args.length < 3) {
-            System.out.println("Usage: java DeleteStorageContainer username password identityDomain\n");
+        if (args.length < 4) {
+            System.out.println("Usage: java DeleteStorageContainer username password identityDomain method\n");
         } else {            
             DeleteStorageContainer  delSC = new DeleteStorageContainer ();
             delSC.setOpcUsername(args[0]);
             delSC.setOpcPassword(args[1]);
             delSC.setOpcDomain(args[2]);
-            containerNames = delSC.getContainerNames();
-            System.out.println ("\nStorage Contain Names = " + containerNames);
-            //delSC.paasDemoCleanup ();
-            delSC.DeleteAllContainers();
-            containerNames = delSC.getContainerNames();
-            System.out.println ("\nStorage Contain Names = " + containerNames);
-            containerNames = delSC.opcWorkshopCreateContainers();
-            System.out.println ("\nStorage Contain Names = " + containerNames);
+            if (args[3].contains("getContainerNames")) {
+                containerNames = delSC.getContainerNames();
+                System.out.println ("\nStorage Contain Names = " + containerNames);                
+            } else if (args[3].contains("paasDemoCleanup")) {
+                delSC.paasDemoCleanup ();                
+            } else if (args[3].contains("DeleteAllContainers")) {
+                delSC.DeleteAllContainers();
+            } else if (args[3].contains("opcWorkshopCreateContainers")) {
+                containerNames = delSC.opcWorkshopCreateContainers();
+                System.out.println ("\nStorage Contain Names = " + containerNames);
+            }
         }
     }
 }

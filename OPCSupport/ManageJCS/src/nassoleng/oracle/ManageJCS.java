@@ -72,7 +72,6 @@ public class ManageJCS {
         
         jcsInstances = getJCSInstances ();
         jcsNames = new ArrayList<String>();
-        System.out.println ("\nJCS Instance = " + jcsInstances);
         try {
             servicesArray = jcsInstances.getJSONArray("services");
             for (int i = 0; i < servicesArray.length(); i++) {
@@ -80,6 +79,7 @@ public class ManageJCS {
                 jcsNames.add(jcsInstance.getString("service_name"));
             }
         } catch (JSONException e) {
+            e.printStackTrace();
         }
                                              
         return jcsNames;
@@ -157,7 +157,7 @@ public class ManageJCS {
         return jobStatus;
     }
 
-    public void createAlpha01JCS () {
+    public void createAlphaJCS (String instanceNum) {
         ClientResponse response = null;
         String jobURL = null;
         String instanceName = null;
@@ -169,8 +169,8 @@ public class ManageJCS {
             WebResource webResource =
                 client.resource(getOpcJCSURL() + getIdentityDomain());
 
-            instanceName = "Alpha01JCS";
-            domainName = "Alpha01J_domain";
+            instanceName = "Alpha" + instanceNum + "JCS";
+            domainName = "Alpha" + instanceNum + "J_domain";
             String se = new String (
                 "{\n" + 
                 "    \"serviceName\" : \"" + instanceName + "\",\n" + 
@@ -178,14 +178,14 @@ public class ManageJCS {
                 "    \"subscriptionType\" : \"HOURLY\",\n" + 
                 "    \"description\" : \"Alpha Office Java Cloud Service\",\n" + 
                 "    \"provisionOTD\" : true,\n" + 
-                "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha01_SC\",\n" + 
+                "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + instanceNum + "_SC\",\n" + 
                 "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
                 "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
                 " \n" + 
                 "\"parameters\" : [\n" + 
                 "    {\n" + 
                 "        \"type\" : \"weblogic\",\n" + 
-                "        \"version\" : \"12.1.2.0.3\",\n" + 
+                "        \"version\" : \"12.1.3.0.1\",\n" + 
                 "        \"edition\" : \"EE\",\n" + 
                 "        \"domainMode\" : \"PRODUCTION\",\n" + 
                 "        \"managedServerCount\" : \"1\",\n" + 
@@ -195,7 +195,7 @@ public class ManageJCS {
                 "        \"contentPort\" : \"7003\",\n" + 
                 "        \"securedContentPort\" : \"7004\",\n" + 
                 "        \"domainName\" : \"" + domainName + "\",\n" + 
-                "        \"clusterName\" : \"Alpha01J_cluster\",\n" + 
+                "        \"clusterName\" : \"Alpha" + instanceNum + "J_cluster\",\n" + 
                 "        \"adminUserName\" : \"weblogic\",\n" + 
                 "        \"adminPassword\" : \"Alpha2014_\",\n" + 
                 "        \"nodeManagerPort\" : \"6555\",\n" + 
@@ -240,6 +240,32 @@ public class ManageJCS {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void createAlpha01JCS () {
+        JSONObject jcsInstance = null;
+        String status = "In Progress";
+        
+        System.out.println ("\n***************************");
+        System.out.println ("Create Alpha01JCS Instance");
+        System.out.println ("***************************\n");
+        
+        try {
+            createAlphaJCS ("01");
+            System.out.println ("Waiting on Create of Alpha01JCS Instance....");
+            Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+            while (status.contains("In Progress")) {
+                System.out.println ("Waiting on Create of Alpha01JCS Instance....");
+                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                jcsInstance = getJCSInstanceInfo("Alpha01JCS");
+                status = jcsInstance.getString("status");
+            }
+            System.out.println ("Alpha01JCS Instance Create finshied....");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } 
     }
     
     public String scaleDown (String instanceName, String serverName) {
@@ -483,18 +509,26 @@ public class ManageJCS {
         List <String> jcsNames = null;
         JSONObject jcsInstance = null;
 
-        if (args.length < 3) {
-            System.out.println("Usage: java ManageJCS username password identityDomain\n");
+        if (args.length < 4) {
+            System.out.println("Usage: java ManageJCS username password identityDomain method\n");
         } else {            
             ManageJCS  opcConnection = new ManageJCS ();
             opcConnection.setUsername(args[0]);
             opcConnection.setPassword(args[1]);
             opcConnection.setIdentityDomain(args[2]);
-            jcsNames = opcConnection.getJCSInstanceNames();
-            System.out.println ("\nJCS Instance Name = " + jcsNames);
-            //opcConnection.paasDemoCleanup();
-            //jcsInstance = opcConnection.getJCSInstanceInfo("Alpha01JCS");
-            //opcConnection.deleteJCS("Alpha01JCS");
+            if (args[3].contains("getJCSInstanceNames")) {
+                jcsNames = opcConnection.getJCSInstanceNames();
+                System.out.println ("\nJCS Instance Name = " + jcsNames);                
+            } else if (args[3].contains("paasDemoCleanup")) {
+                opcConnection.paasDemoCleanup();
+            } else if (args[3].contains("DeleteAlpha01JCS")) {
+                opcConnection.deleteJCS("Alpha01JCS");
+            } else if (args[3].contains("createAlpha01JCS")) {
+                opcConnection.createAlpha01JCS();
+                jcsNames = opcConnection.getJCSInstanceNames();
+                System.out.println ("\nJCS Instance Name = " + jcsNames);                
+            }
+            
         }
     }
 }
