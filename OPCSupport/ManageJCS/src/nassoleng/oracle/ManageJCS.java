@@ -268,6 +268,117 @@ public class ManageJCS {
         } 
     }
     
+    public void createMyJCS2Instance () {
+        ClientResponse response = null;
+        String jobURL = null;
+        String instanceName = null;
+        String domainName = null;
+
+        try {  
+            Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+    
+            WebResource webResource =
+                client.resource(getOpcJCSURL() + getIdentityDomain());
+
+            instanceName = "MyJCS2";
+            domainName = "MyJCS2_domain";
+            String se = new String (
+                "{\n" + 
+                "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+                "    \"level\" : \"PAAS\",\n" + 
+                "    \"subscriptionType\" : \"HOURLY\",\n" + 
+                "    \"description\" : \"Paas Demo JCS\",\n" + 
+                "    \"provisionOTD\" : true,\n" + 
+                "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/MyJCS2\",\n" + 
+                "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+                "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
+                " \n" + 
+                "\"parameters\" : [\n" + 
+                "    {\n" + 
+                "        \"type\" : \"weblogic\",\n" + 
+                "        \"version\" : \"12.1.3.0.1\",\n" + 
+                "        \"edition\" : \"EE\",\n" + 
+                "        \"domainMode\" : \"PRODUCTION\",\n" + 
+                "        \"managedServerCount\" : \"1\",\n" + 
+                "        \"adminPort\" : \"7001\",\n" + 
+                "        \"deploymentChannelPort\" : \"9001\",\n" + 
+                "        \"securedAdminPort\" : \"7002\",\n" + 
+                "        \"contentPort\" : \"7003\",\n" + 
+                "        \"securedContentPort\" : \"7004\",\n" + 
+                "        \"domainName\" : \"" + domainName + "\",\n" + 
+                "        \"clusterName\" : \"MyJCS2_cluster\",\n" + 
+                "        \"adminUserName\" : \"weblogic\",\n" + 
+                "        \"adminPassword\" : \"JCSDem0#\",\n" + 
+                "        \"nodeManagerPort\" : \"6555\",\n" + 
+                "        \"nodeManagerUserName\" : \"weblogic\",\n" + 
+                "        \"nodeManagerPassword\" : \"JCSDem0#\",\n" + 
+                "        \"dbServiceName\" : \"MyDB2\",\n" + 
+                "        \"dbaName\" : \"SYS\",\n" + 
+                "        \"dbaPassword\" : \"JCSDem0#\",\n" + 
+                "        \"shape\" : \"oc3\",\n" + 
+                "        \"domainVolumeSize\" : \"10240M\",\n" + 
+                "        \"backupVolumeSize\" : \"20480M\",\n" + 
+                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDK44PtRnT9HaZE0coQZRhsfh2SSi7nT0DGgUf3u37U2sbQ0QjRFmV9NZ5eIK+u34xfG9jYt1Lxz8dQTCf4pcjOzX65wbcQDEXx2vkAXNUk7trjAiIGs73kKNX//gTIPV4nnyY77lO5NGymx1JP3/6X8paMduEFFEBKkhZkLscAtQ== JCS HOL\"\n" + 
+                "    },\n" + 
+                "    {\n" + 
+                "        \"type\" : \"otd\",\n" + 
+                "        \"adminUserName\" : \"weblogic\",\n" + 
+                "        \"adminPassword\" : \"JCSDem0#\",\n" + 
+                "        \"listenerPortsEnabled\" : true,\n" + 
+                "        \"listenerPort\" : \"8080\",\n" + 
+                "        \"listenerType\" : \"http\",\n" + 
+                "        \"securedListenerPort\" : \"8081\",\n" + 
+                "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
+                "        \"adminPort\" : \"8989\",\n" + 
+                "        \"shape\" : \"oc3\",\n" + 
+                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDK44PtRnT9HaZE0coQZRhsfh2SSi7nT0DGgUf3u37U2sbQ0QjRFmV9NZ5eIK+u34xfG9jYt1Lxz8dQTCf4pcjOzX65wbcQDEXx2vkAXNUk7trjAiIGs73kKNX//gTIPV4nnyY77lO5NGymx1JP3/6X8paMduEFFEBKkhZkLscAtQ== JCS HOL\"\n" + 
+                "    }\n" + 
+                "]\n" + 
+                "}");
+            
+            System.out.println ("\nBody = " + se);
+            response = webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+
+            if (response.getStatus() != 202) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                final MultivaluedMap<String,String> headers = response.getHeaders();
+                if (headers != null) {
+                    jobURL = headers.getFirst("Location");
+                }
+                System.out.println("Output from Server .... \n");                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createMyJCS2 () {
+        JSONObject jcsInstance = null;
+        String status = "In Progress";
+        
+        System.out.println ("\n***************************");
+        System.out.println ("Create MyJCS2 Instance");
+        System.out.println ("***************************\n");
+        
+        try {
+            createMyJCS2Instance ();
+            System.out.println ("Waiting on Create of MyJCS2 Instance....");
+            Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+            while (status.contains("In Progress")) {
+                System.out.println ("Waiting on Create of MyJCS2 Instance....");
+                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                jcsInstance = getJCSInstanceInfo("MyJCS2");
+                status = jcsInstance.getString("status");
+            }
+            System.out.println ("MyJCS2 Instance Create finshied....");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } 
+    }
+    
     public String scaleDown (String instanceName, String serverName) {
         ClientResponse response = null;
         JSONObject jobResponse = null;
@@ -364,6 +475,42 @@ public class ManageJCS {
                 }
                 String output = response.getEntity(String.class);
                 //System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteMyJCS2() {
+        ClientResponse response = null;
+        MultivaluedMap<String, String> headers = null;
+        String jobURL = null;
+
+        try {
+            Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+
+            WebResource webResource =
+                client.resource(getOpcJCSURL() + getIdentityDomain() + "/MyJCS2");
+
+            String se =
+                new String("{ \"dbaName\": \"SYS\",\n" + "  \"dbaPassword\": \"JCSDem0#\",\n" +
+                           "  \"forceDelete\": true\n" + "}");
+
+            //System.out.println("\nBody = " + se);
+            response =
+                webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).put(ClientResponse.class, se);
+
+            if (response.getStatus() != 202) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                headers = response.getHeaders();
+                if (headers != null) {
+                    jobURL = headers.getFirst("Location");
+                    System.out.println ("\nDelete JCS JobURL = " + jobURL);
+                }
+                String output = response.getEntity(String.class);
+                System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
             }
 
         } catch (Exception e) {
@@ -523,12 +670,17 @@ public class ManageJCS {
                 opcConnection.paasDemoCleanup();
             } else if (args[3].contains("DeleteAlpha01JCS")) {
                 opcConnection.deleteJCS("Alpha01JCS");
+            } else if (args[3].contains("DeleteMyJCS2")) {
+                    opcConnection.deleteMyJCS2();
             } else if (args[3].contains("createAlpha01JCS")) {
                 opcConnection.createAlpha01JCS();
                 jcsNames = opcConnection.getJCSInstanceNames();
                 System.out.println ("\nJCS Instance Name = " + jcsNames);                
+            } else if (args[3].contains("createAlpha01JCS")) {
+                opcConnection.createMyJCS2();
+                jcsNames = opcConnection.getJCSInstanceNames();
+                System.out.println ("\nJCS Instance Name = " + jcsNames);                
             }
-            
         }
     }
 }

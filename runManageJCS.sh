@@ -4,10 +4,12 @@ if [ $# -lt 4 ]
 then
 	echo "Usage: runManageJCS.sh <username> <password> <identity domain> <method>" 
         echo "Supported Methods:"
-        echo "   getJCSInstanceNames"
-        echo "   paasDemoCleanup"
+        echo "   GetJCSInstanceNames"
+        echo "   PaasDemoCleanup"
         echo "   DeleteAlpha01JCS"
-        echo "   createAlpha01JCS"
+        echo "   CreateAlpha01JCS"
+        echo "   CreateMyJCS2"
+        echo "   DeleteMyJCS2"
 	exit 1
 fi
 echo $*
