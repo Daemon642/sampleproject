@@ -192,9 +192,12 @@ public class DeleteStorageContainer {
             delSC.setOpcUsername(args[0]);
             delSC.setOpcPassword(args[1]);
             delSC.setOpcDomain(args[2]);
-            if (args[3].contains("getContainerNames")) {
+            if (args[3].contains("GetContainerNames")) {
                 containerNames = delSC.getContainerNames();
-                System.out.println ("\nStorage Contain Names = " + containerNames);                
+                System.out.println ("\n*****************************");
+                System.out.println ("Paas Demo Review for Storage");
+                System.out.println ("*****************************\n");
+                System.out.println ("Storage Contain Names = " + containerNames);                
             } else if (args[3].contains("paasDemoCleanup")) {
                 delSC.paasDemoCleanup ();                
             } else if (args[3].contains("DeleteAllContainers")) {

@@ -4,7 +4,7 @@ if [ $# -lt 4 ]
 then
 	echo "Usage: runManageStorage.sh <username> <password> <identity domain> <method>" 
         echo "Supported Methods:"
-        echo "   getContainerNames"
+        echo "   GetContainerNames"
         echo "   paasDemoCleanup"
         echo "   DeleteAllContainers"
         echo "   opcWorkshopCreateContainers"

@@ -619,6 +619,45 @@ public class ManageJCS {
         } 
     }
 
+    public void paasDemoReview() {
+        JSONObject jcsInstances = null;
+        JSONObject jcsInstance = null;
+        JSONObject server = null;
+        JSONArray servicesArray = null;
+        JSONArray serversArray = null;
+        String serviceName = null;
+        String serverName = null;
+        
+        jcsInstances = getJCSInstances ();
+
+        System.out.println ("\n**************************");
+        System.out.println ("Paas Demo Review for JCS");
+        System.out.println ("**************************\n");
+        
+        try {
+            servicesArray = jcsInstances.getJSONArray("services");
+            for (int i = 0; i < servicesArray.length(); i++) {
+                jcsInstance = servicesArray.getJSONObject(i);
+                serviceName = jcsInstance.getString("service_name");
+                if (serviceName.equals("MyJCS2")) {
+                    System.out.println ("Instance MyJCS2 does exist...");
+                    jcsInstance = getJCSServerDetails(serviceName);
+                    serversArray = jcsInstance.getJSONArray("servers");
+                    for (int j = 0; j < serversArray.length(); j++) {
+                        server = serversArray.getJSONObject(j);
+                        serverName = server.getString("name");
+                        if (!serverName.equals("MyJCS2_server_1")) {
+                            System.out.println ("Extra Server " + serverName + " created on MyJCS2 ....");
+                        }
+                    }
+                } else {
+                    System.out.println ("Instance " + serviceName + " exists ...");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } 
+    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -666,8 +705,10 @@ public class ManageJCS {
             if (args[3].contains("GetJCSInstanceNames")) {
                 jcsNames = opcConnection.getJCSInstanceNames();
                 System.out.println ("\nJCS Instance Name = " + jcsNames);                
-            } else if (args[3].contains("PaasDemoCleanup")) {
+            } else if (args[3].contains("PaaSDemoCleanup")) {
                 opcConnection.paasDemoCleanup();
+            } else if (args[3].contains("PaaSDemoReview")) {
+                opcConnection.paasDemoReview();
             } else if (args[3].contains("DeleteAlpha01JCS")) {
                 opcConnection.deleteJCS("Alpha01JCS");
             } else if (args[3].contains("DeleteMyJCS2")) {
