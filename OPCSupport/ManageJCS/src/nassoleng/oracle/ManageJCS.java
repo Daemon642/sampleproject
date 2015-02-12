@@ -663,20 +663,20 @@ public class ManageJCS {
             opcConnection.setUsername(args[0]);
             opcConnection.setPassword(args[1]);
             opcConnection.setIdentityDomain(args[2]);
-            if (args[3].contains("getJCSInstanceNames")) {
+            if (args[3].contains("GetJCSInstanceNames")) {
                 jcsNames = opcConnection.getJCSInstanceNames();
                 System.out.println ("\nJCS Instance Name = " + jcsNames);                
-            } else if (args[3].contains("paasDemoCleanup")) {
+            } else if (args[3].contains("PaasDemoCleanup")) {
                 opcConnection.paasDemoCleanup();
             } else if (args[3].contains("DeleteAlpha01JCS")) {
                 opcConnection.deleteJCS("Alpha01JCS");
             } else if (args[3].contains("DeleteMyJCS2")) {
                     opcConnection.deleteMyJCS2();
-            } else if (args[3].contains("createAlpha01JCS")) {
+            } else if (args[3].contains("CreateAlpha01JCS")) {
                 opcConnection.createAlpha01JCS();
                 jcsNames = opcConnection.getJCSInstanceNames();
                 System.out.println ("\nJCS Instance Name = " + jcsNames);                
-            } else if (args[3].contains("createAlpha01JCS")) {
+            } else if (args[3].contains("CreateMyJCS2")) {
                 opcConnection.createMyJCS2();
                 jcsNames = opcConnection.getJCSInstanceNames();
                 System.out.println ("\nJCS Instance Name = " + jcsNames);                
