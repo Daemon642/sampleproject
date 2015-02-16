@@ -703,21 +703,46 @@ public class ManageJCS {
             opcConnection.setPassword(args[1]);
             opcConnection.setIdentityDomain(args[2]);
             if (args[3].contains("GetJCSInstanceNames")) {
+                System.out.println ("\n***********************");
+                System.out.println ("Get JCS Instance Names");
+                System.out.println ("***********************\n");                    
                 jcsNames = opcConnection.getJCSInstanceNames();
-                System.out.println ("\nJCS Instance Name = " + jcsNames);                
+                System.out.println ("JCS Instance Name = " + jcsNames);                
             } else if (args[3].contains("PaaSDemoCleanup")) {
                 opcConnection.paasDemoCleanup();
             } else if (args[3].contains("PaaSDemoReview")) {
                 opcConnection.paasDemoReview();
             } else if (args[3].contains("DeleteAlpha01JCS")) {
+                System.out.println ("\n******************");
+                System.out.println ("Delete Alpha01JCS");
+                System.out.println ("******************\n");                    
                 opcConnection.deleteJCS("Alpha01JCS");
+            } else if (args[3].contains("DeleteJCS")) {
+                if (args.length < 5) {
+                    System.out.println("Usage: java ManageJCS username password identityDomain method JCSName\n");
+                    System.out.println("This method requires an additional parameter - JCSName\n");
+                } else {                    
+                    System.out.println ("\n*****************************");
+                    System.out.println ("Delete JCS - " + args[4]);
+                    System.out.println ("*****************************\n");                    
+                    opcConnection.deleteJCS(args[4]);
+                }
             } else if (args[3].contains("DeleteMyJCS2")) {
+                System.out.println ("\n***************");
+                System.out.println ("Delete MyJCS02");
+                System.out.println ("***************\n");                    
                     opcConnection.deleteMyJCS2();
             } else if (args[3].contains("CreateAlpha01JCS")) {
+                System.out.println ("\n******************");
+                System.out.println ("Create Alpha01JCS");
+                System.out.println ("******************\n");                    
                 opcConnection.createAlpha01JCS();
                 jcsNames = opcConnection.getJCSInstanceNames();
                 System.out.println ("\nJCS Instance Name = " + jcsNames);                
             } else if (args[3].contains("CreateMyJCS2")) {
+                System.out.println ("\n***************");
+                System.out.println ("Create MyJCS02");
+                System.out.println ("***************\n");                    
                 opcConnection.createMyJCS2();
                 jcsNames = opcConnection.getJCSInstanceNames();
                 System.out.println ("\nJCS Instance Name = " + jcsNames);                

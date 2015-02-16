@@ -194,15 +194,31 @@ public class DeleteStorageContainer {
             delSC.setOpcDomain(args[2]);
             if (args[3].contains("GetContainerNames")) {
                 containerNames = delSC.getContainerNames();
-                System.out.println ("\n*****************************");
-                System.out.println ("Paas Demo Review for Storage");
-                System.out.println ("*****************************\n");
+                System.out.println ("\n********************");
+                System.out.println ("Get Container Names");
+                System.out.println ("********************\n");
                 System.out.println ("Storage Contain Names = " + containerNames);                
-            } else if (args[3].contains("paasDemoCleanup")) {
+            } else if (args[3].contains("PaaSDemoCleanup")) {
                 delSC.paasDemoCleanup ();                
             } else if (args[3].contains("DeleteAllContainers")) {
+                System.out.println ("\n**********************");
+                System.out.println ("Delete All Containers");
+                System.out.println ("**********************\n");
                 delSC.DeleteAllContainers();
-            } else if (args[3].contains("opcWorkshopCreateContainers")) {
+            } else if (args[3].contains("DeleteContainer")) {
+                if (args.length < 5) {
+                    System.out.println("Usage: java DeleteStorageContainer username password identityDomain method containerName\n");
+                    System.out.println("This method requires an additional parameter - ContainerName\n");
+                } else {                    
+                    System.out.println ("\n*********************************");
+                    System.out.println ("Delete Container - " + args[4]);
+                    System.out.println ("*********************************\n");                    
+                    delSC.DeleteContainer(args[4]);
+                }
+            } else if (args[3].contains("OPCWorkshopCreateContainers")) {
+                System.out.println ("\n*******************************");
+                System.out.println ("Create OPC Workshop Containers");
+                System.out.println ("*******************************\n");
                 containerNames = delSC.opcWorkshopCreateContainers();
                 System.out.println ("\nStorage Contain Names = " + containerNames);
             }

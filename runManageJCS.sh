@@ -8,10 +8,10 @@ then
         echo "   PaaSDemoCleanup"
         echo "   PaaSDemoReview"
         echo "   DeleteAlpha01JCS"
+        echo "   DeleteJCS <JCS Name>"
         echo "   CreateAlpha01JCS"
         echo "   CreateMyJCS2"
         echo "   DeleteMyJCS2"
 	exit 1
 fi
-echo $*
-/u01/jdeveloper/oracle_common/jdk/bin/java -server -classpath /u01/OPCWorkshop/lab/OPCSupport/.adf:/u01/OPCWorkshop/lab/OPCSupport/ManageJCS/classes:/u01/OPCWorkshop/lab/OracleCloudStorageAPI/lib/jersey-client-1.13.jar:/u01/OPCWorkshop/lab/OracleCloudStorageAPI/lib/jersey-core-1.13.jar:/u01/OPCWorkshop/lab/OracleCloudStorageAPI/lib/jersey-json-1.13.jar:/u01/OPCWorkshop/lab/OracleCloudStorageAPI/lib/jersey-multipart-1.13.jar:/u01/OPCWorkshop/lab/OracleCloudStorageAPI/lib/jettison-1.1.jar:/u01/OPCWorkshop/lab/OracleCloudStorageAPI/lib/mimepull-1.9.3.jar:/u01/OPCWorkshop/lab/OracleCloudStorageAPI/lib/oracle.cloud.storage.api-13.0.0.jar -Djavax.net.ssl.trustStore=/u01/OPCWorkshop/lab/trustStore.jks nassoleng.oracle.ManageJCS $1 $2 $3 $4
+/u01/jdeveloper/oracle_common/jdk/bin/java -server -classpath ./OPCSupport/ManageJCS/classes:./OracleCloudStorageAPI/lib/jersey-client-1.13.jar:./OracleCloudStorageAPI/lib/jersey-core-1.13.jar:./OracleCloudStorageAPI/lib/jersey-json-1.13.jar:./OracleCloudStorageAPI/lib/jersey-multipart-1.13.jar:./OracleCloudStorageAPI/lib/jettison-1.1.jar:./OracleCloudStorageAPI/lib/mimepull-1.9.3.jar:./OracleCloudStorageAPI/lib/oracle.cloud.storage.api-13.0.0.jar -Djavax.net.ssl.trustStore=./trustStore.jks nassoleng.oracle.ManageJCS $1 $2 $3 $4 $5

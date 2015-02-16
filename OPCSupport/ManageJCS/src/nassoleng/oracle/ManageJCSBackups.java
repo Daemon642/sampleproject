@@ -221,11 +221,7 @@ public class ManageJCSBackups {
             opcConnection.setUsername(args[0]);
             opcConnection.setPassword(args[1]);
             opcConnection.setIdentityDomain(args[2]);
-            //opcConnection.getJCSBackups("MyJCS2");
-            //opcConnection.getJCSBackupDetails("MyJCS2", "1422313568201");
             opcConnection.paasDemoCleanupBackups ();
-            //opcConnection.deleteJCSBackup("MyJCS2", "1422313568201");
-            //opcConnection.getJCSBackups("MyJCS2");
         }
     }
 
