@@ -7,7 +7,9 @@ then
         echo "   GetContainerNames"
         echo "   PaaSDemoCleanup"
         echo "   DeleteAllContainers"
+        echo "   CreateContainer <Container Name>"
         echo "   DeleteContainer <Container Name>"
+        echo "   OPCWorkshopCleanup"
         echo "   OPCWorkshopCreateContainers"
 	exit 1
 fi

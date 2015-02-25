@@ -149,6 +149,27 @@ public class DeleteStorageContainer {
         }            
     }
 
+    public void opcWorkshopCleanup () {
+        CloudStorage myConnection = null;
+        java.util.List<Container> myContainers;
+
+        System.out.println ("\n********************************************");
+        System.out.println ("OPC Workshop Cleanup for Storage Containers");
+        System.out.println ("********************************************\n");
+
+        myConnection = getStorageConnection ();            
+        myContainers = myConnection.listContainers();
+            
+        for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
+            if (myContainers.get(i).getName().equals("AlphaDBCS_SC")) {
+                System.out.println ("Do not Delete " + myContainers.get(i).getName());
+            } else {
+                System.out.println ("Delete " + myContainers.get(i).getName());
+                DeleteContainer (myContainers.get(i).getName());
+            }
+        }            
+    }
+
     public List <String> opcWorkshopCreateContainers () {
         List <String> containerNames = null;
 
@@ -200,11 +221,29 @@ public class DeleteStorageContainer {
                 System.out.println ("Storage Contain Names = " + containerNames);                
             } else if (args[3].contains("PaaSDemoCleanup")) {
                 delSC.paasDemoCleanup ();                
+            } else if (args[3].contains("OPCWorkshopCleanup")) {
+                delSC.opcWorkshopCleanup ();                
             } else if (args[3].contains("DeleteAllContainers")) {
                 System.out.println ("\n**********************");
                 System.out.println ("Delete All Containers");
                 System.out.println ("**********************\n");
                 delSC.DeleteAllContainers();
+            } else if (args[3].contains("OPCWorkshopCreateContainers")) {
+                System.out.println ("\n*******************************");
+                System.out.println ("Create OPC Workshop Containers");
+                System.out.println ("*******************************\n");
+                containerNames = delSC.opcWorkshopCreateContainers();
+                System.out.println ("\nStorage Contain Names = " + containerNames);
+            } else if (args[3].contains("CreateContainer")) {
+                if (args.length < 5) {
+                    System.out.println("Usage: java DeleteStorageContainer username password identityDomain method containerName\n");
+                    System.out.println("This method requires an additional parameter - ContainerName\n");
+                } else {                    
+                    System.out.println ("\n*********************************");
+                    System.out.println ("Create Container - " + args[4]);
+                    System.out.println ("*********************************\n");                    
+                    delSC.createContainer(args[4]);
+                }
             } else if (args[3].contains("DeleteContainer")) {
                 if (args.length < 5) {
                     System.out.println("Usage: java DeleteStorageContainer username password identityDomain method containerName\n");
@@ -215,12 +254,6 @@ public class DeleteStorageContainer {
                     System.out.println ("*********************************\n");                    
                     delSC.DeleteContainer(args[4]);
                 }
-            } else if (args[3].contains("OPCWorkshopCreateContainers")) {
-                System.out.println ("\n*******************************");
-                System.out.println ("Create OPC Workshop Containers");
-                System.out.println ("*******************************\n");
-                containerNames = delSC.opcWorkshopCreateContainers();
-                System.out.println ("\nStorage Contain Names = " + containerNames);
             }
         }
     }

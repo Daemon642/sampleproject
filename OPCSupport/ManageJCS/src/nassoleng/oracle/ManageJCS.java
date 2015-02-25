@@ -446,7 +446,7 @@ public class ManageJCS {
         return inProgress;
     }
 
-    public void deleteJCS(String instanceName) {
+    public String deleteJCS(String instanceName) {
         ClientResponse response = null;
         MultivaluedMap<String, String> headers = null;
         String jobURL = null;
@@ -480,6 +480,7 @@ public class ManageJCS {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return jobURL;
     }
 
     public void deleteMyJCS2() {
@@ -553,6 +554,40 @@ public class ManageJCS {
             e.printStackTrace();
         }
         return jobURL;
+    }
+
+    public void deleteAllJCS() {
+        JSONObject jcsInstances = null;
+        JSONObject jcsInstance = null;
+        JSONArray servicesArray = null;
+        String serviceName = null;
+        String status = "Terminating";
+        String jobURL = null;
+        
+        jcsInstances = getJCSInstances ();
+        try {
+            servicesArray = jcsInstances.getJSONArray("services");
+            for (int i = 0; i < servicesArray.length(); i++) {
+                jcsInstance = servicesArray.getJSONObject(i);
+                serviceName = jcsInstance.getString("service_name");
+                status = "Terminating";
+                System.out.println ("Delete JCS " + serviceName);
+                jobURL = deleteJCS (serviceName);
+                System.out.println ("Waiting on JCS to be deleted ....");
+                Thread.sleep(1000 * 60 * 2); // Sleep for 1 minutes
+                status = getJobStatus(jobURL);                        
+                while (status.equals("Terminating")) {
+                    System.out.println ("Waiting on JCS to be deleted ....");
+                    Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                    status = getJobStatus(jobURL);                        
+                }
+                System.out.println ("JCS " + serviceName + " has been deleted\n");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } 
     }
 
     public void paasDemoCleanup() {
@@ -727,11 +762,16 @@ public class ManageJCS {
                     System.out.println ("*****************************\n");                    
                     opcConnection.deleteJCS(args[4]);
                 }
+            } else if (args[3].contains("DeleteAllJCS")) {
+                System.out.println ("\n***************");
+                System.out.println ("Delete All JCS");
+                System.out.println ("***************\n");                    
+                opcConnection.deleteAllJCS();
             } else if (args[3].contains("DeleteMyJCS2")) {
                 System.out.println ("\n***************");
                 System.out.println ("Delete MyJCS02");
                 System.out.println ("***************\n");                    
-                    opcConnection.deleteMyJCS2();
+                opcConnection.deleteMyJCS2();
             } else if (args[3].contains("CreateAlpha01JCS")) {
                 System.out.println ("\n******************");
                 System.out.println ("Create Alpha01JCS");
