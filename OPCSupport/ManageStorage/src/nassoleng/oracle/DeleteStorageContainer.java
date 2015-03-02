@@ -105,15 +105,15 @@ public class DeleteStorageContainer {
         Container myContainer = null;
         boolean containerEmpty = false;
         
-        myConnection = getStorageConnection ();            
+        myConnection = getStorageConnection ();
 
         myContainers = myConnection.listContainers();
-
         for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
             if (myContainers.get(i).getName().equals(containerName)) {
                 while (!containerEmpty) {
                     myContainer = myContainers.get(i);
                     myContainerObjs = myConnection.listObjects(containerName, null);
+
                     if (myContainerObjs.size() < 10000) {
                         containerEmpty = true;
                     }
@@ -125,7 +125,7 @@ public class DeleteStorageContainer {
                 myConnection.deleteContainer(containerName);
                 i = myContainers.size();
             }
-        }            
+        }
     }
 
     public void paasDemoCleanup () {
