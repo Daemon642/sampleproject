@@ -9,9 +9,10 @@ SSH Tunnel to DBCS
 ------------------
    ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/lab/labkey oracle@<your-DB-IP> -L 1521:<your-DB-IP>:1521
 
-SSH Tunnel to Load Balancer
-------------------
-   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/lab/labkey oracle@<your-LB-IP> -L 1521:<your-LB-IP>:1521
+SSH Tunnel to Load Balancer for Traffic Director Console
+--------------------------------------------------------
+   ssh -o ServerAliveInterval=60 -i /u01/OPCWorkshop/lab/labkey opc@<your-LB-IP> -L 8989:<your-LB-IP>:8989
+
 
 REST Applications
 -----------------
@@ -19,8 +20,8 @@ REST Applications
      https://<your-LB-IP>:8081/AlphaOffice/jersey/AlphaOfficeAccess/Products/getProducts
      https://<your-LB-IP>:8081/AlphaOffice/jersey/AlphaOfficeAccess/Student<your-Student-ID>/sayHello
    Non-SSL Versions:
-     http://<your-LB-IP>/AlphaOffice/jersey/AlphaOfficeAccess/Products/getProducts
-     http://<your-LB-IP>/AlphaOffice/jersey/AlphaOfficeAccess/Student<your-Student-ID>/sayHello
+     http://<your-LB-IP>:8080/AlphaOffice/jersey/AlphaOfficeAccess/Products/getProducts
+     http://<your-LB-IP>:8080/AlphaOffice/jersey/AlphaOfficeAccess/Student<your-Student-ID>/sayHello
 
 REST Cloud Queries:
 -------------------
@@ -34,5 +35,4 @@ Sample JDBC DataSource URL
 GIT Repository URL
 ------------------
    https://developer.us2.oraclecloud.com/developer81763-usoracletrial92622/s/developer81763-usoracletrial92622_alpha01mobileapplication/scm/developer81763-usoracletrial92622_alpha01mobileapplication.git
-
 
