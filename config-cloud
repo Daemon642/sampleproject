@@ -1,60 +1,56 @@
 Host AlphaDBCS
-  hostname 129.152.146.146
+  hostname REPLACE_WITH_DBCS_IP
 
   user oracle
   IdentityFile /u01/OPCWorkshop/lab/labkey
 
   # Database Access
-  LocalForward 1521 129.152.146.146:1521
+  LocalForward 1521 REPLACE_WITH_DBCS_IP:1521
 
   # Apex and DB Monitor
   # https://localhost:4443/apex
-  LocalForward 4443 129.152.146.146:443
+  LocalForward 4443 REPLACE_WITH_DBCS_IP:443
 
   # Glass Fish
   # https://localhost:4848
-  LocalForward 4848 129.152.146.146:4848
+  LocalForward 4848 REPLACE_WITH_DBCS_IP:4848
 
   # Enterprise Manager
   # https://localhost:5500/em
-  LocalForward 5500 129.152.146.146:5500
-
-  RemoteForward 4000 localhost:4000
+  LocalForward 5500 REPLACE_WITH_DBCS_IP:5500
 
   ServerAliveInterval 60
 
 
 Host AlphaJCS
-  hostname 129.152.144.75
+  hostname REPLACE_WITH_JCS_IP
 
   user opc
   IdentityFile /u01/OPCWorkshop/lab/labkey
 
   # WLS Admin Server
   # https://localhost:7002/console
-  LocalForward 9001 129.152.144.75:7001
-  LocalForward 7002 129.152.144.75:7002
+  LocalForward 9001 REPLACE_WITH_JCS_IP:9001
+  LocalForward 7002 REPLACE_WITH_JCS_IP:7002
   # VNC
-  LocalForward 5901 129.152.144.75:5901
+  LocalForward 5901 REPLACE_WITH_JCS_IP:5901
 
-  RemoteForward 4000 localhost:4000
+  RemoteForward 4000 localhost:7101
 
   ServerAliveInterval 60
 
 
 Host AlphaLB
-  hostname 129.152.146.160
+  hostname REPLACE_WITH_LB_IP
 
   user opc
   IdentityFile /u01/OPCWorkshop/lab/labkey
 
   # Traffic Director
   # https://localhost:8989
-  LocalForward 8989 129.152.146.160:8989
+  LocalForward 8989 REPLACE_WITH_LB_IP:8989
   # VNC
-  LocalForward 5902 129.152.146.160:5902
-
-  RemoteForward 4000 localhost:4000
+  LocalForward 5902 REPLACE_WITH_LB_IP:5902
 
   ServerAliveInterval 60
 
