@@ -8,8 +8,8 @@ Host AlphaDBCS
   LocalForward 1521 REPLACE_WITH_DBCS_IP:1521
 
   # Apex and DB Monitor
-  # https://localhost:4443/apex
-  LocalForward 4443 REPLACE_WITH_DBCS_IP:443
+  # https://localhost:443/apex
+  LocalForward 443 REPLACE_WITH_DBCS_IP:443
 
   # Glass Fish
   # https://localhost:4848
