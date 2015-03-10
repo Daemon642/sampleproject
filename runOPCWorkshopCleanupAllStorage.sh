@@ -1,6 +1,6 @@
 # !/bin/sh
 #
-PASSWORD='Welcome2$'
+PASSWORD='RB73Sc@r3'
 #
 ./runOPCWorkshopStorageCleanup.sh gse_cloud-admin@oracleads.com ${PASSWORD} usdevops40552
 ./runOPCWorkshopStorageCleanup.sh gse_cloud-admin@oracleads.com ${PASSWORD} usoracleam04611

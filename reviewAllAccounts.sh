@@ -1,6 +1,6 @@
 # !/bin/sh
 #
-PASSWORD='RB71@racl3'
+PASSWORD='RB73Sc@r3'
 #
 ./runReviewAccount.sh gse_cloud-admin@oracleads.com ${PASSWORD} usdevops40552
 ./runReviewAccount.sh gse_cloud-admin@oracleads.com ${PASSWORD} usoracleam04611

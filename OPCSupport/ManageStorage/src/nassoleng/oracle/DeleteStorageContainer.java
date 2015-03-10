@@ -175,6 +175,7 @@ public class DeleteStorageContainer {
 
         createContainer ("AlphaDBCS_SC");
         createContainer ("Alpha01_SC");
+        createContainer ("Alpha02_SC");
         containerNames = getContainerNames();
         
         return containerNames;
