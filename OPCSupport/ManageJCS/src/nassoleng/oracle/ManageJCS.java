@@ -213,7 +213,7 @@ public class ManageJCS {
                 "        \"type\" : \"otd\",\n" + 
                 "        \"adminUserName\" : \"weblogic\",\n" + 
                 "        \"adminPassword\" : \"Alpha2014_\",\n" + 
-                "        \"listenerPortsEnabled\" : true,\n" + 
+                "        \"listenerPortsEnabled\" : \"false\",\n" + 
                 "        \"listenerPort\" : \"8080\",\n" + 
                 "        \"listenerType\" : \"http\",\n" + 
                 "        \"securedListenerPort\" : \"8081\",\n" + 
@@ -324,7 +324,7 @@ public class ManageJCS {
                 "        \"type\" : \"otd\",\n" + 
                 "        \"adminUserName\" : \"weblogic\",\n" + 
                 "        \"adminPassword\" : \"JCSDem0#\",\n" + 
-                "        \"listenerPortsEnabled\" : true,\n" + 
+                "        \"listenerPortsEnabled\" : \"true\",\n" + 
                 "        \"listenerPort\" : \"8080\",\n" + 
                 "        \"listenerType\" : \"http\",\n" + 
                 "        \"securedListenerPort\" : \"8081\",\n" + 
