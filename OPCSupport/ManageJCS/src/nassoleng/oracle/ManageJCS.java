@@ -185,7 +185,7 @@ public class ManageJCS {
                 "\"parameters\" : [\n" + 
                 "    {\n" + 
                 "        \"type\" : \"weblogic\",\n" + 
-                "        \"version\" : \"12.1.3.0.1\",\n" + 
+                "        \"version\" : \"12.1.3.0.2\",\n" + 
                 "        \"edition\" : \"EE\",\n" + 
                 "        \"domainMode\" : \"PRODUCTION\",\n" + 
                 "        \"managedServerCount\" : \"1\",\n" + 
@@ -296,7 +296,7 @@ public class ManageJCS {
                 "\"parameters\" : [\n" + 
                 "    {\n" + 
                 "        \"type\" : \"weblogic\",\n" + 
-                "        \"version\" : \"12.1.3.0.1\",\n" + 
+                "        \"version\" : \"12.1.3.0.2\",\n" + 
                 "        \"edition\" : \"EE\",\n" + 
                 "        \"domainMode\" : \"PRODUCTION\",\n" + 
                 "        \"managedServerCount\" : \"1\",\n" + 
