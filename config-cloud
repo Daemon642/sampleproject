@@ -13,8 +13,8 @@ Host AlphaDBCS
   LocalForward 443 REPLACE_WITH_DBCS_IP:443
 
   # Glass Fish
-  # https://localhost:4848
-  LocalForward 4848 REPLACE_WITH_DBCS_IP:4848 .... username=admin
+  # https://localhost:4848 .... username=admin
+  LocalForward 4848 REPLACE_WITH_DBCS_IP:4848
 
   # Enterprise Manager
   # https://localhost:5500/em  ..... username=sys
