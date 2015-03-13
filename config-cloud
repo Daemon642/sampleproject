@@ -1,57 +1,40 @@
 Host AlphaDBCS
-  hostname REPLACE_WITH_DBCS_IP
+  hostname alphadbcs
 
   user oracle
   IdentityFile /u01/OPCWorkshop/lab/labkey
 
   # Database Access
-  LocalForward 1521 REPLACE_WITH_DBCS_IP:1521
+  LocalForward 1521 alphadbcs:1521
 
   # Apex and DB Monitor
   # https://localhost:443/apex/apex/pdb1 .... workspace=internal, username=admin
   # https://localhost:443/dbaas_monitor ..... username=dbaas_monitor
-  LocalForward 443 REPLACE_WITH_DBCS_IP:443
+  LocalForward 443 alphadbcs:443
 
   # Glass Fish
-  # https://localhost:4848 .... username=admin
-  LocalForward 4848 REPLACE_WITH_DBCS_IP:4848
+  # https://localhost:4848  .... username=admin
+  LocalForward 4848 alphadbcs:4848
 
   # Enterprise Manager
   # https://localhost:5500/em  ..... username=sys
-  LocalForward 5500 REPLACE_WITH_DBCS_IP:5500
+  LocalForward 5500 alphadbcs:5500
 
   ServerAliveInterval 60
 
 
 Host AlphaJCS
-  hostname REPLACE_WITH_JCS_IP
+  hostname alphajcs
 
   user opc
   IdentityFile /u01/OPCWorkshop/lab/labkey
 
   # WLS Admin Server
-  # https://localhost:7002/console
-  LocalForward 9001 REPLACE_WITH_JCS_IP:9001
-  LocalForward 7002 REPLACE_WITH_JCS_IP:7002
+  LocalForward 9001 alphajcs:9001
   # VNC
-  LocalForward 5901 REPLACE_WITH_JCS_IP:5901
+  LocalForward 5901 alphajcs:5901
 
   RemoteForward 4000 localhost:7101
-
-  ServerAliveInterval 60
-
-
-Host AlphaLB
-  hostname REPLACE_WITH_LB_IP
-
-  user opc
-  IdentityFile /u01/OPCWorkshop/lab/labkey
-
-  # Traffic Director
-  # https://localhost:8989
-  LocalForward 8989 REPLACE_WITH_LB_IP:8989
-  # VNC
-  LocalForward 5902 REPLACE_WITH_LB_IP:5902
 
   ServerAliveInterval 60
 
