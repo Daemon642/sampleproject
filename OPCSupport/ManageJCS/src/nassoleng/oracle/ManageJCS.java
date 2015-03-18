@@ -207,7 +207,7 @@ public class ManageJCS {
                 "        \"shape\" : \"oc3\",\n" + 
                 "        \"domainVolumeSize\" : \"10240M\",\n" + 
                 "        \"backupVolumeSize\" : \"20480M\",\n" + 
-                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDK44PtRnT9HaZE0coQZRhsfh2SSi7nT0DGgUf3u37U2sbQ0QjRFmV9NZ5eIK+u34xfG9jYt1Lxz8dQTCf4pcjOzX65wbcQDEXx2vkAXNUk7trjAiIGs73kKNX//gTIPV4nnyY77lO5NGymx1JP3/6X8paMduEFFEBKkhZkLscAtQ== JCS HOL\"\n" + 
+                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
                 "    },\n" + 
                 "    {\n" + 
                 "        \"type\" : \"otd\",\n" + 
@@ -220,7 +220,7 @@ public class ManageJCS {
                 "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
                 "        \"adminPort\" : \"8989\",\n" + 
                 "        \"shape\" : \"oc3\",\n" + 
-                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDK44PtRnT9HaZE0coQZRhsfh2SSi7nT0DGgUf3u37U2sbQ0QjRFmV9NZ5eIK+u34xfG9jYt1Lxz8dQTCf4pcjOzX65wbcQDEXx2vkAXNUk7trjAiIGs73kKNX//gTIPV4nnyY77lO5NGymx1JP3/6X8paMduEFFEBKkhZkLscAtQ== JCS HOL\"\n" + 
+                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
                 "    }\n" + 
                 "]\n" + 
                 "}");
@@ -318,7 +318,7 @@ public class ManageJCS {
                 "        \"shape\" : \"oc3\",\n" + 
                 "        \"domainVolumeSize\" : \"10240M\",\n" + 
                 "        \"backupVolumeSize\" : \"20480M\",\n" + 
-                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDK44PtRnT9HaZE0coQZRhsfh2SSi7nT0DGgUf3u37U2sbQ0QjRFmV9NZ5eIK+u34xfG9jYt1Lxz8dQTCf4pcjOzX65wbcQDEXx2vkAXNUk7trjAiIGs73kKNX//gTIPV4nnyY77lO5NGymx1JP3/6X8paMduEFFEBKkhZkLscAtQ== JCS HOL\"\n" + 
+                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
                 "    },\n" + 
                 "    {\n" + 
                 "        \"type\" : \"otd\",\n" + 
@@ -331,7 +331,7 @@ public class ManageJCS {
                 "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
                 "        \"adminPort\" : \"8989\",\n" + 
                 "        \"shape\" : \"oc3\",\n" + 
-                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDK44PtRnT9HaZE0coQZRhsfh2SSi7nT0DGgUf3u37U2sbQ0QjRFmV9NZ5eIK+u34xfG9jYt1Lxz8dQTCf4pcjOzX65wbcQDEXx2vkAXNUk7trjAiIGs73kKNX//gTIPV4nnyY77lO5NGymx1JP3/6X8paMduEFFEBKkhZkLscAtQ== JCS HOL\"\n" + 
+                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
                 "    }\n" + 
                 "]\n" + 
                 "}");
