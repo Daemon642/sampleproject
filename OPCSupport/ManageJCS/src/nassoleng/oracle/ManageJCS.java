@@ -198,15 +198,17 @@ public class ManageJCS {
                 "        \"clusterName\" : \"Alpha" + instanceNum + "J_cluster\",\n" + 
                 "        \"adminUserName\" : \"weblogic\",\n" + 
                 "        \"adminPassword\" : \"Alpha2014_\",\n" + 
-                "        \"nodeManagerPort\" : \"6555\",\n" + 
+                "        \"nodeManagerPort\" : \"5556\",\n" + 
                 "        \"nodeManagerUserName\" : \"weblogic\",\n" + 
                 "        \"nodeManagerPassword\" : \"Alpha2014_\",\n" + 
                 "        \"dbServiceName\" : \"AlphaDBCS\",\n" + 
                 "        \"dbaName\" : \"SYS\",\n" + 
                 "        \"dbaPassword\" : \"Alpha2014_\",\n" + 
                 "        \"shape\" : \"oc3\",\n" + 
+                /*
                 "        \"domainVolumeSize\" : \"10240M\",\n" + 
                 "        \"backupVolumeSize\" : \"20480M\",\n" + 
+*/
                 "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
                 "    },\n" + 
                 "    {\n" + 
@@ -309,15 +311,17 @@ public class ManageJCS {
                 "        \"clusterName\" : \"MyJCS2_cluster\",\n" + 
                 "        \"adminUserName\" : \"weblogic\",\n" + 
                 "        \"adminPassword\" : \"JCSDem0#\",\n" + 
-                "        \"nodeManagerPort\" : \"6555\",\n" + 
+                "        \"nodeManagerPort\" : \"5556\",\n" + 
                 "        \"nodeManagerUserName\" : \"weblogic\",\n" + 
                 "        \"nodeManagerPassword\" : \"JCSDem0#\",\n" + 
                 "        \"dbServiceName\" : \"MyDB2\",\n" + 
                 "        \"dbaName\" : \"SYS\",\n" + 
                 "        \"dbaPassword\" : \"JCSDem0#\",\n" + 
                 "        \"shape\" : \"oc3\",\n" + 
+                /*
                 "        \"domainVolumeSize\" : \"10240M\",\n" + 
                 "        \"backupVolumeSize\" : \"20480M\",\n" + 
+*/
                 "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
                 "    },\n" + 
                 "    {\n" + 

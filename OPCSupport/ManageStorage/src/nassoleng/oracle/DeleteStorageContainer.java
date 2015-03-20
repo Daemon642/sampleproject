@@ -67,13 +67,16 @@ public class DeleteStorageContainer {
         java.util.List<Container> myContainers;
         List <String> containerNames = null;
 
-        myConnection = getStorageConnection ();            
-        myContainers = myConnection.listContainers();
-            
+        myConnection = getStorageConnection ();
         containerNames = new ArrayList<String>();
-        for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
-            containerNames.add(myContainers.get(i).getName());
-        }     
+        try {
+            myContainers = myConnection.listContainers();
+                
+            for ( int i = 0; myContainers != null && i < myContainers.size(); i++ ) {
+                containerNames.add(myContainers.get(i).getName());
+            }     
+        } catch (Exception e) {
+        }
         
         return containerNames;
     }
