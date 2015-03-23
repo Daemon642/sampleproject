@@ -4,25 +4,9 @@ import com.sun.jersey.api.client.Client;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
-
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import java.util.UUID;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -84,6 +68,7 @@ public class ManageJCS {
                                              
         return jcsNames;
     }
+
     public JSONObject getJCSServerDetails(String instanceName) {
         JSONObject servers = null;
 

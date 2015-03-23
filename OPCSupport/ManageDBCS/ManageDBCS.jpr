@@ -70,7 +70,7 @@
    </hash>
    <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
       <hash n="profileDefinitions">
-         <hash n="ManageJCS">
+         <hash n="ManageDBCS">
             <hash n="archiveOptions">
                <value n="hasManifest" v="true"/>
             </hash>
@@ -99,23 +99,33 @@
                   </hash>
                </list>
             </hash>
-            <url n="jarURL" path="deploy/ManageJCS.jar"/>
+            <url n="jarURL" path="deploy/ManageDBCS.jar"/>
             <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
-            <value n="profileName" v="ManageJCS"/>
+            <value n="profileName" v="ManageDBCS"/>
          </hash>
       </hash>
       <list n="profileList">
-         <string v="ManageJCS"/>
+         <string v="ManageDBCS"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
-      <value n="j2eeWebAppName" v="OPCSupport-ManageJCS-webapp"/>
-      <value n="j2eeWebContextRoot" v="OPCSupport-ManageJCS-context-root"/>
+      <value n="j2eeWebAppName" v="OPCSupport-ManageDBCS-webapp"/>
+      <value n="j2eeWebContextRoot" v="OPCSupport-ManageDBCS-context-root"/>
    </hash>
    <hash n="oracle.jdeveloper.model.PathsConfiguration">
       <hash n="javaContentSet">
+         <list n="constituent-sets">
+            <hash>
+               <url n="content-folder-url" path="../ManageJCS/src/nassoleng/oracle/"/>
+               <list n="pattern-filters">
+                  <string v="+nassoleng/oracle/ManageDBCS.java"/>
+               </list>
+               <list n="url-path">
+                  <url path="../ManageJCS/src/"/>
+               </list>
+            </hash>
+         </list>
          <list n="pattern-filters">
-            <string v="-nassoleng/oracle/ManageDBCS.java"/>
             <string v="+**"/>
          </list>
          <list n="url-path">
