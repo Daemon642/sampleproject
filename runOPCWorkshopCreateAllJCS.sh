@@ -57,7 +57,7 @@ echo "* Create of Alpha01JCS started for Identity Domain usoracleam32349..."
 echo "*   check output in Account9.log"
 echo "**********************************************************************"
 sleep ${SLEEP_TIME}
-#./runOPCWorkshopJCSCreate.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam15239 > Account10.log  2>&1 &
+./runOPCWorkshopJCSCreate.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam15239 > Account10.log  2>&1 &
 echo "**********************************************************************"
 echo "* Create of Alpha01JCS started for Identity Domain usoracleam15239..."
 echo "*   check output in Account10.log"
