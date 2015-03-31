@@ -1,6 +1,12 @@
 # !/bin/sh
 #
-PASSWORD='Oracle123!'
+if [ $# -lt 1 ]
+then
+        echo "Usage: cleanupAll.sh <password>" 
+        exit 1
+fi
+#
+PASSWORD=$1
 #
 ./runOPCWorkshopCleanup.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552
 ./runOPCWorkshopCleanup.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam04611

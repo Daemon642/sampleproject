@@ -1,6 +1,12 @@
 # !/bin/sh
 #
-PASSWORD='Oracle123!'
+f [ $# -lt 1 ]
+then
+        echo "Usage: runOPCWorkshopCleanupAllStorage.sh <password>" 
+        exit 1
+fi
+#
+PASSWORD=$1
 #
 ./runOPCWorkshopStorageCleanup.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552
 ./runOPCWorkshopStorageCleanup.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam04611

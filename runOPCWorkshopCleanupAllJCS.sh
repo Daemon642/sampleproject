@@ -1,6 +1,12 @@
 # !/bin/sh
 #
-PASSWORD='Oracle123!'
+if [ $# -lt 1 ]
+then
+        echo "Usage: runOPCWorkshopCleanupAllJCS.sh <password>" 
+        exit 1
+fi
+#
+PASSWORD=$1
 SLEEP_TIME=1m
 #
 ./runOPCWorkshopJCSCleanup.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552 > Account1Cleanup.log 2>&1 &

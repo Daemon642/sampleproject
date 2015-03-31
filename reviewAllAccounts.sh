@@ -1,6 +1,12 @@
 # !/bin/sh
 #
-PASSWORD='Oracle123!'
+if [ $# -lt 1 ]
+then
+        echo "Usage: reviewAllAccounts.sh <password>" 
+        exit 1
+fi
+#
+PASSWORD=$1
 #
 ./runReviewAccount.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552
 ./runReviewAccount.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam04611
