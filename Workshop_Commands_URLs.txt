@@ -37,3 +37,48 @@ GIT Repository URL
    https://developer.us2.oraclecloud.com/developer81763-usoracletrial92622/s/developer81763-usoracletrial92622_alpha01mobileapplication/scm/developer81763-usoracletrial92622_alpha01mobileapplication.git
 
 
+OPC Cloud Backup Installtion
+----------------------------
+java -jar opc_install.jar -serviceName Storage -identityDomain <opc-identity-domain> -opcId <opc-username> -opcPass <opc-passwd> -walletDir $ORACLE_HOME/dbs/opc_wallet -libDir $ORACLE_HOME/lib -libPlatform linux64
+
+RMAN Config Params
+------------------
+run {
+configure retention policy to recovery window of 30 days;
+configure channel device type 'sbt_tape' MAXPIECESIZE 2 G FORMAT   'alphacloud_%d_%U' PARMS  'SBT_LIBRARY=libopc.so, ENV=(OPC_PFILE=/u01/app/oracle/product/12.1.0/dbhome_1/dbs/opcorcl.ora)';
+configure encryption for database on;
+configure device type 'sbt_tape' parallelism 3 backup type to backupset;
+configure backup optimization on;
+configure compression algorithm 'basic' as of release 'default' optimize for load true;
+configure default device type to sbt_tape;
+}
+
+RMAN FLOW:
+
+ * optional (only used in recursive testing for delete/restore situations)
+ ** (only needs to run the first time)
+ BACKUP
+    set encryption on identified by oracle only;
+    *drop restore point gold;
+    **backup as compressed backupset tag 'onprem' database plus archivelog;
+    create restore point gold preserve;
+
+ RESTORE
+    shutdown immediate;
+    startup mount;
+    set decryption identified by oracle;
+
+    run {
+    restore to restore point gold database;
+    recover database to restore point gold;
+    alter database open resetlogs;
+    }
+
+ ALTERNATIVE RESTORE
+    set decryption identified by oracle;
+    alter pluggable database AlphaPDB close;
+    restore pluggable database AlphaPDB to restore point gold;
+    recover pluggable database AlphaPDB to restore point gold;
+    alter pluggable database AlphaPDB open resetlogs;
+
+
