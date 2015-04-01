@@ -34,7 +34,7 @@ Host AlphaJCS
   # VNC
   LocalForward 5901 REPLACE_WITH_JCS_IP:5901
 
-  RemoteForward 4000 REPLACE_WITH_JCS_IPt:7101
+  RemoteForward 4000 REPLACE_WITH_JCS_IP:7101
 
   ServerAliveInterval 60
 
