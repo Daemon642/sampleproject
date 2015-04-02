@@ -5,7 +5,7 @@ Host AlphaDBCS
   IdentityFile /u01/OPCWorkshop/lab/labkey
 
   # Database Access
-  LocalForward 1521 REPLACE_WITH_DBCS_IP:1521
+  LocalForward 1526 REPLACE_WITH_DBCS_IP:1521
 
   # Apex and DB Monitor
   # https://localhost:443/apex/apex/pdb1 .... workspace=internal, username=admin
