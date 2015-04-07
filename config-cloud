@@ -17,8 +17,8 @@ Host AlphaDBCS
   LocalForward 4848 REPLACE_WITH_DBCS_IP:4848
 
   # Enterprise Manager
-  # https://localhost:5500/em  ..... username=sys
-  LocalForward 5500 REPLACE_WITH_DBCS_IP:5500
+  # https://localhost:5600/em  ..... username=sys
+  LocalForward 5600 REPLACE_WITH_DBCS_IP:5500
 
   ServerAliveInterval 60
 
