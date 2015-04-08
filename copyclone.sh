@@ -9,7 +9,7 @@ CLOUD_CLONE_PATH=/u02/app/oracle/oradata/ORCL/AlphaClone
 
 if [ ! -d $LOCAL_CLONE_PATH ]; then
   zenity --error \
-         --text="AlphaClone diretory not found - exiting."
+         --text="AlphaClone directory not found - exiting."
 
   exit
 fi
