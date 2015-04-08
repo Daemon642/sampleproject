@@ -8,7 +8,7 @@ Host AlphaDBCS
   LocalForward 1526 REPLACE_WITH_DBCS_IP:1521
 
   # Apex and DB Monitor
-  # https://localhost:443/apex/apex/pdb1 .... workspace=internal, username=admin
+  # https://localhost:443/apex/apex/pdb1/ .... workspace=internal, username=admin
   # https://localhost:443/dbaas_monitor ..... username=dbaas_monitor
   LocalForward 443 REPLACE_WITH_DBCS_IP:443
 
@@ -17,8 +17,8 @@ Host AlphaDBCS
   LocalForward 4848 REPLACE_WITH_DBCS_IP:4848
 
   # Enterprise Manager
-  # https://localhost:5600/em  ..... username=sys
-  LocalForward 5600 REPLACE_WITH_DBCS_IP:5500
+  # https://localhost:5500/em  ..... username=sys
+  LocalForward 5500 REPLACE_WITH_DBCS_IP:5500
 
   ServerAliveInterval 60
 
