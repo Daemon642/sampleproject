@@ -49,25 +49,129 @@ public class ManageDBCS {
     }
 
     public List <String> getDBCSInstanceNames () {
-        JSONObject jcsInstances = null;
-        JSONObject jcsInstance = null;
+        JSONObject dbcsInstances = null;
+        JSONObject dbcsInstance = null;
         JSONArray servicesArray = null;
-        List <String> jcsNames = null;
+        List <String> dbcsNames = null;
         
-        jcsInstances = getDBCSInstances ();
-        jcsNames = new ArrayList<String>();
+        dbcsInstances = getDBCSInstances ();
+        dbcsNames = new ArrayList<String>();
         try {
-            servicesArray = jcsInstances.getJSONArray("services");
+            servicesArray = dbcsInstances.getJSONArray("services");
             for (int i = 0; i < servicesArray.length(); i++) {
-                jcsInstance = servicesArray.getJSONObject(i);
-                jcsNames.add(jcsInstance.getString("service_name"));
+                dbcsInstance = servicesArray.getJSONObject(i);
+                dbcsNames.add(dbcsInstance.getString("service_name"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
                                              
-        return jcsNames;
+        return dbcsNames;
     }
+
+    public JSONObject getDBCSInstanceInfo(String instanceName) {
+        JSONObject dbcsInstance = null;
+
+        try {
+            Client client = ManageDBCSUtil.getClient(getUsername(), getPassword());
+            WebResource webResource =
+                client.resource(getOpcDBCSURL() + getIdentityDomain() + "/" + instanceName);
+            ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                String output = response.getEntity(String.class);
+                System.out.println ("\nDBCS Instance = " + output);
+
+                dbcsInstance = new JSONObject(output);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dbcsInstance;
+    }
+
+    public void createAlphaDBCS () {
+        ClientResponse response = null;
+        String jobURL = null;
+        String instanceName = null;
+        String domainName = null;
+
+        try {  
+            Client client = ManageDBCSUtil.getClient(getUsername(), getPassword());
+    
+            WebResource webResource =
+                client.resource(getOpcDBCSURL() + getIdentityDomain());
+
+            instanceName = "AlphaDBCS";
+            String se = new String (
+                "{\n" + 
+                "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+                "    \"version\" : \"11.2.0.4\",\n" + 
+                "    \"level\" : \"PAAS\",\n" + 
+                "    \"description\" : \"Alpha Office Database Cloud Service\",\n" + 
+                "    \"edition\" : \"EE\",\n" + 
+                "    \"subscriptionType\" : \"HOURLY\",\n" + 
+                "    \"shape\" : \"oc3\",\n" + 
+                "\"parameters\" : [\n" + 
+                "    {\n" + 
+                "        \"type\" : \"db\",\n" + 
+                "        \"usableStorage\" : \"10\",\n" + 
+                "        \"adminPassword\" : \"Alpha2014_\",\n" + 
+                "        \"sid\" : \"ORCL\",\n" + 
+                "        \"failoverDatabase\" : \"no\",\n" + 
+                "        \"backupDestination\" : \"BOTH\",\n" + 
+                "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/AlphaDBCS_SC\",\n" + 
+                "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+                "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
+                "    }],\n" + 
+                "    \"vmPublicKeyText\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+                "}");
+            
+            System.out.println ("\nBody = " + se);
+            response = webResource.header("Content-Type", "application/json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+
+            if (response.getStatus() != 202) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                final MultivaluedMap<String,String> headers = response.getHeaders();
+                if (headers != null) {
+                    jobURL = headers.getFirst("Location");
+                }
+                System.out.println("Output from Server .... \n");                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createDBJCS () {
+        JSONObject dbcsInstance = null;
+        String status = "In Progress";
+        
+        System.out.println ("\n***************************");
+        System.out.println ("Create Alpha01JCS Instance");
+        System.out.println ("***************************\n");
+        
+        try {
+            createAlphaDBCS ();
+            System.out.println ("Waiting on Create of Alpha01JCS Instance....");
+            Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+            while (status.contains("In Progress")) {
+                System.out.println ("Waiting on Create of Alpha01JCS Instance....");
+                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                dbcsInstance = getDBCSInstanceInfo("Alpha01JCS");
+                status = dbcsInstance.getString("status");
+            }
+            System.out.println ("AlphaDBCS Instance Create finshied....");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } 
+    }
+    
 
     public void setUsername(String username) {
         this.username = username;
@@ -102,8 +206,8 @@ public class ManageDBCS {
     }
 
     public static void main(String[] args) {
-        List <String> jcsNames = null;
-        JSONObject jcsInstance = null;
+        List <String> dbcsNames = null;
+        JSONObject dbcsInstance = null;
 
         if (args.length < 4) {
             System.out.println("Usage: java ManageDBCS username password identityDomain method\n");
@@ -116,8 +220,20 @@ public class ManageDBCS {
                 System.out.println ("\n***********************");
                 System.out.println ("Get DBCS Instance Names");
                 System.out.println ("***********************\n");                    
-                jcsNames = opcConnection.getDBCSInstanceNames();
-                System.out.println ("DBCS Instance Name = " + jcsNames);                
+                dbcsNames = opcConnection.getDBCSInstanceNames();
+                System.out.println ("DBCS Instance Name = " + dbcsNames);                
+            } else if (args[3].contains("CreateAlphaDBCS")) {
+                System.out.println ("\n******************");
+                System.out.println ("Create AlphaDBCS");
+                System.out.println ("******************\n");                    
+                opcConnection.createAlphaDBCS();
+                dbcsNames = opcConnection.getDBCSInstanceNames();
+                System.out.println ("\nDBCS Instance Name = " + dbcsNames);                
+            } else if (args[3].contains("GetDBCSInstanceInfo")) {
+                System.out.println ("\n******************************");
+                System.out.println ("Get AlphaDBCS Instance Details");
+                System.out.println ("******************************\n");                    
+                opcConnection.getDBCSInstanceInfo("AlphaDBCS");
             }
         }
     }
