@@ -22,120 +22,173 @@
 
 OPC_PATH=/u01/OPCWorkshop/lab
 
-errorMsg=""
-gotValidIP=0
+dbOnly() {
+  errorMsg=""
+  gotValidIP=0
 
-while [ $gotValidIP -eq 0 ]; do
-  DBIPADDR=$(zenity --entry \
-                  --title="DBCS IP Address" \
-                  --text="${errorMsg}Enter the IP address found in the Database Cloud Service Console for your database." \
-                  #--entry-text="DBCS IP Address"
-            )
+  while [ $gotValidIP -eq 0 ]; do
+    DBIPADDR=$(zenity --entry \
+                    --title="DBCS IP Address" \
+                    --text="${errorMsg}Enter the IP address found in the Database Cloud Service Console for your database." \
+                    #--entry-text="DBCS IP Address"
+              )
 
-  # Check if the user canceled.
-  [ $? -ne 0 ] && exit
+    # Check if the user canceled.
+    [ $? -ne 0 ] && exit
 
-  # Check to see if we can SSH to the cloud using the IP and private key.
-  (ssh -o "StrictHostKeyChecking no" -o ConnectTimeout=45 -i $OPC_PATH/oldkey/labkey opc@${DBIPADDR} echo "success") | \
-     zenity --progress \
-            --percentage=50 \
-            --pulsate \
-            --title="Validating DBCS at: $DBIPADDR" \
-            --width=500 \
-            --text="Checking connectivity..." \
-            --auto-close
+    # Check to see if we can SSH to the cloud using the IP and private key.
+    (ssh -o "StrictHostKeyChecking no" -o ConnectTimeout=45 -i $OPC_PATH/labkey opc@${DBIPADDR} echo "success") | \
+       zenity --progress \
+              --percentage=50 \
+              --pulsate \
+              --title="Validating DBCS at: $DBIPADDR" \
+              --width=500 \
+              --text="Checking connectivity..." \
+              --auto-close
 
-  # Get the status of the SSH command from the command status list.
-  RETVAL=${PIPESTATUS[0]}
+    # Get the status of the SSH command from the command status list.
+    RETVAL=${PIPESTATUS[0]}
 
-  # If we got 0 for the SSH then we can get to the image.
-  [ $RETVAL -eq 0 ] && gotValidIP=1
+    # If we got 0 for the SSH then we can get to the image.
+    [ $RETVAL -eq 0 ] && gotValidIP=1
 
-  errorMsg="** Invalid IP address: $DBIPADDR\n\nPlease try again.\n\n"
-done
+    errorMsg="** Invalid IP address: $DBIPADDR\n\nPlease try again.\n\n"
+  done
 
-errorMsg=""
-gotValidIP=0
+  # If a redo delete the ssh config file
+    rm -f $OPC_PATH/myssh
 
-while [ $gotValidIP -eq 0 ]; do
-  JCSIPADDR=$(zenity --entry \
-                  --title="JCS IP Address" \
-                  --text="${errorMsg}Enter the IP address found in the Java Cloud Service Console for your WLS Admin Server ." \
-                  #--entry-text="JCS IP Address"
-             )
+  # Now create the "myssh" file with the IPs substituted
+    #DBCS
+    sed s/REPLACE_WITH_DBCS_IP/$DBIPADDR/ < $OPC_PATH/config-cloud > $OPC_PATH/myssh
 
-  # Check if the user canceled.
-  [ $? -ne 0 ] && exit
+  # Clean up files
+    rm -f $OPC_PATH/ssh.err $OPC_PATH/ssh.out
 
-  # Check to see if we can SSH to the cloud using the IP and private key.
-  (ssh -o "StrictHostKeyChecking no" -o ConnectTimeout=45 -i $OPC_PATH/oldkey/labkey opc@${JCSIPADDR} echo "success") | \
-     zenity --progress \
-            --percentage=50 \
-            --pulsate \
-            --title="Validating JCS at: $JCSIPADDR" \
-            --width=500 \
-            --text="Checking connectivity..." \
-            --auto-close
+  # Create Tunnels
+    sudo ssh -t -t -F myssh AlphaDBCS >ssh.out 2>ssh.err < /dev/null &
 
-  # Get the status of the SSH command from the command status list.
-  RETVAL=${PIPESTATUS[0]}
+zenity --info \
+       --text="Tunnels have been successfully created on...\n
+               DBCS:  $DBIPADDR\n
+   DO NOT CLOSE THE TERMINAL WINDOW"
+}
 
-  # If we got 0 for the SSH then we can get to the image.
-  [ $RETVAL -eq 0 ] && gotValidIP=1
+doAll() {
+  errorMsg=""
+  gotValidIP=0
 
-  errorMsg="** Invalid IP address: $JCSIPADDR\n\nPlease try again.\n\n"
-done
+  while [ $gotValidIP -eq 0 ]; do
+    DBIPADDR=$(zenity --entry \
+                    --title="DBCS IP Address" \
+                    --text="${errorMsg}Enter the IP address found in the Database Cloud Service Console for your database." \
+                    #--entry-text="DBCS IP Address"
+              )
 
-errorMsg=""
-gotValidIP=0
+    # Check if the user canceled.
+    [ $? -ne 0 ] && exit
 
-while [ $gotValidIP -eq 0 ]; do
-  LBIPADDR=$(zenity --entry \
-                  --title="LB IP Address" \
-                  --text="${errorMsg}Enter the IP address found on the Java Cloud Service Console for your Load Balancer" \
-                  #--entry-text="Load Balancer IP Address"
-            )
+    # Check to see if we can SSH to the cloud using the IP and private key.
+    (ssh -o "StrictHostKeyChecking no" -o ConnectTimeout=45 -i $OPC_PATH/labkey opc@${DBIPADDR} echo "success") | \
+       zenity --progress \
+              --percentage=50 \
+              --pulsate \
+              --title="Validating DBCS at: $DBIPADDR" \
+              --width=500 \
+              --text="Checking connectivity..." \
+              --auto-close
 
-  # Check if the user canceled.
-  [ $? -ne 0 ] && exit
+    # Get the status of the SSH command from the command status list.
+    RETVAL=${PIPESTATUS[0]}
 
-  # Check to see if we can SSH to the cloud using the IP and private key.
-  (ssh -o "StrictHostKeyChecking no" -o ConnectTimeout=45 -i $OPC_PATH/oldkey/labkey opc@${LBIPADDR} echo "success") | \
-     zenity --progress \
-            --percentage=50 \
-            --pulsate \
-            --title="Validating Load Balancer at: $LBIPADDR" \
-            --width=500 \
-            --text="Checking connectivity..." \
-            --auto-close
+    # If we got 0 for the SSH then we can get to the image.
+    [ $RETVAL -eq 0 ] && gotValidIP=1
 
-  # Get the status of the SSH command from the command status list.
-  RETVAL=${PIPESTATUS[0]}
+    errorMsg="** Invalid IP address: $DBIPADDR\n\nPlease try again.\n\n"
+  done
 
-  # If we got 0 for the SSH then we can get to the image.
-  [ $RETVAL -eq 0 ] && gotValidIP=1
+  errorMsg=""
+  gotValidIP=0
 
-  errorMsg="** Invalid IP address: $LBIPADDR\n\nPlease try again.\n\n"
-done
+  while [ $gotValidIP -eq 0 ]; do
+    JCSIPADDR=$(zenity --entry \
+                    --title="JCS IP Address" \
+                    --text="${errorMsg}Enter the IP address found in the Java Cloud Service Console for your WLS Admin Server ." \
+                    #--entry-text="JCS IP Address"
+               )
 
-# If a redo delete the ssh config file
-  #rm -f $OPC_PATH/myssh
+    # Check if the user canceled.
+    [ $? -ne 0 ] && exit
 
-# Now create the "myssh" file with the IPs substituted
-  #DBCS
-  sed s/REPLACE_WITH_DBCS_IP/$DBIPADDR/ < $OPC_PATH/config-cloud > $OPC_PATH/tmp1
-  #JCS
-  sed s/REPLACE_WITH_JCS_IP/$JCSIPADDR/ < $OPC_PATH/tmp1 > $OPC_PATH/tmp2
-  #LB
-  sed s/REPLACE_WITH_LB_IP/$LBIPADDR/ < $OPC_PATH/tmp2 > $OPC_PATH/myssh
+    # Check to see if we can SSH to the cloud using the IP and private key.
+    (ssh -o "StrictHostKeyChecking no" -o ConnectTimeout=45 -i $OPC_PATH/labkey opc@${JCSIPADDR} echo "success") | \
+       zenity --progress \
+              --percentage=50 \
+              --pulsate \
+              --title="Validating JCS at: $JCSIPADDR" \
+              --width=500 \
+              --text="Checking connectivity..." \
+              --auto-close
 
-# Clean up files
-  rm -f $OPC_PATH/tmp1 $OPC_PATH/tmp2 $OPC_PATH/ssh.err $OPC_PATH/ssh.out
+    # Get the status of the SSH command from the command status list.
+    RETVAL=${PIPESTATUS[0]}
 
-# Create Tunnels
-  sudo ssh -t -t -F myssh AlphaDBCS >ssh.out 2>ssh.err < /dev/null &
-  sudo ssh -t -t -F myssh AlphaJCS >>ssh.out 2>>ssh.err < /dev/null &
-  sudo ssh -t -t -F myssh AlphaLB >>ssh.out 2>>ssh.err < /dev/null &
+    # If we got 0 for the SSH then we can get to the image.
+    [ $RETVAL -eq 0 ] && gotValidIP=1
+
+    errorMsg="** Invalid IP address: $JCSIPADDR\n\nPlease try again.\n\n"
+  done
+
+  errorMsg=""
+  gotValidIP=0
+
+  while [ $gotValidIP -eq 0 ]; do
+    LBIPADDR=$(zenity --entry \
+                    --title="LB IP Address" \
+                    --text="${errorMsg}Enter the IP address found on the Java Cloud Service Console for your Load Balancer" \
+                    #--entry-text="Load Balancer IP Address"
+              )
+
+    # Check if the user canceled.
+    [ $? -ne 0 ] && exit
+
+    # Check to see if we can SSH to the cloud using the IP and private key.
+    (ssh -o "StrictHostKeyChecking no" -o ConnectTimeout=45 -i $OPC_PATH/labkey opc@${LBIPADDR} echo "success") | \
+       zenity --progress \
+              --percentage=50 \
+              --pulsate \
+              --title="Validating Load Balancer at: $LBIPADDR" \
+              --width=500 \
+              --text="Checking connectivity..." \
+              --auto-close
+
+    # Get the status of the SSH command from the command status list.
+    RETVAL=${PIPESTATUS[0]}
+
+    # If we got 0 for the SSH then we can get to the image.
+    [ $RETVAL -eq 0 ] && gotValidIP=1
+
+    errorMsg="** Invalid IP address: $LBIPADDR\n\nPlease try again.\n\n"
+  done
+
+  # If a redo delete the ssh config file
+    rm -f $OPC_PATH/myssh
+
+  # Now create the "myssh" file with the IPs substituted
+    #DBCS
+    sed s/REPLACE_WITH_DBCS_IP/$DBIPADDR/ < $OPC_PATH/config-cloud > $OPC_PATH/tmp1
+    #JCS
+    sed s/REPLACE_WITH_JCS_IP/$JCSIPADDR/ < $OPC_PATH/tmp1 > $OPC_PATH/tmp2
+    #LB
+    sed s/REPLACE_WITH_LB_IP/$LBIPADDR/ < $OPC_PATH/tmp2 > $OPC_PATH/myssh
+
+  # Clean up files
+    rm -f $OPC_PATH/tmp1 $OPC_PATH/tmp2 $OPC_PATH/ssh.err $OPC_PATH/ssh.out
+
+  # Create Tunnels
+    sudo ssh -t -t -F myssh AlphaDBCS >ssh.out 2>ssh.err < /dev/null &
+    sudo ssh -t -t -F myssh AlphaJCS >>ssh.out 2>>ssh.err < /dev/null &
+    sudo ssh -t -t -F myssh AlphaLB >>ssh.out 2>>ssh.err < /dev/null &
 
 zenity --info \
        --text="Tunnels have been successfully created on...\n
@@ -143,3 +196,19 @@ zenity --info \
                JCS:  $JCSIPADDR\n
                LB:  $LBIPADDR\n\n
    DO NOT CLOSE THE TERMINAL WINDOW"
+}
+
+
+## Start here...
+if [ $1 == "DBONLY" ]; then
+   dbOnly
+elif [ $1 == "ALL" ]; then
+   echo there
+   doAll
+else
+   zenity --info \
+          --text="Usage: setssh.sh [DBONLY, ALL]\n"
+   exit
+fi
+
+
