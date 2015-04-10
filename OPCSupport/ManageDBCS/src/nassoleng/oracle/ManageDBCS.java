@@ -38,7 +38,7 @@ public class ManageDBCS {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
                 String output = response.getEntity(String.class);
-                System.out.println ("\nDBCS Instance = " + output);
+                //System.out.println ("\nDBCS Instance = " + output);
 
                 jcsInstances = new JSONObject(output);
             }
