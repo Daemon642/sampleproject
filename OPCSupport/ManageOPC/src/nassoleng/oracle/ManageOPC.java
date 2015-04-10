@@ -125,7 +125,7 @@ public class ManageOPC {
             if (args[3].contains("ReviewAccount")) {
                 manageOPC.reviewAccount();
             } else if (args[3].contains("CleanupAccount")) {
-                manageOPC.reviewAccount();
+                manageOPC.cleanupAccount();
             }
         }
     }
