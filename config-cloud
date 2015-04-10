@@ -21,6 +21,7 @@ Host AlphaDBCS
   LocalForward 5500 REPLACE_WITH_DBCS_IP:5500
 
   ServerAliveInterval 60
+  StrictHostKeyChecking no
 
 
 Host AlphaJCS
@@ -30,6 +31,7 @@ Host AlphaJCS
   IdentityFile /u01/OPCWorkshop/lab/labkey
 
   # WLS Admin Server
+  #http://localhost:9001/console
   LocalForward 9001 REPLACE_WITH_JCS_IP:9001
   # VNC
   LocalForward 5901 REPLACE_WITH_JCS_IP:5901
@@ -37,4 +39,22 @@ Host AlphaJCS
   RemoteForward 4000 REPLACE_WITH_JCS_IP:7101
 
   ServerAliveInterval 60
+  StrictHostKeyChecking no
+
+
+Host AlphaLB
+  hostname REPLACE_WITH_LB_IP
+
+  user opc
+  IdentityFile /u01/OPCWorkshop/lab/labkey
+
+  # Oracle Traffic Director Console
+  #https://localhost:8989
+  LocalForward 8989 REPLACE_WITH_LB_IP:8989
+
+  # VNC
+  #LocalForward 5902 REPLACE_WITH_LB_IP:5901
+
+  ServerAliveInterval 60
+  StrictHostKeyChecking no
 
