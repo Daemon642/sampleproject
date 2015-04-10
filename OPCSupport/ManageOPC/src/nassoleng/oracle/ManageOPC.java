@@ -8,9 +8,60 @@ public class ManageOPC {
     private String username;
     private String password;
     private String identityDomain;
+    private DeleteStorageContainer  manageSC;
+    private ManageDBCS  manageDBCS;
+    private ManageJCS  manageJCS;
    
     public ManageOPC() {
         super();
+    }
+
+    public void initOPC () {
+        // Connect to Storage
+        this.manageSC = new DeleteStorageContainer ();
+        this.manageSC.setOpcUsername(this.getUsername());
+        this.manageSC.setOpcPassword(this.getPassword());
+        this.manageSC.setOpcDomain(this.getIdentityDomain());
+        // Connect to DBCS
+        this.manageDBCS = new ManageDBCS ();
+        this.manageDBCS.setUsername(this.getUsername());
+        this.manageDBCS.setPassword(this.getPassword());
+        this.manageDBCS.setIdentityDomain(this.getIdentityDomain());
+        // Connect to JCS
+        this.manageJCS = new ManageJCS ();
+        this.manageJCS.setUsername(this.getUsername());
+        this.manageJCS.setPassword(this.getPassword());
+        this.manageJCS.setIdentityDomain(this.getIdentityDomain());        
+    }
+
+    public void reviewAccount () {
+        List <String> containerNames = null;
+        List <String> dbcsNames = null;
+        List <String> jcsNames = null;
+
+        System.out.println ("\n*******************************************");
+        System.out.println ("Review of OPC Account " + this.getIdentityDomain());
+        System.out.println ("*******************************************\n");                    
+        containerNames = manageSC.getContainerNames();
+        System.out.println ("Storage Contain Names = " + containerNames);    
+        dbcsNames = manageDBCS.getDBCSInstanceNames();
+        System.out.println ("DBCS Instance Name = " + dbcsNames);      
+        jcsNames = manageJCS.getJCSInstanceNames();
+        System.out.println ("JCS Instance Name = " + jcsNames);                
+    }
+
+    public void cleanupAccount () {
+        List <String> containerNames = null;
+        List <String> dbcsNames = null;
+        List <String> jcsNames = null;
+
+        System.out.println ("\n*******************************************");
+        System.out.println ("Cleanup of OPC Account " + this.getIdentityDomain());
+        System.out.println ("*******************************************\n");                    
+        this.manageJCS.deleteAllJCS();
+        this.manageDBCS.deleteAllDBCS();
+        this.manageSC.DeleteAllContainers();
+        reviewAccount();
     }
 
     public void setUsername(String username) {
@@ -36,42 +87,45 @@ public class ManageOPC {
     public String getIdentityDomain() {
         return identityDomain;
     }
-    public static void main(String[] args) {
-        List <String> containerNames = null;
-        List <String> dbcsNames = null;
-        List <String> jcsNames = null;
-        JSONObject dbcsInstance = null;
-        JSONObject jcsInstance = null;
 
+    public void setManageSC(DeleteStorageContainer manageSC) {
+        this.manageSC = manageSC;
+    }
+
+    public DeleteStorageContainer getManageSC() {
+        return manageSC;
+    }
+
+    public void setManageDBCS(ManageDBCS manageDBCS) {
+        this.manageDBCS = manageDBCS;
+    }
+
+    public ManageDBCS getManageDBCS() {
+        return manageDBCS;
+    }
+
+    public void setManageJCS(ManageJCS manageJCS) {
+        this.manageJCS = manageJCS;
+    }
+
+    public ManageJCS getManageJCS() {
+        return manageJCS;
+    }
+
+    public static void main(String[] args) {
         if (args.length < 4) {
             System.out.println("Usage: java ManageOPC username password identityDomain method\n");
         } else {            
-            // Connect to Storage
-            DeleteStorageContainer  manageSC = new DeleteStorageContainer ();
-            manageSC.setOpcUsername(args[0]);
-            manageSC.setOpcPassword(args[1]);
-            manageSC.setOpcDomain(args[2]);
-            // Connect to DBCS
-            ManageDBCS  manageDBCS = new ManageDBCS ();
-            manageDBCS.setUsername(args[0]);
-            manageDBCS.setPassword(args[1]);
-            manageDBCS.setIdentityDomain(args[2]);
-            // Connect to JCS
-            ManageJCS  manageJCS = new ManageJCS ();
-            manageJCS.setUsername(args[0]);
-            manageJCS.setPassword(args[1]);
-            manageJCS.setIdentityDomain(args[2]);
+            ManageOPC manageOPC = new ManageOPC ();
+            manageOPC.setUsername(args[0]);
+            manageOPC.setPassword(args[1]);
+            manageOPC.setIdentityDomain(args[2]);
+            manageOPC.initOPC();
 
             if (args[3].contains("ReviewAccount")) {
-                System.out.println ("\n*******************************************");
-                System.out.println ("Review of OPC Account " + args[2]);
-                System.out.println ("*******************************************\n");                    
-                containerNames = manageSC.getContainerNames();
-                System.out.println ("Storage Contain Names = " + containerNames);    
-                dbcsNames = manageDBCS.getDBCSInstanceNames();
-                System.out.println ("DBCS Instance Name = " + dbcsNames);      
-                jcsNames = manageJCS.getJCSInstanceNames();
-                System.out.println ("JCS Instance Name = " + jcsNames);                
+                manageOPC.reviewAccount();
+            } else if (args[3].contains("CleanupAccount")) {
+                manageOPC.reviewAccount();
             }
         }
     }
