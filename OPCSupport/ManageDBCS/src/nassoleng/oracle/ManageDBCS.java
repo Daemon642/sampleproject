@@ -82,7 +82,7 @@ public class ManageDBCS {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
                 String output = response.getEntity(String.class);
-                System.out.println ("\nDBCS Instance = " + output);
+                //System.out.println ("\nDBCS Instance = " + output);
 
                 dbcsInstance = new JSONObject(output);
             }
@@ -104,7 +104,7 @@ public class ManageDBCS {
 
             if (response.getStatus() == 202) {
                 String output = response.getEntity(String.class);
-                System.out.println ("\nJob Status = " + output);
+                //System.out.println ("\nJob Status = " + output);
 
                 jobResponse = new JSONObject(output);
                 jobStatus = jobResponse.getString("status");
@@ -210,10 +210,10 @@ public class ManageDBCS {
         try {
             createAlphaDBCS ();
             System.out.println ("Waiting on Create of AlphaDBCS Instance....");
-            Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
                 System.out.println ("Waiting on Create of AlphaDBCS Instance....");
-                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
                 dbcsInstance = getDBCSInstanceInfo("AlphaDBCS");
                 status = dbcsInstance.getString("status");
             }
@@ -245,10 +245,10 @@ public class ManageDBCS {
                 headers = response.getHeaders();
                 if (headers != null) {
                     jobURL = headers.getFirst("Location");
-                    System.out.println ("\nDelete DBCS JobURL = " + jobURL);
+                    //System.out.println ("\nDelete DBCS JobURL = " + jobURL);
                 }
                 String output = response.getEntity(String.class);
-                System.out.println ("\nDelete PaaS Demo DBCS Output = " + output);
+                //System.out.println ("\nDelete PaaS Demo DBCS Output = " + output);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -269,7 +269,7 @@ public class ManageDBCS {
             System.out.println ("Delete DBCS " + serviceName);
             jobURL = deleteDBCS (serviceName);
             System.out.println ("Waiting on DBCS to be deleted ....");
-            Thread.sleep(1000 * 60 * 2); // Sleep for 1 minutes
+            Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
             status = getJobStatus(jobURL);                        
             while (status.equals("Terminating")) {
                 System.out.println ("Waiting on DBCS to be deleted ....");
@@ -300,7 +300,7 @@ public class ManageDBCS {
                 System.out.println ("Delete DBCS " + serviceName);
                 jobURL = deleteDBCS (serviceName);
                 System.out.println ("Waiting on DBCS to be deleted ....");
-                Thread.sleep(1000 * 60 * 2); // Sleep for 1 minutes
+                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
                 status = getJobStatus(jobURL);                        
                 while (status.equals("Terminating")) {
                     System.out.println ("Waiting on DBCS to be deleted ....");

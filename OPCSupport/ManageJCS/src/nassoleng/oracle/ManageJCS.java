@@ -240,10 +240,10 @@ public class ManageJCS {
         try {
             createAlphaJCS ("01");
             System.out.println ("Waiting on Create of Alpha01JCS Instance....");
-            Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
                 System.out.println ("Waiting on Create of Alpha01JCS Instance....");
-                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
                 jcsInstance = getJCSInstanceInfo("Alpha01JCS");
                 status = jcsInstance.getString("status");
             }
@@ -353,10 +353,10 @@ public class ManageJCS {
         try {
             createMyJCS2Instance ();
             System.out.println ("Waiting on Create of MyJCS2 Instance....");
-            Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
                 System.out.println ("Waiting on Create of MyJCS2 Instance....");
-                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
                 jcsInstance = getJCSInstanceInfo("MyJCS2");
                 status = jcsInstance.getString("status");
             }

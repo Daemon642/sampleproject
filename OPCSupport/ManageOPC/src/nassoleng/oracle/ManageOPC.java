@@ -1,7 +1,16 @@
 package nassoleng.oracle;
 
+import java.io.BufferedReader;
+import java.io.File;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.io.InputStreamReader;
+
 import java.util.List;
 
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 public class ManageOPC {
@@ -50,6 +59,27 @@ public class ManageOPC {
         System.out.println ("JCS Instance Name = " + jcsNames);                
     }
 
+    public Boolean verifyCleanAccount () {
+        Boolean accountStatus = true;
+        List <String> containerNames = null;
+        List <String> dbcsNames = null;
+        List <String> jcsNames = null;
+        
+        containerNames = manageSC.getContainerNames();
+        if (containerNames.size() != 0) {
+            accountStatus = false;
+        }
+        dbcsNames = manageDBCS.getDBCSInstanceNames();
+        if (dbcsNames.size() != 0) {
+            accountStatus = false;
+        }
+        jcsNames = manageJCS.getJCSInstanceNames();
+        if (jcsNames.size() != 0) {
+            accountStatus = false;
+        }
+        return accountStatus;
+    }
+    
     public void cleanupAccount () {
         List <String> containerNames = null;
         List <String> dbcsNames = null;
@@ -57,11 +87,97 @@ public class ManageOPC {
 
         System.out.println ("\n*******************************************");
         System.out.println ("Cleanup of OPC Account " + this.getIdentityDomain());
-        System.out.println ("*******************************************\n");                    
+        System.out.println ("*******************************************\n");     
         this.manageJCS.deleteAllJCS();
         this.manageDBCS.deleteAllDBCS();
         this.manageSC.DeleteAllContainers();
+        try {
+            Thread.sleep(1000 * 10); // Sleep 10 seconds
+        } catch (InterruptedException e) {
+        }
         reviewAccount();
+    }
+
+    public void setupDBCSWorkshopAccount () {
+        List <String> containerNames = null;
+        List <String> dbcsNames = null;
+
+        System.out.println ("\n*******************************************");
+        System.out.println ("Setup of OPC Account " + this.getIdentityDomain());
+        System.out.println ("*******************************************\n");                    
+        
+        if (!verifyCleanAccount()) {
+            System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
+        } else {
+            containerNames = this.manageSC.opcWorkshopCreateContainers();
+            System.out.println ("\nStorage Contain Names = " + containerNames);
+            this.manageDBCS.createDBCS();
+            dbcsNames = this.manageDBCS.getDBCSInstanceNames();
+            System.out.println ("DBCS Instance Name = " + dbcsNames);      
+        }
+        try {
+            Thread.sleep(1000 * 10); // Sleep 10 seconds
+        } catch (InterruptedException e) {
+        }
+        reviewAccount();
+    }
+    
+    public void setupJCSWorkshopAccount () {
+        List <String> containerNames = null;
+        List <String> dbcsNames = null;
+        List <String> jcsNames = null;
+
+        System.out.println ("\n*******************************************");
+        System.out.println ("Setup of OPC Account " + this.getIdentityDomain());
+        System.out.println ("*******************************************\n");                    
+        
+        if (!verifyCleanAccount()) {
+            System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
+        } else {
+            containerNames = this.manageSC.opcWorkshopCreateContainers();
+            System.out.println ("\nStorage Contain Names = " + containerNames);
+            this.manageDBCS.createDBCS();
+            dbcsNames = this.manageDBCS.getDBCSInstanceNames();
+            System.out.println ("DBCS Instance Name = " + dbcsNames);      
+            setupAlphaSchema ("AlphaDBCS");
+            this.manageJCS.createAlpha01JCS();
+            jcsNames = this.manageJCS.getJCSInstanceNames();
+            System.out.println ("\nJCS Instance Name = " + jcsNames);                
+        }
+        try {
+            Thread.sleep(1000 * 10); // Sleep 10 seconds
+        } catch (InterruptedException e) {
+        }
+        reviewAccount();
+    }
+    
+    public void setupAlphaSchema (String dbcsName) {
+        ProcessBuilder procBuilder;
+        Process process;
+        File batchFile;
+        JSONObject dbcsInstance = null;
+        String dbcsIP = null;
+
+        try {
+            dbcsInstance = this.manageDBCS.getDBCSInstanceInfo(dbcsName);
+            dbcsIP = dbcsInstance.getString("em_url").substring(8);
+            dbcsIP = dbcsIP.substring(0,dbcsIP.indexOf(":"));
+            batchFile = new File("runOPCWorkshopDatabaseSetup.sh");
+            procBuilder =
+                    new ProcessBuilder(batchFile.getAbsolutePath(), dbcsIP);
+            process = procBuilder.start();
+            InputStream procIn = process.getInputStream();
+            BufferedReader in =
+                new BufferedReader(new InputStreamReader(procIn));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+            }
+            in.close();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setUsername(String username) {
@@ -126,6 +242,14 @@ public class ManageOPC {
                 manageOPC.reviewAccount();
             } else if (args[3].contains("CleanupAccount")) {
                 manageOPC.cleanupAccount();
+            } else if (args[3].contains("SetupJCSWorkshopAccount")) {
+                manageOPC.setupJCSWorkshopAccount();
+            } else if (args[3].contains("SetupDBCSWorkshopAccount")) {
+                manageOPC.setupDBCSWorkshopAccount();
+            } else if (args[3].contains("VerifyCleanAccount")) {
+                manageOPC.verifyCleanAccount();
+            } else if (args[3].contains("SetupAlphaSchema")) {
+                manageOPC.setupAlphaSchema("AlphaDBCS");
             }
         }
     }
