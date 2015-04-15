@@ -7,7 +7,7 @@ then
 fi
 #
 PASSWORD=$1
-SLEEP_TIME=1m
+SLEEP_TIME=10m
 #
 ./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552 CleanupAccount > Account1Cleanup.log 2>&1 &
 echo "**********************************************************************"
