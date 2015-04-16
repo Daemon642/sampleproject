@@ -34,7 +34,7 @@ while [ $gotValidIP -eq 0 ]; do
   [ $? -ne 0 ] && exit
 
   # Check to see if we can SSH to the cloud using the IP and private key.
-  (ssh -o "StrictHostKeyChecking no" -i $OPC_PATH/oldkey/labkey oracle@${IPADDR} echo "success") | \
+  (ssh -o "StrictHostKeyChecking no" -i $OPC_PATH/labkey oracle@${IPADDR} echo "success") | \
      zenity --progress \
             --percentage=50 \
             --pulsate \
@@ -60,11 +60,11 @@ function packageAndSend() {
 
   echo "# Creating directory on server..."
   echo "25" ; sleep 1
-  echo "mkdir -p $CLOUD_CLONE_PATH" | ssh -i $OPC_PATH/oldkey/labkey oracle@${IPADDR} bash
+  echo "mkdir -p $CLOUD_CLONE_PATH" | ssh -i $OPC_PATH/labkey oracle@${IPADDR} bash
 
   echo "50"
   echo "# Copying clone to cloud..."
-  scp -i $OPC_PATH/oldkey/labkey /tmp/clone.tar.gz oracle@${IPADDR}:$CLOUD_CLONE_PATH
+  scp -i $OPC_PATH/labkey /tmp/clone.tar.gz oracle@${IPADDR}:$CLOUD_CLONE_PATH
 
   # Clean up the zip
   rm -Rf /tmp/clone.tar.gz
@@ -76,7 +76,7 @@ function packageAndSend() {
   (echo cd $CLOUD_CLONE_PATH; \
    echo tar -xzf clone.tar.gz; \
    echo rm clone.tar.gz) | \
-       ssh -i $OPC_PATH/oldkey/labkey oracle@${IPADDR} bash
+       ssh -i $OPC_PATH/labkey oracle@${IPADDR} bash
 
   # Final echo to 100%
   echo "100" ; sleep 3
