@@ -8,6 +8,11 @@ import java.io.InputStream;
 
 import java.io.InputStreamReader;
 
+import java.text.DateFormat;
+
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.List;
 
 import org.codehaus.jettison.json.JSONException;
@@ -52,7 +57,7 @@ public class ManageOPC {
         System.out.println ("Review of OPC Account " + this.getIdentityDomain());
         System.out.println ("*******************************************\n");                    
         containerNames = manageSC.getContainerNames();
-        System.out.println ("Storage Contain Names = " + containerNames);    
+        System.out.println ("Storage Container Names = " + containerNames);    
         dbcsNames = manageDBCS.getDBCSInstanceNames();
         System.out.println ("DBCS Instance Name = " + dbcsNames);      
         jcsNames = manageJCS.getJCSInstanceNames();
@@ -117,7 +122,7 @@ public class ManageOPC {
             System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
         } else {
             containerNames = this.manageSC.opcWorkshopCreateContainers();
-            System.out.println ("\nStorage Contain Names = " + containerNames);
+            System.out.println ("\nStorage Container Names = " + containerNames);
             this.manageDBCS.createDBCS();
             dbcsNames = this.manageDBCS.getDBCSInstanceNames();
             System.out.println ("DBCS Instance Name = " + dbcsNames);      
@@ -145,7 +150,7 @@ public class ManageOPC {
             System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
         } else {
             containerNames = this.manageSC.opcWorkshopCreateContainers();
-            System.out.println ("\nStorage Contain Names = " + containerNames);
+            System.out.println ("\nStorage Container Names = " + containerNames);
             this.manageDBCS.createDBCS();
             dbcsNames = this.manageDBCS.getDBCSInstanceNames();
             System.out.println ("DBCS Instance Name = " + dbcsNames);      
@@ -251,6 +256,10 @@ public class ManageOPC {
             manageOPC.setIdentityDomain(args[2]);
             manageOPC.initOPC();
 
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date startDate = new Date();
+            System.out.println("Start Time = " + dateFormat.format(startDate));
+             
             if (args[3].contains("ReviewAccount")) {
                 manageOPC.reviewAccount();
             } else if (args[3].contains("CleanupAccount")) {
@@ -264,6 +273,8 @@ public class ManageOPC {
             } else if (args[3].contains("SetupAlphaSchema")) {
                 manageOPC.setupAlphaSchema("AlphaDBCS");
             }
+            Date endDate = new Date();
+            System.out.println("End Time = " + dateFormat.format(endDate));
         }
     }
 }
