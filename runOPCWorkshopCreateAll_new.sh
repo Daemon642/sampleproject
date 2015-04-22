@@ -9,7 +9,7 @@ fi
 PASSWORD=$1
 SLEEP_TIME=1m
 #
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle21884 SetupJCSWorkshopAccount > Account11Create.log 2>&1 &
+#./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle21884 SetupJCSWorkshopAccount > Account11Create.log 2>&1 &
 echo "**********************************************************************"
 echo "* Create of Account started for Identity Domain usoracle21884..."
 echo "*   check output in Account11Create.log"

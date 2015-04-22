@@ -7,7 +7,7 @@ then
 fi
 #
 PASSWORD=$1
-SLEEP_TIME=20m
+SLEEP_TIME=25m
 #
 ./runOPCWorkshopJCSCreate.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552 > Account1.log  2>&1 &
 echo "**********************************************************************"

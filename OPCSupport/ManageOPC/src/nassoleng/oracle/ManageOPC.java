@@ -57,6 +57,9 @@ public class ManageOPC {
         System.out.println ("DBCS Instance Name = " + dbcsNames);      
         jcsNames = manageJCS.getJCSInstanceNames();
         System.out.println ("JCS Instance Name = " + jcsNames);                
+        System.out.println ("\n*************************************************************");
+        System.out.println ("Review of OPC Account " + this.getIdentityDomain() + " has completed...");
+        System.out.println ("*************************************************************\n");                    
     }
 
     public Boolean verifyCleanAccount () {
@@ -96,6 +99,10 @@ public class ManageOPC {
         } catch (InterruptedException e) {
         }
         reviewAccount();
+        System.out.println ("\n*************************************************************");
+        System.out.println ("Cleanup of OPC Account " + this.getIdentityDomain() + " has completed...");
+        System.out.println ("*************************************************************\n");                    
+
     }
 
     public void setupDBCSWorkshopAccount () {
@@ -120,6 +127,9 @@ public class ManageOPC {
         } catch (InterruptedException e) {
         }
         reviewAccount();
+        System.out.println ("\n*************************************************************");
+        System.out.println ("Setup of OPC Account " + this.getIdentityDomain() + " has completed...");
+        System.out.println ("*************************************************************\n");                    
     }
     
     public void setupJCSWorkshopAccount () {
@@ -149,6 +159,9 @@ public class ManageOPC {
         } catch (InterruptedException e) {
         }
         reviewAccount();
+        System.out.println ("\n*************************************************************");
+        System.out.println ("Setup of OPC Account " + this.getIdentityDomain() + " has completed...");
+        System.out.println ("*************************************************************\n");                    
     }
     
     public void setupAlphaSchema (String dbcsName) {
