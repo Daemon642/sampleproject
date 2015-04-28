@@ -69,6 +69,34 @@ public class ManageJCS {
         return jcsNames;
     }
 
+    public void getJCSInstanceIPs () {
+        JSONObject jcsInstances = null;
+        JSONObject jcsInstance = null;
+        JSONObject jcsInfo = null;
+        JSONArray servicesArray = null;
+        String jcsName = null;
+        String wlsIP = null;
+        String otdIP = null;
+        
+        jcsInstances = getJCSInstances ();
+        try {
+            servicesArray = jcsInstances.getJSONArray("services");
+            for (int i = 0; i < servicesArray.length(); i++) {
+                jcsInstance = servicesArray.getJSONObject(i);
+                jcsName = jcsInstance.getString("service_name");
+                jcsInfo = getJCSInstanceInfo(jcsName);
+                wlsIP = jcsInfo.getString("wls_admin_url").substring(8);
+                wlsIP = wlsIP.substring(0,wlsIP.indexOf(":"));
+                otdIP = jcsInfo.getString("otd_admin_url").substring(8);
+                otdIP = otdIP.substring(0,otdIP.indexOf(":"));
+                System.out.println (jcsName + " WLS IP = " +  wlsIP);
+                System.out.println (jcsName + " OTD IP = " + otdIP);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public JSONObject getJCSServerDetails(String instanceName) {
         JSONObject servers = null;
 
@@ -732,6 +760,11 @@ public class ManageJCS {
                 System.out.println ("***********************\n");                    
                 jcsNames = opcConnection.getJCSInstanceNames();
                 System.out.println ("JCS Instance Name = " + jcsNames);                
+            } else if (args[3].contains("GetJCSInstanceIPs")) {
+                    System.out.println ("\n***********************");
+                    System.out.println ("Get JCS Instance IPs");
+                    System.out.println ("***********************\n");                    
+                    opcConnection.getJCSInstanceIPs();
             } else if (args[3].contains("PaaSDemoCleanup")) {
                 opcConnection.paasDemoCleanup();
             } else if (args[3].contains("PaaSDemoReview")) {
