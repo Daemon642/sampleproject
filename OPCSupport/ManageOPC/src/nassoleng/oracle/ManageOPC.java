@@ -60,8 +60,10 @@ public class ManageOPC {
         System.out.println ("Storage Container Names = " + containerNames);    
         dbcsNames = manageDBCS.getDBCSInstanceNames();
         System.out.println ("DBCS Instance Name = " + dbcsNames);      
+        manageDBCS.getDBCSInstanceIPs();
         jcsNames = manageJCS.getJCSInstanceNames();
         System.out.println ("JCS Instance Name = " + jcsNames);                
+        manageJCS.getJCSInstanceIPs();
         System.out.println ("\n*************************************************************");
         System.out.println ("Review of OPC Account " + this.getIdentityDomain() + " has completed...");
         System.out.println ("*************************************************************\n");                    

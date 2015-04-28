@@ -119,6 +119,31 @@ public class ManageDBCS {
         return jobStatus;
     }
 
+    public void getDBCSInstanceIPs () {
+        JSONObject dbcsInstances = null;
+        JSONObject dbcsInstance = null;
+        JSONObject dbcsInfo = null;
+        JSONArray servicesArray = null;
+        String dbcsName = null;
+        String dbIP = null;
+        
+        dbcsInstances = getDBCSInstances ();
+        try {
+            servicesArray = dbcsInstances.getJSONArray("services");
+            for (int i = 0; i < servicesArray.length(); i++) {
+                dbcsInstance = servicesArray.getJSONObject(i);
+                dbcsName = dbcsInstance.getString("service_name");
+                dbcsInfo = getDBCSInstanceInfo(dbcsName);
+                dbIP = dbcsInfo.getString("em_url").substring(8);
+                dbIP = dbIP.substring(0,dbIP.indexOf(":"));
+                System.out.println (dbcsName + " DB IP = " + dbIP);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void createAlphaDBCS () {
         ClientResponse response = null;
         String jobURL = null;
@@ -365,6 +390,11 @@ public class ManageDBCS {
                 System.out.println ("***********************\n");                    
                 dbcsNames = opcConnection.getDBCSInstanceNames();
                 System.out.println ("DBCS Instance Name = " + dbcsNames);                
+            } else if (args[3].contains("GetDBCSInstanceIPs")) {
+                    System.out.println ("\n***********************");
+                    System.out.println ("Get DBCS Instance IPs");
+                    System.out.println ("***********************\n");                    
+                    opcConnection.getDBCSInstanceIPs();
             } else if (args[3].contains("CreateAlphaDBCS")) {
                 System.out.println ("\n******************");
                 System.out.println ("Create AlphaDBCS");
