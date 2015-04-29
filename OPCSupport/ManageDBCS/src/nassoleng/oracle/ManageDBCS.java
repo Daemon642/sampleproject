@@ -60,7 +60,7 @@ public class ManageDBCS {
             servicesArray = dbcsInstances.getJSONArray("services");
             for (int i = 0; i < servicesArray.length(); i++) {
                 dbcsInstance = servicesArray.getJSONObject(i);
-                dbcsNames.add(dbcsInstance.getString("service_name"));
+                dbcsNames.add(dbcsInstance.getString("service_name") + " - " + dbcsInstance.getString("status"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -132,11 +132,13 @@ public class ManageDBCS {
             servicesArray = dbcsInstances.getJSONArray("services");
             for (int i = 0; i < servicesArray.length(); i++) {
                 dbcsInstance = servicesArray.getJSONObject(i);
-                dbcsName = dbcsInstance.getString("service_name");
-                dbcsInfo = getDBCSInstanceInfo(dbcsName);
-                dbIP = dbcsInfo.getString("em_url").substring(8);
-                dbIP = dbIP.substring(0,dbIP.indexOf(":"));
-                System.out.println (dbcsName + " DB IP = " + dbIP);
+                if (dbcsInstance.getString("status").equals("Running")) {
+                    dbcsName = dbcsInstance.getString("service_name");
+                    dbcsInfo = getDBCSInstanceInfo(dbcsName);
+                    dbIP = dbcsInfo.getString("em_url").substring(8);
+                    dbIP = dbIP.substring(0,dbIP.indexOf(":"));
+                    System.out.println (dbcsName + " DB IP = " + dbIP);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
