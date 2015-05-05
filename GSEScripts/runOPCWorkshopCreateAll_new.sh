@@ -8,12 +8,12 @@ fi
 #
 PASSWORD=$1
 #
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle21884 SetupJCSWorkshopAccount
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle03294 SetupJCSWorkshopAccount
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle45722 SetupJCSWorkshopAccount
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle48514 SetupJCSWorkshopAccount
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle88327 SetupJCSWorkshopAccount
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle54892 SetupJCSWorkshopAccount
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle16340 SetupJCSWorkshopAccount
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle99246 SetupJCSWorkshopAccount
-./runManageOPC.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle32870 SetupJCSWorkshopAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle21884 SetupJCSWorkshopAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle03294 SetupJCSWorkshopAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle45722 SetupJCSWorkshopAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle48514 SetupJCSWorkshopAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle88327 SetupJCSWorkshopAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle54892 SetupJCSWorkshopAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle16340 SetupJCSWorkshopAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle99246 SetupJCSWorkshopAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracle32870 SetupJCSWorkshopAccount

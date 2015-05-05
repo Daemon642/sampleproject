@@ -60,7 +60,7 @@ public class ManageJCS {
             servicesArray = jcsInstances.getJSONArray("services");
             for (int i = 0; i < servicesArray.length(); i++) {
                 jcsInstance = servicesArray.getJSONObject(i);
-                jcsNames.add(jcsInstance.getString("service_name"));
+                jcsNames.add(jcsInstance.getString("service_name") + " - " + jcsInstance.getString("status"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
