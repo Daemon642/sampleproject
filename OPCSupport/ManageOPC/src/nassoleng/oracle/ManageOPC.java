@@ -171,6 +171,38 @@ public class ManageOPC {
         System.out.println ("*************************************************************\n");                    
     }
     
+    public void setupJCSWorkshopAccount (String studentNumber) {
+        List <String> containerNames = null;
+        List <String> dbcsNames = null;
+        List <String> jcsNames = null;
+
+        System.out.println ("\n*******************************************");
+        System.out.println ("Setup of OPC Account " + this.getIdentityDomain());
+        System.out.println ("*******************************************\n");                    
+        
+        if (!verifyCleanAccount()) {
+            System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
+        } else {
+            containerNames = this.manageSC.opcWorkshopCreateContainers(studentNumber);
+            System.out.println ("\nStorage Container Names = " + containerNames);
+            this.manageDBCS.createDBCS(studentNumber);
+            dbcsNames = this.manageDBCS.getDBCSInstanceNames();
+            System.out.println ("DBCS Instance Name = " + dbcsNames);      
+            setupAlphaSchema ("AlphaDBCS" + studentNumber + "A");
+            this.manageJCS.createAlpha01JCS();
+            jcsNames = this.manageJCS.getJCSInstanceNames();
+            System.out.println ("\nJCS Instance Name = " + jcsNames);                
+        }
+        try {
+            Thread.sleep(1000 * 10); // Sleep 10 seconds
+        } catch (InterruptedException e) {
+        }
+        reviewAccount();
+        System.out.println ("\n*************************************************************");
+        System.out.println ("Setup of OPC Account " + this.getIdentityDomain() + " has completed...");
+        System.out.println ("*************************************************************\n");                    
+    }
+    
     public void setupAlphaSchema (String dbcsName) {
         ProcessBuilder procBuilder;
         Process process;
@@ -268,6 +300,13 @@ public class ManageOPC {
                 manageOPC.cleanupAccount();
             } else if (args[3].contains("SetupJCSWorkshopAccount")) {
                 manageOPC.setupJCSWorkshopAccount();
+            } else if (args[3].contains("SetupJCSWorkshopOnsiteAccount")) {
+                if (args.length < 5) {
+                    System.out.println("Usage: java ManageOPC username password identityDomain method StudentNumber\n");
+                    System.out.println("This method requires an additional parameter - StudentNumber\n");
+                } else {                    
+                    manageOPC.setupJCSWorkshopAccount(args[4]);
+                }
             } else if (args[3].contains("SetupDBCSWorkshopAccount")) {
                 manageOPC.setupDBCSWorkshopAccount();
             } else if (args[3].contains("VerifyCleanAccount")) {

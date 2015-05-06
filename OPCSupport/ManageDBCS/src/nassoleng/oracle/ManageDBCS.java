@@ -226,6 +226,86 @@ public class ManageDBCS {
         }
     }
 
+    public void createAlphaDBCS (String studentNumber) {
+        ClientResponse response = null;
+        String jobURL = null;
+        String instanceName = null;
+        String domainName = null;
+
+        try {  
+            Client client = ManageDBCSUtil.getClient(getUsername(), getPassword());
+    
+            WebResource webResource =
+                client.resource(getOpcDBCSURL() + getIdentityDomain());
+
+            instanceName = "AlphaDBCS" + studentNumber + "A";
+            /* 11G
+            String se = new String (
+                "{\n" + 
+                "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+                "    \"version\" : \"11.2.0.4\",\n" + 
+                "    \"level\" : \"PAAS\",\n" + 
+                "    \"description\" : \"Alpha Office Database Cloud Service\",\n" + 
+                "    \"edition\" : \"EE\",\n" + 
+                "    \"subscriptionType\" : \"HOURLY\",\n" + 
+                "    \"shape\" : \"oc3\",\n" + 
+                "\"parameters\" : [\n" + 
+                "    {\n" + 
+                "        \"type\" : \"db\",\n" + 
+                "        \"usableStorage\" : \"10\",\n" + 
+                "        \"adminPassword\" : \"Alpha2014_\",\n" + 
+                "        \"sid\" : \"ORCL\",\n" + 
+                "        \"failoverDatabase\" : \"no\",\n" + 
+                "        \"backupDestination\" : \"BOTH\",\n" + 
+                "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/AlphaDBCS_SC\",\n" + 
+                "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+                "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
+                "    }],\n" + 
+                "    \"vmPublicKeyText\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+                "}");
+            */
+            String se = new String (
+                "{\n" + 
+                "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+                "    \"version\" : \"12.1.0.2\",\n" + 
+                "    \"level\" : \"PAAS\",\n" + 
+                "    \"description\" : \"Alpha Office Database Cloud Service\",\n" + 
+                "    \"edition\" : \"EE\",\n" + 
+                "    \"subscriptionType\" : \"HOURLY\",\n" + 
+                "    \"shape\" : \"oc3\",\n" + 
+                "\"parameters\" : [\n" + 
+                "    {\n" + 
+                "        \"type\" : \"db\",\n" + 
+                "        \"usableStorage\" : \"10\",\n" + 
+                "        \"adminPassword\" : \"Alpha2014_\",\n" + 
+                "        \"sid\" : \"ORCL\",\n" + 
+                "        \"pdf\" : \"PDB1\",\n" + 
+                "        \"failoverDatabase\" : \"no\",\n" + 
+                "        \"backupDestination\" : \"BOTH\",\n" + 
+                "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/AlphaDBCS" + studentNumber + "A_SC\",\n" + 
+                "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+                "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
+                "    }],\n" + 
+                "    \"vmPublicKeyText\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+                "}");
+            
+            System.out.println ("\nBody = " + se);
+            response = webResource.header("Content-Type", "application/json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+
+            if (response.getStatus() != 202) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                final MultivaluedMap<String,String> headers = response.getHeaders();
+                if (headers != null) {
+                    jobURL = headers.getFirst("Location");
+                }
+                System.out.println("Output from Server .... \n");                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createDBCS () {
         JSONObject dbcsInstance = null;
         String status = "In Progress";
@@ -242,6 +322,32 @@ public class ManageDBCS {
                 System.out.println ("Waiting on Create of AlphaDBCS Instance....");
                 Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
                 dbcsInstance = getDBCSInstanceInfo("AlphaDBCS");
+                status = dbcsInstance.getString("status");
+            }
+            System.out.println ("AlphaDBCS Instance Create finshied....");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } 
+    }
+    
+    public void createDBCS (String studentNumber) {
+        JSONObject dbcsInstance = null;
+        String status = "In Progress";
+        
+        System.out.println ("\n***************************");
+        System.out.println ("Create AlphaDBCS Instance");
+        System.out.println ("***************************\n");
+        
+        try {
+            createAlphaDBCS (studentNumber);
+            System.out.println ("Waiting on Create of AlphaDBCS Instance....");
+            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+            while (status.contains("In Progress")) {
+                System.out.println ("Waiting on Create of AlphaDBCS Instance....");
+                Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+                dbcsInstance = getDBCSInstanceInfo("AlphaDBCS" + studentNumber + "A");
                 status = dbcsInstance.getString("status");
             }
             System.out.println ("AlphaDBCS Instance Create finshied....");

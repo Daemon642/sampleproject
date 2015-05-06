@@ -183,6 +183,17 @@ public class DeleteStorageContainer {
         
         return containerNames;
     }
+
+    public List <String> opcWorkshopCreateContainers (String studentNumber) {
+        List <String> containerNames = null;
+
+        createContainer ("AlphaDBCS" + studentNumber + "A_SC");
+        createContainer ("Alpha" + studentNumber + "A_SC");
+        createContainer ("Alpha" + studentNumber + "B_SC");
+        containerNames = getContainerNames();
+        
+        return containerNames;
+    }
     public void setOpcUsername(String opcUsername) {
         this.opcUsername = opcUsername;
     }

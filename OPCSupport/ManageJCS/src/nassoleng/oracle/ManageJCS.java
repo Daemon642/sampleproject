@@ -283,6 +283,32 @@ public class ManageJCS {
         } 
     }
     
+    public void createAlphaJCSDriver (String studentNumber) {
+        JSONObject jcsInstance = null;
+        String status = "In Progress";
+        
+        System.out.println ("\n***************************");
+        System.out.println ("Create Alpha01JCS Instance");
+        System.out.println ("***************************\n");
+        
+        try {
+            createAlphaJCS (studentNumber + "A");
+            System.out.println ("Waiting on Create of AlphaJCS Instance....");
+            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+            while (status.contains("In Progress")) {
+                System.out.println ("Waiting on Create of AlphaJCS Instance....");
+                Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+                jcsInstance = getJCSInstanceInfo("Alpha" + studentNumber + "AJCS");
+                status = jcsInstance.getString("status");
+            }
+            System.out.println ("Alpha01JCS Instance Create finshied....");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } 
+    }
+    
     public void createMyJCS2Instance () {
         ClientResponse response = null;
         String jobURL = null;

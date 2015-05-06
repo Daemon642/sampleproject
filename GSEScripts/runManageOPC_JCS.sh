@@ -7,6 +7,7 @@ then
         echo "   ReviewAccount"
         echo "   CleanupAccount"
         echo "   SetupJCSWorkshopAccount"
+        echo "   SetupJCSWorkshopOnsiteAccount"
 	exit 1
 fi
 LOGFILE="logs/jcs/"$3"_"$4".log"
