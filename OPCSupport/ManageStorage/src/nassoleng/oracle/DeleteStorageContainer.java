@@ -187,9 +187,9 @@ public class DeleteStorageContainer {
     public List <String> opcWorkshopCreateContainers (String studentNumber) {
         List <String> containerNames = null;
 
-        createContainer ("AlphaDBCS" + studentNumber + "A_SC");
-        createContainer ("Alpha" + studentNumber + "A_SC");
-        createContainer ("Alpha" + studentNumber + "B_SC");
+        createContainer ("Alpha" + studentNumber + "A-DBCS-SC");
+        createContainer ("Alpha" + studentNumber + "A-JCS-SC");
+        createContainer ("Alpha" + studentNumber + "B-JCS-SC");
         containerNames = getContainerNames();
         
         return containerNames;

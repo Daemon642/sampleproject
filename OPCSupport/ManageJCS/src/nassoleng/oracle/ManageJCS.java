@@ -122,20 +122,27 @@ public class ManageJCS {
 
     public JSONObject getJCSInstanceInfo(String instanceName) {
         JSONObject jcsInstance = null;
+        int retryCnt = 0;
 
         try {
-            Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
-            WebResource webResource =
-                client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + instanceName);
-            ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
-
-            if (response.getStatus() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-            } else {
-                String output = response.getEntity(String.class);
-                //System.out.println ("\nJCS Instance = " + output);
-
-                jcsInstance = new JSONObject(output);
+            if (retryCnt <= 1) {
+                Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+                WebResource webResource =
+                    client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + instanceName);
+                ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
+    
+                if (response.getStatus() != 200) {
+                    if (retryCnt == 0) {
+                        retryCnt++;
+                        Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                    }
+                    else
+                        throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+                } else {
+                    String output = response.getEntity(String.class);
+                    //System.out.println ("\nJCS Instance = " + output);    
+                    jcsInstance = new JSONObject(output);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,11 +177,12 @@ public class ManageJCS {
         return jobStatus;
     }
 
-    public void createAlphaJCS (String instanceNum) {
+    public void createAlphaJCS (String studentNumber, String instanceLetter) {
         ClientResponse response = null;
         String jobURL = null;
         String instanceName = null;
         String domainName = null;
+        String dbName = null;
 
         try {  
             Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
@@ -182,8 +190,9 @@ public class ManageJCS {
             WebResource webResource =
                 client.resource(getOpcJCSURL() + getIdentityDomain());
 
-            instanceName = "Alpha" + instanceNum + "JCS";
-            domainName = "Alpha" + instanceNum + "J_domain";
+            instanceName = "Alpha" + studentNumber + instanceLetter + "-JCS";
+            domainName = "Alpha" + studentNumber + instanceLetter + "_domain";
+            dbName = "Alpha" + studentNumber + instanceLetter + "-DBCS";
             String se = new String (
                 "{\n" + 
                 "    \"serviceName\" : \"" + instanceName + "\",\n" + 
@@ -191,7 +200,7 @@ public class ManageJCS {
                 "    \"subscriptionType\" : \"HOURLY\",\n" + 
                 "    \"description\" : \"Alpha Office Java Cloud Service\",\n" + 
                 "    \"provisionOTD\" : true,\n" + 
-                "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + instanceNum + "_SC\",\n" + 
+                "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + studentNumber + instanceLetter +"A-JCS-SC\",\n" + 
                 "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
                 "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
                 " \n" + 
@@ -208,13 +217,13 @@ public class ManageJCS {
                 "        \"contentPort\" : \"7003\",\n" + 
                 "        \"securedContentPort\" : \"7004\",\n" + 
                 "        \"domainName\" : \"" + domainName + "\",\n" + 
-                "        \"clusterName\" : \"Alpha" + instanceNum + "J_cluster\",\n" + 
+                "        \"clusterName\" : \"Alpha" + studentNumber + instanceLetter + "_cluster\",\n" + 
                 "        \"adminUserName\" : \"weblogic\",\n" + 
                 "        \"adminPassword\" : \"Alpha2014_\",\n" + 
                 "        \"nodeManagerPort\" : \"5556\",\n" + 
                 "        \"nodeManagerUserName\" : \"weblogic\",\n" + 
                 "        \"nodeManagerPassword\" : \"Alpha2014_\",\n" + 
-                "        \"dbServiceName\" : \"AlphaDBCS\",\n" + 
+                "        \"dbServiceName\" : \"" + dbName + "\",\n" + 
                 "        \"dbaName\" : \"SYS\",\n" + 
                 "        \"dbaPassword\" : \"Alpha2014_\",\n" + 
                 "        \"shape\" : \"oc3\",\n" + 
@@ -266,7 +275,7 @@ public class ManageJCS {
         System.out.println ("***************************\n");
         
         try {
-            createAlphaJCS ("01");
+            createAlphaJCS ("01", "A");
             System.out.println ("Waiting on Create of Alpha01JCS Instance....");
             Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
@@ -288,17 +297,17 @@ public class ManageJCS {
         String status = "In Progress";
         
         System.out.println ("\n***************************");
-        System.out.println ("Create Alpha01JCS Instance");
+        System.out.println ("Create AlphaJCS Instance");
         System.out.println ("***************************\n");
         
         try {
-            createAlphaJCS (studentNumber + "A");
+            createAlphaJCS (studentNumber, "A");
             System.out.println ("Waiting on Create of AlphaJCS Instance....");
             Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
                 System.out.println ("Waiting on Create of AlphaJCS Instance....");
                 Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
-                jcsInstance = getJCSInstanceInfo("Alpha" + studentNumber + "AJCS");
+                jcsInstance = getJCSInstanceInfo("Alpha" + studentNumber + "A-JCS");
                 status = jcsInstance.getString("status");
             }
             System.out.println ("Alpha01JCS Instance Create finshied....");

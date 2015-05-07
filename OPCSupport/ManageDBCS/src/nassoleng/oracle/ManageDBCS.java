@@ -71,20 +71,28 @@ public class ManageDBCS {
 
     public JSONObject getDBCSInstanceInfo(String instanceName) {
         JSONObject dbcsInstance = null;
+        int retryCnt = 0;
 
         try {
-            Client client = ManageDBCSUtil.getClient(getUsername(), getPassword());
-            WebResource webResource =
-                client.resource(getOpcDBCSURL() + getIdentityDomain() + "/" + instanceName);
-            ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
-
-            if (response.getStatus() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-            } else {
-                String output = response.getEntity(String.class);
-                //System.out.println ("\nDBCS Instance = " + output);
-
-                dbcsInstance = new JSONObject(output);
+            if (retryCnt <= 1) {
+                Client client = ManageDBCSUtil.getClient(getUsername(), getPassword());
+                WebResource webResource =
+                    client.resource(getOpcDBCSURL() + getIdentityDomain() + "/" + instanceName);
+                ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
+    
+                if (response.getStatus() != 200) {
+                    if (retryCnt == 0) {
+                        retryCnt++;
+                        Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                    }
+                    else
+                       throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+                } else {
+                    String output = response.getEntity(String.class);
+                    //System.out.println ("\nDBCS Instance = " + output);
+    
+                    dbcsInstance = new JSONObject(output);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -238,7 +246,7 @@ public class ManageDBCS {
             WebResource webResource =
                 client.resource(getOpcDBCSURL() + getIdentityDomain());
 
-            instanceName = "AlphaDBCS" + studentNumber + "A";
+            instanceName = "Alpha" + studentNumber + "A-DBCS";
             /* 11G
             String se = new String (
                 "{\n" + 
@@ -282,7 +290,7 @@ public class ManageDBCS {
                 "        \"pdf\" : \"PDB1\",\n" + 
                 "        \"failoverDatabase\" : \"no\",\n" + 
                 "        \"backupDestination\" : \"BOTH\",\n" + 
-                "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/AlphaDBCS" + studentNumber + "A_SC\",\n" + 
+                "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + studentNumber + "A-DBCS-SC\",\n" + 
                 "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
                 "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
                 "    }],\n" + 
@@ -347,7 +355,7 @@ public class ManageDBCS {
             while (status.contains("In Progress")) {
                 System.out.println ("Waiting on Create of AlphaDBCS Instance....");
                 Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
-                dbcsInstance = getDBCSInstanceInfo("AlphaDBCS" + studentNumber + "A");
+                dbcsInstance = getDBCSInstanceInfo("Alpha" + studentNumber + "A-DBCS");
                 status = dbcsInstance.getString("status");
             }
             System.out.println ("AlphaDBCS Instance Create finshied....");
