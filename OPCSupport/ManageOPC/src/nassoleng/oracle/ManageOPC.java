@@ -112,7 +112,7 @@ public class ManageOPC {
 
     }
 
-    public void setupDBCSWorkshopAccount () {
+    public void setupDBCSWorkshopAccount (String studentNumber) {
         List <String> containerNames = null;
         List <String> dbcsNames = null;
 
@@ -123,43 +123,11 @@ public class ManageOPC {
         if (!verifyCleanAccount()) {
             System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
         } else {
-            containerNames = this.manageSC.opcWorkshopCreateContainers();
+            containerNames = this.manageSC.opcWorkshopCreateContainers(studentNumber);
             System.out.println ("\nStorage Container Names = " + containerNames);
-            this.manageDBCS.createDBCS();
+            this.manageDBCS.createDBCS(studentNumber);
             dbcsNames = this.manageDBCS.getDBCSInstanceNames();
             System.out.println ("DBCS Instance Name = " + dbcsNames);      
-        }
-        try {
-            Thread.sleep(1000 * 10); // Sleep 10 seconds
-        } catch (InterruptedException e) {
-        }
-        reviewAccount();
-        System.out.println ("\n*************************************************************");
-        System.out.println ("Setup of OPC Account " + this.getIdentityDomain() + " has completed...");
-        System.out.println ("*************************************************************\n");                    
-    }
-    
-    public void setupJCSWorkshopAccount () {
-        List <String> containerNames = null;
-        List <String> dbcsNames = null;
-        List <String> jcsNames = null;
-
-        System.out.println ("\n*******************************************");
-        System.out.println ("Setup of OPC Account " + this.getIdentityDomain());
-        System.out.println ("*******************************************\n");                    
-        
-        if (!verifyCleanAccount()) {
-            System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
-        } else {
-            containerNames = this.manageSC.opcWorkshopCreateContainers();
-            System.out.println ("\nStorage Container Names = " + containerNames);
-            this.manageDBCS.createDBCS();
-            dbcsNames = this.manageDBCS.getDBCSInstanceNames();
-            System.out.println ("DBCS Instance Name = " + dbcsNames);      
-            setupAlphaSchema ("AlphaDBCS");
-            this.manageJCS.createAlpha01JCS();
-            jcsNames = this.manageJCS.getJCSInstanceNames();
-            System.out.println ("\nJCS Instance Name = " + jcsNames);                
         }
         try {
             Thread.sleep(1000 * 10); // Sleep 10 seconds
@@ -299,7 +267,7 @@ public class ManageOPC {
             } else if (args[3].contains("CleanupAccount")) {
                 manageOPC.cleanupAccount();
             } else if (args[3].contains("SetupJCSWorkshopAccount")) {
-                manageOPC.setupJCSWorkshopAccount();
+                manageOPC.setupJCSWorkshopAccount("01");
             } else if (args[3].contains("SetupJCSWorkshopOnsiteAccount")) {
                 if (args.length < 5) {
                     System.out.println("Usage: java ManageOPC username password identityDomain method StudentNumber\n");
@@ -308,7 +276,14 @@ public class ManageOPC {
                     manageOPC.setupJCSWorkshopAccount(args[4]);
                 }
             } else if (args[3].contains("SetupDBCSWorkshopAccount")) {
-                manageOPC.setupDBCSWorkshopAccount();
+                manageOPC.setupDBCSWorkshopAccount("01");
+            } else if (args[3].contains("SetupDBCSWorkshopOnsiteAccount")) {
+                if (args.length < 5) {
+                    System.out.println("Usage: java ManageOPC username password identityDomain method StudentNumber\n");
+                    System.out.println("This method requires an additional parameter - StudentNumber\n");
+                } else {                    
+                    manageOPC.setupDBCSWorkshopAccount(args[4]);
+                }
             } else if (args[3].contains("VerifyCleanAccount")) {
                 manageOPC.verifyCleanAccount();
             } else if (args[3].contains("SetupAlphaSchema")) {

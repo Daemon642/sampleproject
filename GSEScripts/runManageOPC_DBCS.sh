@@ -7,6 +7,7 @@ then
         echo "   ReviewAccount"
         echo "   CleanupAccount"
         echo "   SetupDBCSWorkshopAccount"
+        echo "   SetupDBCSWorkshopOnsiteAccount"
 	exit 1
 fi
 LOGFILE="logs/dbcs/"$3"_"$4".log"

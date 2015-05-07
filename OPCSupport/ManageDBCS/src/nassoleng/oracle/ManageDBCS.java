@@ -5,8 +5,14 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Properties;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -19,12 +25,28 @@ public class ManageDBCS {
     private String password;
     private String identityDomain;
     private String opcDBCSURL;
+    private Properties configProperties;
 
     public ManageDBCS() {
         super();
-        this.setOpcDBCSURL("https://dbaas.oraclecloud.com/jaas/db/api/v1.1/instances/");
+        readConfigProperties ();
+        this.setOpcDBCSURL(this.getConfigProperties().getProperty("opcDBCSURL"));
     }
 
+    public void readConfigProperties () {
+        InputStream input = null;
+        
+        try {
+            this.configProperties = new Properties ();
+            
+            input = new FileInputStream ("config.properties");
+            
+            this.configProperties.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace ();
+        }
+    }
+    
     public JSONObject getDBCSInstances() {
         JSONObject jcsInstances = null;
 
@@ -214,7 +236,7 @@ public class ManageDBCS {
                 "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
                 "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
                 "    }],\n" + 
-                "    \"vmPublicKeyText\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+                "    \"vmPublicKeyText\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
                 "}");
             
             System.out.println ("\nBody = " + se);
@@ -294,7 +316,7 @@ public class ManageDBCS {
                 "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
                 "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
                 "    }],\n" + 
-                "    \"vmPublicKeyText\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+                "    \"vmPublicKeyText\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
                 "}");
             
             System.out.println ("\nBody = " + se);
@@ -487,6 +509,14 @@ public class ManageDBCS {
 
     public String getOpcDBCSURL() {
         return opcDBCSURL;
+    }
+
+    public void setConfigProperties(Properties configProperties) {
+        this.configProperties = configProperties;
+    }
+
+    public Properties getConfigProperties() {
+        return configProperties;
     }
 
     public static void main(String[] args) {

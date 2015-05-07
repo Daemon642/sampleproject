@@ -5,8 +5,14 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Properties;
 
 import javax.ws.rs.core.MultivaluedMap;
 
@@ -19,12 +25,28 @@ public class ManageJCS {
     private String password;
     private String identityDomain;
     private String opcJCSURL;
+    private Properties configProperties;
 
     public ManageJCS() {
         super();
-        this.setOpcJCSURL("https://jaas.oraclecloud.com/jaas/api/v1.1/instances/");
+        readConfigProperties ();
+        this.setOpcJCSURL(this.getConfigProperties().getProperty("opcJCSURL"));
     }
 
+    public void readConfigProperties () {
+        InputStream input = null;
+        
+        try {
+            this.configProperties = new Properties ();
+            
+            input = new FileInputStream ("config.properties");
+            
+            this.configProperties.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace ();
+        }
+    }
+    
     public JSONObject getJCSInstances() {
         JSONObject jcsInstances = null;
 
@@ -231,7 +253,7 @@ public class ManageJCS {
                 "        \"domainVolumeSize\" : \"10240M\",\n" + 
                 "        \"backupVolumeSize\" : \"20480M\",\n" + 
 */
-                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+                "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
                 "    },\n" + 
                 "    {\n" + 
                 "        \"type\" : \"otd\",\n" + 
@@ -244,7 +266,7 @@ public class ManageJCS {
                 "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
                 "        \"adminPort\" : \"8989\",\n" + 
                 "        \"shape\" : \"oc3\",\n" + 
-                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+                "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
                 "    }\n" + 
                 "]\n" + 
                 "}");
@@ -370,7 +392,7 @@ public class ManageJCS {
                 "        \"domainVolumeSize\" : \"10240M\",\n" + 
                 "        \"backupVolumeSize\" : \"20480M\",\n" + 
 */
-                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+                "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
                 "    },\n" + 
                 "    {\n" + 
                 "        \"type\" : \"otd\",\n" + 
@@ -383,7 +405,7 @@ public class ManageJCS {
                 "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
                 "        \"adminPort\" : \"8989\",\n" + 
                 "        \"shape\" : \"oc3\",\n" + 
-                "        \"VMsPublicKey\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+                "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
                 "    }\n" + 
                 "]\n" + 
                 "}");
@@ -776,6 +798,14 @@ public class ManageJCS {
 
     public String getOpcJCSURL() {
         return opcJCSURL;
+    }
+
+    public void setConfigProperties(Properties configProperties) {
+        this.configProperties = configProperties;
+    }
+
+    public Properties getConfigProperties() {
+        return configProperties;
     }
 
     public static void main(String[] args) {
