@@ -200,7 +200,7 @@ public class ManageJCS {
                 "    \"subscriptionType\" : \"HOURLY\",\n" + 
                 "    \"description\" : \"Alpha Office Java Cloud Service\",\n" + 
                 "    \"provisionOTD\" : true,\n" + 
-                "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + studentNumber + instanceLetter +"A-JCS-SC\",\n" + 
+                "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + studentNumber + instanceLetter +"-JCS-SC\",\n" + 
                 "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
                 "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
                 " \n" + 

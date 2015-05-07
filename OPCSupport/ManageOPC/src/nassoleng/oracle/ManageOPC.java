@@ -188,7 +188,7 @@ public class ManageOPC {
             this.manageDBCS.createDBCS(studentNumber);
             dbcsNames = this.manageDBCS.getDBCSInstanceNames();
             System.out.println ("DBCS Instance Name = " + dbcsNames);      
-            setupAlphaSchema ("AlphaDBCS" + studentNumber + "A");
+            setupAlphaSchema ("Alpha" + studentNumber + "A-DBCS");
             this.manageJCS.createAlphaJCSDriver(studentNumber);
             jcsNames = this.manageJCS.getJCSInstanceNames();
             System.out.println ("\nJCS Instance Name = " + jcsNames);                
