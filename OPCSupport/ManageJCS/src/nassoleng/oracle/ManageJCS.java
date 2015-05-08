@@ -148,19 +148,20 @@ public class ManageJCS {
 
         try {
             if (retryCnt <= 1) {
+                retryCnt++;
                 Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
                 WebResource webResource =
                     client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + instanceName);
                 ClientResponse response = webResource.header("X-ID-TENANT-NAME", getIdentityDomain()).get(ClientResponse.class);
     
                 if (response.getStatus() != 200) {
-                    if (retryCnt == 0) {
-                        retryCnt++;
+                    if (retryCnt <= 1) {
                         Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
                     }
                     else
                         throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
                 } else {
+                    retryCnt++;
                     String output = response.getEntity(String.class);
                     //System.out.println ("\nJCS Instance = " + output);    
                     jcsInstance = new JSONObject(output);
