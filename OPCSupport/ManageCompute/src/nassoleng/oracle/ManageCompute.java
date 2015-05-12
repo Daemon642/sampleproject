@@ -58,14 +58,13 @@ public class ManageCompute {
             "}");
 
             System.out.println ("\nBody = " + se);                
-            ClientResponse response = webResource.post(ClientResponse.class, se);
+            ClientResponse response = webResource.header("Content-Type", "application/oracle-compute-v3+json").header("Accept", "application/oracle-compute-v3+json").post(ClientResponse.class, se);
 
             if (response.getStatus() != 204) {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
                 final MultivaluedMap<String,String> headers = response.getHeaders();
                 System.out.println ("Headers = " + headers.getFirst("Set-Cookie"));
-                //jsonOutput = new JSONObject(headers.getFirst("nimbula"));
             }
         } catch (Exception e) {
             e.printStackTrace();
