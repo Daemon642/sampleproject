@@ -25,6 +25,7 @@
       <string v="oracle.jdeveloper.model.PathsConfiguration/ResourceBundlesContentSet"/>
    </list>
    <list n="listOfChildren">
+      <hash><url n="URL" path="ManageCompute/ManageCompute.jpr"/></hash>
       <hash><url n="URL" path="ManageDBCS/ManageDBCS.jpr"/></hash>
       <hash><url n="URL" path="ManageJCS/ManageJCS.jpr"/></hash>
       <hash><url n="URL" path="ManageOPC/ManageOPC.jpr"/></hash>
