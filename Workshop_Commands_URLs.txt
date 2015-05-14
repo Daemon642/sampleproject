@@ -17,8 +17,8 @@ SSH Tunnel to Load Balancer for Traffic Director Console
 REST Applications
 -----------------
    SSL Versions:
-     https://<your-LB-IP>:8081/AlphaOffice/jersey/AlphaOfficeAccess/Products/getProducts
-     https://<your-LB-IP>:8081/AlphaOffice/jersey/AlphaOfficeAccess/Student<your-Student-ID>/sayHello
+     https://<your-LB-IP>/AlphaOffice/jersey/AlphaOfficeAccess/Products/getProducts
+     https://<your-LB-IP>/AlphaOffice/jersey/AlphaOfficeAccess/Student<your-Student-ID>/sayHello
    Non-SSL Versions:
      http://<your-LB-IP>:8080/AlphaOffice/jersey/AlphaOfficeAccess/Products/getProducts
      http://<your-LB-IP>:8080/AlphaOffice/jersey/AlphaOfficeAccess/Student<your-Student-ID>/sayHello
