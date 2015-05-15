@@ -16,4 +16,4 @@ echo ${PASSWORD} > ${PASSWORDFILE}
 chmod 600 ${PASSWORDFILE}
 nimbula-api -a https://api-${ZONE}.compute.us2.oraclecloud.com -p ${PASSWORDFILE} -u /Compute-${DOMAIN}/${USERNAME} list orchestration /Compute-${DOMAIN} -f json
 
-#rm ${PASSWORDFILE}
+rm ${PASSWORDFILE}
