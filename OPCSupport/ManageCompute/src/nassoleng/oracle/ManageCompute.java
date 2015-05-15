@@ -4,6 +4,15 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+// Paul import
+import java.io.IOException;
+import org.apache.http.*;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
+//
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +30,10 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MultivaluedMap;
 
 import javax.ws.rs.core.NewCookie;
+
+import org.apache.http.client.methods.HttpPost;
+
+import org.apache.http.entity.StringEntity;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -55,7 +68,113 @@ public class ManageCompute {
             ex.printStackTrace ();
         }
     }
-    
+    public void authCompute2() {
+
+
+        //  HTTPClientTest hTTPClientTest = new HTTPClientTest();
+
+
+        String json =
+            new String("{\n" + "    \"password\" : \"" + "Alpha2014_" + "\",\n" +
+                       "    \"user\" : \"/Compute-usoracle16033/pat.davies@oracle.com\"\n" + "}");
+
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httppost = new HttpPost("https://api-z12.compute.us2.oraclecloud.com/authenticate/");
+
+        try {
+
+            StringEntity entity = new StringEntity(json);
+            httppost.setEntity(entity);
+            httppost.setHeader("Content-Type", "application/oracle-compute-v3+json");
+            httppost.setHeader("Accept", "application/oracle-compute-v3+json");
+            CloseableHttpResponse response = httpclient.execute(httppost);
+
+            System.out.println("Response:" + response.getStatusLine().getStatusCode());
+            System.out.println("StatusLine:" + response.getStatusLine());
+
+            HeaderIterator it = response.headerIterator("Set-Cookie");
+
+            while (it.hasNext()) {
+                System.out.println(it.next());
+            }
+
+            HttpGet httpGet =
+                new HttpGet("https://api-z12.compute.us2.oraclecloud.com/orchestration/Compute-usoracle16033/");
+            httpGet.setHeader("Accept", "application/oracle-compute-v3+json");
+
+            response = httpclient.execute(httpGet);
+            System.out.println("StatusLine:" + response.getStatusLine());
+            HttpEntity responseEntity = response.getEntity();
+
+            JSONObject orchestrationInstances = null;
+            JSONObject orchestrationInstance = null;
+            JSONArray orchestrationArray = null;
+
+            String jsonString = "";
+            if (responseEntity != null) {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(responseEntity.getContent()));
+                StringBuffer result = new StringBuffer();
+                String line = "";
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                System.out.println(result);
+                jsonString = result.toString();
+            }
+
+            if (!jsonString.equals("")) {
+                orchestrationInstances = new JSONObject(jsonString);
+                int spacesToIndentEachLevel = 2;
+                //String prettyJson = new JSONObject(jsonString).toString(spacesToIndentEachLevel);
+                //System.out.println(prettyJson);
+
+                orchestrationArray = orchestrationInstances.getJSONArray("result");
+                System.out.println("List Array =" + orchestrationArray.length());
+
+                for (int i = 0; i < orchestrationArray.length(); i++) {
+                    orchestrationInstance = orchestrationArray.getJSONObject(i);
+
+                    String status = orchestrationInstance.getString("status");
+
+                    if (status.equals("stopping")) {
+                        System.out.println("\n!!!!! ERROR !!!!!");
+                        System.out.println("Object #" + i + " = " + orchestrationInstance.getString("uri"));
+                        System.out.println("  errors=" +
+                                           orchestrationInstance.getJSONArray("oplans").getJSONObject(0).getJSONObject("info").getString("errors"));
+                        System.out.println("  oplans=" + orchestrationInstance.getString("oplans"));
+                        System.out.println("  fullObject=" + orchestrationInstance.toString());
+
+
+                        System.out.println("!!!!!!!!!!!!!!!!!\n");
+
+
+                    } else {
+                        System.out.println("Object #" + i + " = " + orchestrationInstance.toString());
+
+                    }
+
+                    /*
+                                if (orchestrationInstance.getString("status").equals("Running")) {
+                                    dbcsName = dbcsInstance.getString("service_name");
+                                    dbcsInfo = getDBCSInstanceInfo(dbcsName);
+                                    dbIP = dbcsInfo.getString("em_url").substring(8);
+                                    dbIP = dbIP.substring(0,dbIP.indexOf(":"));
+                                    System.out.println (dbcsName + " DB IP = " + dbIP);
+                                }
+                                */
+                }
+            }
+            response.close();
+            httpclient.close();
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+
+    }
     public void authCompute() {
         JSONObject jsonOutput = null;
 
@@ -295,6 +414,7 @@ public class ManageCompute {
             }
             
             webResource = client.resource(getOpcComputeURL() + "/secapplication/Compute-usoracle16033/");
+
             webResourceBuilder = webResource.getRequestBuilder();
             
             
@@ -343,10 +463,11 @@ public class ManageCompute {
         manageCompute.setIdentityDomain("usoracle16033");
         
         //manageCompute.authCompute();
+        manageCompute.authCompute2();
         //manageCompute.securityApplication();
         
-        manageCompute.testComputeOrchestrationCLI("null");
-        manageCompute.testSecapplicationCLI("null");
+        //manageCompute.testComputeOrchestrationCLI("null");
+        //manageCompute.testSecapplicationCLI("null");
                  
 
     }

@@ -114,10 +114,18 @@
             <url n="id" protocol="file" path="/home/oracle/.jdeveloper/system12.1.3.0.41.140521.1008/o.jdeveloper/OracleStorageCloudAPI.library"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <url n="id" protocol="file" path="/home/oracle/.jdeveloper/system12.1.3.0.41.140521.1008/o.jdeveloper/httpcomponents-client.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
       <list n="libraryReferences">
          <hash>
             <url n="id" protocol="file" path="/home/oracle/.jdeveloper/system12.1.3.0.41.140521.1008/o.jdeveloper/OracleStorageCloudAPI.library"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <url n="id" protocol="file" path="/home/oracle/.jdeveloper/system12.1.3.0.41.140521.1008/o.jdeveloper/httpcomponents-client.library"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
