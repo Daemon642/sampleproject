@@ -22,8 +22,10 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import javax.ws.rs.core.NewCookie;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jettison.json.JSONWriter;
 
 public class ManageCompute {
     private String username;
@@ -83,11 +85,14 @@ public class ManageCompute {
             e.printStackTrace();
         }
     }
-    public void testComputeCLI (String dbcsName) {
+    public void testComputeOrchestrationCLI (String dbcsName) {
         ProcessBuilder procBuilder;
         Process process;
         File batchFile;
-        // JSONObject dbcsInstance = null;
+        JSONObject orchestrationInstances = null;
+        JSONObject orchestrationInstance = null;
+        JSONArray orchestrationArray = null;
+
         String dbcsIP = null;
 
         try {
@@ -98,16 +103,69 @@ public class ManageCompute {
             batchFile = new File("/u01/OPCWorkshop/lab/GSEScripts/reviewComputeOrchestration.sh");
             procBuilder =
                 //new ProcessBuilder(batchFile.getAbsolutePath(), dbcsIP);
-                new ProcessBuilder(batchFile.getAbsolutePath(), "z12");
+                new ProcessBuilder(batchFile.getAbsolutePath(), "z12","Alpha2014_");
             process = procBuilder.start();
             InputStream procIn = process.getInputStream();
             BufferedReader in =
                 new BufferedReader(new InputStreamReader(procIn));
+            String jsonString = "";
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
+                jsonString += inputLine;
             }
             in.close();
+            // System.out.println(jsonString);
+            if (!jsonString.equals("") ) {
+                try {
+                    orchestrationInstances = new JSONObject(jsonString);
+                    int spacesToIndentEachLevel = 2;
+                    //String prettyJson = new JSONObject(jsonString).toString(spacesToIndentEachLevel);
+                    //System.out.println(prettyJson);
+                    
+                    orchestrationArray = orchestrationInstances.getJSONArray("list");
+                    System.out.println("List Array ="+orchestrationArray.length());
+                    
+                    for (int i = 0; i < orchestrationArray.length(); i++) {
+                        orchestrationInstance = orchestrationArray.getJSONObject(i);
+                        
+                        String status = orchestrationInstance.getString("status");
+                        
+                        if ( status.equals("stopping")) {
+                            System.out.println("\n!!!!! ERROR !!!!!");
+                            System.out.println("Object #"+i+" = "+orchestrationInstance.getString("uri"));
+                            System.out.println("  errors="+orchestrationInstance.getJSONArray("oplans").getJSONObject(0).getJSONObject("info").getString("errors"));
+                            System.out.println("  oplans="+orchestrationInstance.getString("oplans"));
+                            System.out.println("  fullObject="+orchestrationInstance.toString());
+                            
+
+                            System.out.println("!!!!!!!!!!!!!!!!!\n");
+
+
+                        } else {
+                            System.out.println("Object #"+i+" = "+orchestrationInstance.toString());
+
+                        }
+                        
+                        /*
+                        if (orchestrationInstance.getString("status").equals("Running")) {
+                            dbcsName = dbcsInstance.getString("service_name");
+                            dbcsInfo = getDBCSInstanceInfo(dbcsName);
+                            dbIP = dbcsInfo.getString("em_url").substring(8);
+                            dbIP = dbIP.substring(0,dbIP.indexOf(":"));
+                            System.out.println (dbcsName + " DB IP = " + dbIP);
+                        }
+                        */
+                    }
+                    
+                   
+
+                    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            
+
         //} catch (JSONException e) {
         //    e.printStackTrace();
         } catch (IOException e) {
@@ -115,7 +173,97 @@ public class ManageCompute {
         }
     }
 
-    
+    public void testSecapplicationCLI (String dbcsName) {
+        ProcessBuilder procBuilder;
+        Process process;
+        File batchFile;
+        JSONObject orchestrationInstances = null;
+        JSONObject orchestrationInstance = null;
+        JSONArray orchestrationArray = null;
+
+        String dbcsIP = null;
+
+        try {
+            // dbcsInstance = this.manageDBCS.getDBCSInstanceInfo(dbcsName);
+            // dbcsIP = dbcsInstance.getString("em_url").substring(8);
+            // dbcsIP = dbcsIP.substring(0,dbcsIP.indexOf(":"));
+            // batchFile = new File(this.getConfigProperties().getProperty("scriptLocation") + "runOPCWorkshopDatabaseSetup.sh");
+            batchFile = new File("/u01/OPCWorkshop/lab/GSEScripts/reviewSecapplication.sh");
+            procBuilder =
+                //new ProcessBuilder(batchFile.getAbsolutePath(), dbcsIP);
+                new ProcessBuilder(batchFile.getAbsolutePath(), "z12","Alpha2014_");
+            process = procBuilder.start();
+            InputStream procIn = process.getInputStream();
+            BufferedReader in =
+                new BufferedReader(new InputStreamReader(procIn));
+            String jsonString = "";
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                jsonString += inputLine;
+            }
+            in.close();
+            // System.out.println(jsonString);
+            if (!jsonString.equals("") ) {
+                try {
+                    orchestrationInstances = new JSONObject(jsonString);
+                    int spacesToIndentEachLevel = 2;
+                    //String prettyJson = new JSONObject(jsonString).toString(spacesToIndentEachLevel);
+                    //System.out.println(prettyJson);
+                    
+                    orchestrationArray = orchestrationInstances.getJSONArray("list");
+                    System.out.println("List Array ="+orchestrationArray.length());
+                    
+                    for (int i = 0; i < orchestrationArray.length(); i++) {
+                        orchestrationInstance = orchestrationArray.getJSONObject(i);
+                        
+                        String dport = orchestrationInstance.getString("dport");
+                        String protocol = orchestrationInstance.getString("protocol");
+                        String description = orchestrationInstance.getString("description");
+                        String uri = orchestrationInstance.getString("uri");
+                        
+                        if ( dport.equals("8080") && protocol.equals("tcp")) {
+                            System.out.println("\n!!!!! ERROR !!!!!");
+                            System.out.println("Object #"+i+" = "+description);
+                            System.out.println("  protocol="+protocol);
+                            System.out.println("  uri="+uri);
+                            
+
+                            System.out.println("!!!!!!!!!!!!!!!!!\n");
+
+
+                        } else {
+                            System.out.println("Object #"+i+" = "+orchestrationInstance.toString());
+
+                        }
+                        
+                        /*
+                        if (orchestrationInstance.getString("status").equals("Running")) {
+                            dbcsName = dbcsInstance.getString("service_name");
+                            dbcsInfo = getDBCSInstanceInfo(dbcsName);
+                            dbIP = dbcsInfo.getString("em_url").substring(8);
+                            dbIP = dbIP.substring(0,dbIP.indexOf(":"));
+                            System.out.println (dbcsName + " DB IP = " + dbIP);
+                        }
+                        */
+                    }
+                    
+                   
+
+                    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            
+
+        //} catch (JSONException e) {
+        //    e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+       
 
     public JSONObject securityApplication() {
         JSONObject jsonOutput = null;
@@ -197,7 +345,8 @@ public class ManageCompute {
         //manageCompute.authCompute();
         //manageCompute.securityApplication();
         
-        manageCompute.testComputeCLI("null");
+        manageCompute.testComputeOrchestrationCLI("null");
+        manageCompute.testSecapplicationCLI("null");
                  
 
     }
