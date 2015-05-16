@@ -79,7 +79,7 @@ public class ManageComputeUtil {
         return client;
     }
     
-    public static final CloseableHttpClient getClient (String username, String password, String domain) {
+    public static final CloseableHttpClient getClient (String username, String password, String domain, String zone) {
         CloseableHttpClient httpclient;
 
         String json =
@@ -87,7 +87,7 @@ public class ManageComputeUtil {
                        "    \"user\" : \"/Compute-" + domain + "/" + username + "\"\n" + "}");
 
         httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost("https://api-z12.compute.us2.oraclecloud.com/authenticate/");
+        HttpPost httppost = new HttpPost("https://api-" + zone + ".compute.us2.oraclecloud.com/authenticate/");
 
         try {
             StringEntity entity = new StringEntity(json);

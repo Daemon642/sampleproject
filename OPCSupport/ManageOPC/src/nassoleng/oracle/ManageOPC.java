@@ -143,12 +143,17 @@ public class ManageOPC {
     public void setupDBCSWorkshopAccount (String studentNumber) {
         List <String> containerNames = null;
         List <String> dbcsNames = null;
+        Boolean accountClean;
 
         System.out.println ("\n*******************************************");
         System.out.println ("Setup of OPC Account " + this.getIdentityDomain());
         System.out.println ("*******************************************\n");                    
         
-        if (!verifyCleanAccount()) {
+        if (studentNumber.equals("01")) {
+            accountClean = verifyCleanAccount();
+        } else 
+            accountClean = true;
+        if (!accountClean) {
             System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
         } else {
             containerNames = this.manageSC.opcWorkshopCreateContainers(studentNumber);
@@ -171,12 +176,17 @@ public class ManageOPC {
         List <String> containerNames = null;
         List <String> dbcsNames = null;
         List <String> jcsNames = null;
+        Boolean accountClean;
 
         System.out.println ("\n*******************************************");
         System.out.println ("Setup of OPC Account " + this.getIdentityDomain());
         System.out.println ("*******************************************\n");                    
         
-        if (!verifyCleanAccount()) {
+        if (studentNumber.equals("01")) {
+            accountClean = verifyCleanAccount();
+        } else 
+            accountClean = true;
+        if (!accountClean) {
             System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
         } else {
             containerNames = this.manageSC.opcWorkshopCreateContainers(studentNumber);

@@ -65,10 +65,10 @@ public class ManageCompute {
         JSONObject orchestrationInstances = null;
 
         try {
-            CloseableHttpClient httpclient = ManageComputeUtil.getClient (this.getUsername(), this.getPassword(), this.getIdentityDomain());
+            CloseableHttpClient httpclient = ManageComputeUtil.getClient (this.getUsername(), this.getPassword(), this.getIdentityDomain(), this.getComputeZone());
 
             HttpGet httpGet =
-                new HttpGet("https://api-z12.compute.us2.oraclecloud.com/orchestration/Compute-usoracle16033/");
+                new HttpGet("https://api-" + this.getComputeZone() + ".compute.us2.oraclecloud.com/orchestration/Compute-" + this.getIdentityDomain() + "/");
             httpGet.setHeader("Accept", "application/oracle-compute-v3+json");
 
             CloseableHttpResponse response = httpclient.execute(httpGet);
