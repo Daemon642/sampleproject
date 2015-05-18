@@ -173,7 +173,6 @@ public class ManageCompute {
                         System.out.println("  Deleting the following Protocols");
                         printedHeader = true;
                     }
-                    System.out.println("    dport="+dport+", description="+secAppDescription+", protocol="+protocol+", name="+secAppName);
                     
                     for (int j = 0; j < secRuleResultArray.length(); j++) {
                         secRuleInstance = secRuleResultArray.getJSONObject(j);
@@ -182,10 +181,13 @@ public class ManageCompute {
                         String secRuleName = secRuleInstance.getString("name");
                         String secRuleDescription = secRuleInstance.getString("description");
                         if ( application.equals(secAppName)) {
-                            System.out.println("        Deleting Rule... name="+secRuleName+", description="+secRuleDescription);
+                            System.out.println("     Deleting Rule... name="+secRuleName+", description="+secRuleDescription);
                         }
 
                     }
+                    
+                    System.out.println("    Delete Protocoldport="+dport+", description="+secAppDescription+", protocol="+protocol+", name="+secAppName);
+
                     
                     
                 }
@@ -224,8 +226,8 @@ public class ManageCompute {
             System.out.println(e.getMessage());
         }
         
-        //deleteSecurityApplicationsAndRules("8080");
-        deleteSecurityApplicationsAndRules("(8080|80)");
+        deleteSecurityApplicationsAndRules("8080");
+        //deleteSecurityApplicationsAndRules("(8080|80)");
         //deleteSecurityApplicationsAndRules(".*");
     } 
     
