@@ -26,6 +26,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import javax.ws.rs.core.NewCookie;
 
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 
 import org.apache.http.entity.StringEntity;
@@ -133,6 +134,60 @@ public class ManageCompute {
         return secRuleInstances;
     }
 
+    public String deleteSecurityApplication(String name) {
+
+        String rtnStatus = null;
+        try {
+            CloseableHttpClient httpclient = ManageComputeUtil.getClient (this.getUsername(), this.getPassword(), this.getIdentityDomain(), this.getComputeZone());
+
+            HttpDelete httpDelete =
+                new HttpDelete("https://api-" + this.getComputeZone() + ".compute.us2.oraclecloud.com/secapplication"+name);
+            //httpDelete.setHeader("Accept", "application/oracle-compute-v3+json");
+
+            //System.out.println("!!!! httpDelete = "+httpDelete.getURI().toString());
+
+            CloseableHttpResponse response = httpclient.execute(httpDelete);
+
+            rtnStatus = response.getStatusLine().toString();
+
+            response.close();
+            httpclient.close();
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return rtnStatus;
+    }
+
+    public String deleteSecurityRule(String name) {
+
+        String rtnStatus = null;
+
+        try {
+            CloseableHttpClient httpclient = ManageComputeUtil.getClient (this.getUsername(), this.getPassword(), this.getIdentityDomain(), this.getComputeZone());
+
+            HttpDelete httpDelete =
+                new HttpDelete("https://api-" + this.getComputeZone() + ".compute.us2.oraclecloud.com/secrule"+name);
+            //httpDelete.setHeader("Accept", "application/oracle-compute-v3+json");
+
+            //System.out.println("!!!! httpDelete = "+httpDelete.getURI().toString());
+
+            CloseableHttpResponse response = httpclient.execute(httpDelete);
+
+            rtnStatus = response.getStatusLine().toString();
+
+            response.close();
+            httpclient.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return rtnStatus;
+
+    }
+
     public void deleteSecurityApplicationsAndRules(String portsToDelete) {
         JSONObject secAppInstances = null;
         JSONObject secRuleInstances = null;
@@ -167,6 +222,9 @@ public class ManageCompute {
                 String secAppDescription = secAppInstance.getString("description");
                 String uri = secAppInstance.getString("uri");
                 
+                String secRuleName = null;
+                String secRuleDescription = null;
+                
                 if ( dport.matches(portsToDelete) && protocol.equals("tcp")) {
                     if ( !printedHeader) {
                         System.out.println("  *******************************************");
@@ -178,16 +236,25 @@ public class ManageCompute {
                         secRuleInstance = secRuleResultArray.getJSONObject(j);
                         
                         String application = secRuleInstance.getString("application");
-                        String secRuleName = secRuleInstance.getString("name");
-                        String secRuleDescription = secRuleInstance.getString("description");
+                        String checkName = secRuleInstance.getString("name");
+                        secRuleDescription = secRuleInstance.getString("description");
                         if ( application.equals(secAppName)) {
-                            System.out.println("     Deleting Rule... name="+secRuleName+", description="+secRuleDescription);
+                            secRuleName = checkName;
+                            break;
                         }
 
                     }
-                    
-                    System.out.println("    Delete Protocoldport="+dport+", description="+secAppDescription+", protocol="+protocol+", name="+secAppName);
+                    String rtnStatus;
 
+                    if ( secRuleName != null ) {
+                        System.out.println("     Deleting Rule... name="+secRuleName+", description="+secRuleDescription);
+                        rtnStatus = deleteSecurityRule(secRuleName);
+                        System.out.println("     **** Status="+rtnStatus);
+                    }
+                    
+                    System.out.println("     Delete Protocol dport="+dport+", description="+secAppDescription+", protocol="+protocol+", name="+secAppName);
+                    rtnStatus = deleteSecurityApplication(secAppName);
+                    System.out.println("     **** Status="+rtnStatus);
                     
                     
                 }
