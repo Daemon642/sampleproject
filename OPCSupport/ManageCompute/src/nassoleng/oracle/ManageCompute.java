@@ -133,6 +133,49 @@ public class ManageCompute {
         return secRuleInstances;
     }
 
+    public void deleteSecurityApplications(String portsToDelete) {
+        JSONObject secAppInstances = null;
+        JSONArray resultArray = null;
+        JSONObject secAppInstance = null;
+
+        secAppInstances = getSecurityApplications();
+        try {
+            resultArray = secAppInstances.getJSONArray("result");
+            System.out.println("Result Array Length ="+resultArray.length());
+            System.out.println (secAppInstances.toString(2));
+                        
+        
+            boolean printedHeader = false;
+
+            for (int i = 0; i < resultArray.length(); i++) {
+                secAppInstance = resultArray.getJSONObject(i);
+                
+                String dport = secAppInstance.getString("dport");
+                String protocol = secAppInstance.getString("protocol");
+                String description = secAppInstance.getString("description");
+                String uri = secAppInstance.getString("uri");
+                
+                if ( (portsToDelete == null || portsToDelete.equals("") || dport.matches(portsToDelete)) 
+                     && protocol.equals("tcp")) {
+                    if ( !printedHeader) {
+                        System.out.println("  *******************************************");
+                        System.out.println("  Deleting the following Protocols");
+                        printedHeader = true;
+                    }
+                    System.out.println("    dport="+dport+", description="+description+", protocol="+protocol+", uri="+uri);
+                    
+                }
+               
+            }
+            if ( printedHeader) {
+                System.out.println("  *******************************************");
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    } 
+    
     public void printOrchestrations() {
         JSONObject orchestrationInstances = null;
 
@@ -156,7 +199,11 @@ public class ManageCompute {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        
+        deleteSecurityApplications("(8080|80)");
     } 
+    
+
     
     public void printSecurityRules() {
         JSONObject secRuleInstances = null;
