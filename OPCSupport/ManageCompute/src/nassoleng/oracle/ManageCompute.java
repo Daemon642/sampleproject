@@ -133,26 +133,38 @@ public class ManageCompute {
         return secRuleInstances;
     }
 
-    public void deleteSecurityApplications(String portsToDelete) {
+    public void deleteSecurityApplicationsAndRules(String portsToDelete) {
         JSONObject secAppInstances = null;
-        JSONArray resultArray = null;
+        JSONObject secRuleInstances = null;
+        
+        JSONArray secAppResultArray = null;
+        JSONArray secRuleResultArray = null;
+        
         JSONObject secAppInstance = null;
+        JSONObject secRuleInstance = null;
 
         secAppInstances = getSecurityApplications();
+        secRuleInstances = getSecurityRules();
+
         try {
-            resultArray = secAppInstances.getJSONArray("result");
-            System.out.println("Result Array Length ="+resultArray.length());
-            System.out.println (secAppInstances.toString(2));
+            secAppResultArray = secAppInstances.getJSONArray("result");
+            //System.out.println("Result Array Length ="+resultArray.length());
+            //System.out.println (secAppInstances.toString(2));
+            
+
+            secRuleResultArray = secRuleInstances.getJSONArray("result");
+
                         
         
             boolean printedHeader = false;
 
-            for (int i = 0; i < resultArray.length(); i++) {
-                secAppInstance = resultArray.getJSONObject(i);
+            for (int i = 0; i < secAppResultArray.length(); i++) {
+                secAppInstance = secAppResultArray.getJSONObject(i);
                 
                 String dport = secAppInstance.getString("dport");
+                String secAppName = secAppInstance.getString("name");
                 String protocol = secAppInstance.getString("protocol");
-                String description = secAppInstance.getString("description");
+                String secAppDescription = secAppInstance.getString("description");
                 String uri = secAppInstance.getString("uri");
                 
                 if ( dport.matches(portsToDelete) && protocol.equals("tcp")) {
@@ -161,7 +173,20 @@ public class ManageCompute {
                         System.out.println("  Deleting the following Protocols");
                         printedHeader = true;
                     }
-                    System.out.println("    dport="+dport+", description="+description+", protocol="+protocol+", uri="+uri);
+                    System.out.println("    dport="+dport+", description="+secAppDescription+", protocol="+protocol+", name="+secAppName);
+                    
+                    for (int j = 0; j < secRuleResultArray.length(); j++) {
+                        secRuleInstance = secRuleResultArray.getJSONObject(j);
+                        
+                        String application = secRuleInstance.getString("application");
+                        String secRuleName = secRuleInstance.getString("name");
+                        String secRuleDescription = secRuleInstance.getString("description");
+                        if ( application.equals(secAppName)) {
+                            System.out.println("        Deleting Rule... name="+secRuleName+", description="+secRuleDescription);
+                        }
+
+                    }
+                    
                     
                 }
                
@@ -199,8 +224,9 @@ public class ManageCompute {
             System.out.println(e.getMessage());
         }
         
-        //deleteSecurityApplications("(8080|80)");
-        deleteSecurityApplications(".*");
+        //deleteSecurityApplicationsAndRules("8080");
+        deleteSecurityApplicationsAndRules("(8080|80)");
+        //deleteSecurityApplicationsAndRules(".*");
     } 
     
 
