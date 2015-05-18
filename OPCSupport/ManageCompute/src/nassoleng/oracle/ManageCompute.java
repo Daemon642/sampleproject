@@ -155,8 +155,7 @@ public class ManageCompute {
                 String description = secAppInstance.getString("description");
                 String uri = secAppInstance.getString("uri");
                 
-                if ( (portsToDelete == null || portsToDelete.equals("") || dport.matches(portsToDelete)) 
-                     && protocol.equals("tcp")) {
+                if ( dport.matches(portsToDelete) && protocol.equals("tcp")) {
                     if ( !printedHeader) {
                         System.out.println("  *******************************************");
                         System.out.println("  Deleting the following Protocols");
@@ -200,7 +199,8 @@ public class ManageCompute {
             System.out.println(e.getMessage());
         }
         
-        deleteSecurityApplications("(8080|80)");
+        //deleteSecurityApplications("(8080|80)");
+        deleteSecurityApplications(".*");
     } 
     
 
