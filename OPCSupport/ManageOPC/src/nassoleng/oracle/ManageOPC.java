@@ -86,6 +86,8 @@ public class ManageOPC {
         containerNames = manageSC.getContainerNames();
         System.out.println ("Storage Container Names = " + containerNames);    
         manageCompute.printOrchestrations();
+        manageCompute.printSecurityApplications();
+        manageCompute.printSecurityRules();
         dbcsNames = manageDBCS.getDBCSInstanceNames();
         System.out.println ("DBCS Instance Name = " + dbcsNames);      
         manageDBCS.getDBCSInstanceIPs();

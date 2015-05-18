@@ -72,7 +72,6 @@ public class ManageCompute {
             httpGet.setHeader("Accept", "application/oracle-compute-v3+json");
 
             CloseableHttpResponse response = httpclient.execute(httpGet);
-            System.out.println("StatusLine:" + response.getStatusLine());
             HttpEntity responseEntity = response.getEntity();
 
             orchestrationInstances = ManageComputeUtil.getJSONObject (responseEntity);
@@ -86,12 +85,86 @@ public class ManageCompute {
         return orchestrationInstances;
     }
 
+    public JSONObject getSecurityApplications() {
+        JSONObject secAppInstances = null;
+
+        try {
+            CloseableHttpClient httpclient = ManageComputeUtil.getClient (this.getUsername(), this.getPassword(), this.getIdentityDomain(), this.getComputeZone());
+
+            HttpGet httpGet =
+                new HttpGet("https://api-" + this.getComputeZone() + ".compute.us2.oraclecloud.com/secapplication/Compute-" + this.getIdentityDomain() + "/");
+            httpGet.setHeader("Accept", "application/oracle-compute-v3+json");
+
+            CloseableHttpResponse response = httpclient.execute(httpGet);
+            HttpEntity responseEntity = response.getEntity();
+
+            secAppInstances = ManageComputeUtil.getJSONObject (responseEntity);
+
+            response.close();
+            httpclient.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return secAppInstances;
+    }
+
+    public JSONObject getSecurityRules() {
+        JSONObject secRuleInstances = null;
+
+        try {
+            CloseableHttpClient httpclient = ManageComputeUtil.getClient (this.getUsername(), this.getPassword(), this.getIdentityDomain(), this.getComputeZone());
+
+            HttpGet httpGet =
+                new HttpGet("https://api-" + this.getComputeZone() + ".compute.us2.oraclecloud.com/secrule/Compute-" + this.getIdentityDomain() + "/");
+            httpGet.setHeader("Accept", "application/oracle-compute-v3+json");
+
+            CloseableHttpResponse response = httpclient.execute(httpGet);
+            HttpEntity responseEntity = response.getEntity();
+
+            secRuleInstances = ManageComputeUtil.getJSONObject (responseEntity);
+
+            response.close();
+            httpclient.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        return secRuleInstances;
+    }
+
     public void printOrchestrations() {
         JSONObject orchestrationInstances = null;
 
         orchestrationInstances = getOrchestrations();
-        System.out.println (orchestrationInstances);
-    }
+        try {
+            System.out.println (orchestrationInstances.toString(2));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    } 
+    
+    public void printSecurityApplications() {
+        JSONObject secAppInstances = null;
+
+        secAppInstances = getSecurityApplications();
+        try {
+            System.out.println (secAppInstances.toString(2));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    } 
+    
+    public void printSecurityRules() {
+        JSONObject secRuleInstances = null;
+
+        secRuleInstances = getSecurityRules();
+        try {
+            System.out.println (secRuleInstances.toString(2));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    } 
     
     public void testComputeOrchestrationCLI (String dbcsName) {
         ProcessBuilder procBuilder;
