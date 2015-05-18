@@ -32,6 +32,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 public class ManageCompute {
@@ -162,7 +163,6 @@ public class ManageCompute {
     }
 
     public String deleteSecurityRule(String name) {
-
         String rtnStatus = null;
 
         try {
@@ -171,7 +171,6 @@ public class ManageCompute {
             HttpDelete httpDelete =
                 new HttpDelete("https://api-" + this.getComputeZone() + ".compute.us2.oraclecloud.com/secrule"+name);
             //httpDelete.setHeader("Accept", "application/oracle-compute-v3+json");
-
             //System.out.println("!!!! httpDelete = "+httpDelete.getURI().toString());
 
             CloseableHttpResponse response = httpclient.execute(httpDelete);
@@ -185,7 +184,6 @@ public class ManageCompute {
             e.printStackTrace();
         }
         return rtnStatus;
-
     }
 
     public void deleteSecurityApplicationsAndRules(String portsToDelete) {
@@ -206,13 +204,9 @@ public class ManageCompute {
             //System.out.println("Result Array Length ="+resultArray.length());
             //System.out.println (secAppInstances.toString(2));
             
-
             secRuleResultArray = secRuleInstances.getJSONArray("result");
-
                         
-        
             boolean printedHeader = false;
-
             for (int i = 0; i < secAppResultArray.length(); i++) {
                 secAppInstance = secAppResultArray.getJSONObject(i);
                 
@@ -242,7 +236,6 @@ public class ManageCompute {
                             secRuleName = checkName;
                             break;
                         }
-
                     }
                     String rtnStatus;
 
@@ -255,18 +248,40 @@ public class ManageCompute {
                     System.out.println("     Delete Protocol dport="+dport+", description="+secAppDescription+", protocol="+protocol+", name="+secAppName);
                     rtnStatus = deleteSecurityApplication(secAppName);
                     System.out.println("     **** Status="+rtnStatus);
-                    
-                    
                 }
-               
             }
             if ( printedHeader) {
                 System.out.println("  *******************************************");
             }
-            
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    } 
+    
+    public Boolean verifyOrchestrations() {
+        JSONObject orchestrationInstances = null;
+        JSONArray resultArray = null;
+        JSONObject orchestrationInstance = null;
+        Boolean orchestrationClean = true;
+
+        orchestrationInstances = getOrchestrations();
+        try {
+            resultArray = orchestrationInstances.getJSONArray("result");
+            for (int i = 0; i < resultArray.length(); i++) {
+                orchestrationInstance = resultArray.getJSONObject(i);
+                if (orchestrationInstance.getString("status").equals("stopping")) {
+                    orchestrationClean = false;              
+                    System.out.println("Not Clean ");
+                    System.out.println ("\n*******************************************");
+                    System.out.println ("Print Orchestration");
+                    System.out.println ("*******************************************\n");                    
+                    System.out.println (orchestrationInstance.toString(2));
+                }
+            }
+        } catch (JSONException e) {
+        }
+        
+        return orchestrationClean;
     } 
     
     public void printOrchestrations() {
@@ -293,7 +308,7 @@ public class ManageCompute {
             System.out.println(e.getMessage());
         }
         
-        deleteSecurityApplicationsAndRules("8080");
+        //deleteSecurityApplicationsAndRules("8080");
         //deleteSecurityApplicationsAndRules("(8080|80)");
         //deleteSecurityApplicationsAndRules(".*");
     } 

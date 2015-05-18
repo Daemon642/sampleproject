@@ -18,6 +18,7 @@ import java.util.List;
 
 import java.util.Properties;
 
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -85,18 +86,6 @@ public class ManageOPC {
         System.out.println ("*******************************************\n");                    
         containerNames = manageSC.getContainerNames();
         System.out.println ("Storage Container Names = " + containerNames);    
-        System.out.println ("\n*******************************************");
-        System.out.println ("Print Orchestrations");
-        System.out.println ("*******************************************\n");                    
-        manageCompute.printOrchestrations();
-        System.out.println ("\n*******************************************");
-        System.out.println ("Print Security Applications / Protocols");
-        System.out.println ("*******************************************\n");                    
-        manageCompute.printSecurityApplications();
-        System.out.println ("\n*******************************************");
-        System.out.println ("Print Security Rules");
-        System.out.println ("*******************************************\n");                    
-        manageCompute.printSecurityRules();
         dbcsNames = manageDBCS.getDBCSInstanceNames();
         System.out.println ("DBCS Instance Name = " + dbcsNames);      
         manageDBCS.getDBCSInstanceIPs();
@@ -109,24 +98,59 @@ public class ManageOPC {
     }
 
     public Boolean verifyCleanAccount () {
-        Boolean accountStatus = true;
+        Boolean accountClean = true;
         List <String> containerNames = null;
         List <String> dbcsNames = null;
         List <String> jcsNames = null;
+        JSONObject secAppInstances = null;
+        JSONArray resultArray = null;
         
-        containerNames = manageSC.getContainerNames();
-        if (containerNames.size() != 0) {
-            accountStatus = false;
-        }
-        dbcsNames = manageDBCS.getDBCSInstanceNames();
-        if (dbcsNames.size() != 0) {
-            accountStatus = false;
-        }
         jcsNames = manageJCS.getJCSInstanceNames();
         if (jcsNames.size() != 0) {
-            accountStatus = false;
+            accountClean = false;
         }
-        return accountStatus;
+        if (accountClean) {
+            dbcsNames = manageDBCS.getDBCSInstanceNames();
+            if (dbcsNames.size() != 0) {
+                accountClean = false;
+            }
+            if (accountClean) {
+                containerNames = manageSC.getContainerNames();
+                if (containerNames.size() != 0) {
+                    accountClean = false;
+                }
+                if (accountClean) {
+                    try {
+                        secAppInstances = manageCompute.getSecurityApplications();
+                        resultArray = secAppInstances.getJSONArray("result");
+                        if (resultArray.length() != 0) {
+                            manageCompute.deleteSecurityApplicationsAndRules (".*");
+                            Thread.sleep(1000 * 10); // Sleep 10 seconds
+                            secAppInstances = manageCompute.getSecurityApplications();
+                            resultArray = secAppInstances.getJSONArray("result");
+                            if (resultArray.length() != 0) {
+                                accountClean = false;
+                                System.out.println("Not Clean - Result Array Length ="+resultArray.length());
+                                System.out.println ("\n*******************************************");
+                                System.out.println ("Print Security Applications / Protocols");
+                                System.out.println ("*******************************************\n");                    
+                                manageCompute.printSecurityApplications();
+                            }
+                        }
+                        if (accountClean) {
+                            accountClean = manageCompute.verifyOrchestrations();
+                        }
+                    } catch (JSONException e) {
+                        accountClean = false;
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        accountClean = false;
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return accountClean;
     }
     
     public void cleanupAccount () {
@@ -143,7 +167,9 @@ public class ManageOPC {
         try {
             Thread.sleep(1000 * 10); // Sleep 10 seconds
         } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        verifyCleanAccount ();
         reviewAccount();
         System.out.println ("\n*************************************************************");
         System.out.println ("Cleanup of OPC Account " + this.getIdentityDomain() + " has completed...");
@@ -176,6 +202,7 @@ public class ManageOPC {
         try {
             Thread.sleep(1000 * 10); // Sleep 10 seconds
         } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         reviewAccount();
         System.out.println ("\n*************************************************************");
@@ -213,6 +240,7 @@ public class ManageOPC {
         try {
             Thread.sleep(1000 * 10); // Sleep 10 seconds
         } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         reviewAccount();
         System.out.println ("\n*************************************************************");
