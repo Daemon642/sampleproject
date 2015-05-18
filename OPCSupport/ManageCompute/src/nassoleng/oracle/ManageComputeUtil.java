@@ -115,7 +115,6 @@ public class ManageComputeUtil {
                 while ((line = rd.readLine()) != null) {
                     result.append(line);
                 }
-                System.out.println(result);
                 jsonString = result.toString();
             }
     

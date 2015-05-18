@@ -8,8 +8,8 @@ fi
 #
 PASSWORD=$1
 #
-./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552 ReviewAccount
-./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam04611 ReviewAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552 z12 ReviewAccount
+./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam04611 z11 ReviewAccount
 ./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam03756 ReviewAccount
 ./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam82569 ReviewAccount
 ./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam09373 ReviewAccount

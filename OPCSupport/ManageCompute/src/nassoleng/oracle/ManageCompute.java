@@ -146,9 +146,12 @@ public class ManageCompute {
     
     public void printSecurityApplications() {
         JSONObject secAppInstances = null;
+        JSONArray resultArray = null;
 
         secAppInstances = getSecurityApplications();
         try {
+            resultArray = secAppInstances.getJSONArray("result");
+            System.out.println("Result Array Length ="+resultArray.length());
             System.out.println (secAppInstances.toString(2));
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -157,9 +160,12 @@ public class ManageCompute {
     
     public void printSecurityRules() {
         JSONObject secRuleInstances = null;
+        JSONArray resultArray = null;
 
         secRuleInstances = getSecurityRules();
         try {
+            resultArray = secRuleInstances.getJSONArray("result");
+            System.out.println("Result Array Length ="+resultArray.length());
             System.out.println (secRuleInstances.toString(2));
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -269,7 +275,7 @@ public class ManageCompute {
             // dbcsIP = dbcsInstance.getString("em_url").substring(8);
             // dbcsIP = dbcsIP.substring(0,dbcsIP.indexOf(":"));
             // batchFile = new File(this.getConfigProperties().getProperty("scriptLocation") + "runOPCWorkshopDatabaseSetup.sh");
-            batchFile = new File("/u01/OPCWorkshop/lab/GSEScripts/reviewSecapplication.sh");
+            batchFile = new File("/u01/OPCWorkshop/lab/GSEScripts/reviewSecaplistplication.sh");
             procBuilder =
                 //new ProcessBuilder(batchFile.getAbsolutePath(), dbcsIP);
                 new ProcessBuilder(batchFile.getAbsolutePath(), "z12","Alpha2014_");

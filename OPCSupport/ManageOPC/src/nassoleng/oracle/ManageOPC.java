@@ -85,8 +85,17 @@ public class ManageOPC {
         System.out.println ("*******************************************\n");                    
         containerNames = manageSC.getContainerNames();
         System.out.println ("Storage Container Names = " + containerNames);    
+        System.out.println ("\n*******************************************");
+        System.out.println ("Print Orchestrations");
+        System.out.println ("*******************************************\n");                    
         manageCompute.printOrchestrations();
+        System.out.println ("\n*******************************************");
+        System.out.println ("Print Security Applications / Protocols");
+        System.out.println ("*******************************************\n");                    
         manageCompute.printSecurityApplications();
+        System.out.println ("\n*******************************************");
+        System.out.println ("Print Security Rules");
+        System.out.println ("*******************************************\n");                    
         manageCompute.printSecurityRules();
         dbcsNames = manageDBCS.getDBCSInstanceNames();
         System.out.println ("DBCS Instance Name = " + dbcsNames);      
