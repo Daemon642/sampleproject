@@ -159,6 +159,7 @@ public class ManageOPC {
         List <String> containerNames = null;
         List <String> dbcsNames = null;
         List <String> jcsNames = null;
+        Boolean accountClean;
 
         System.out.println ("\n*******************************************");
         System.out.println ("Cleanup of OPC Account " + this.getIdentityDomain());
@@ -171,7 +172,16 @@ public class ManageOPC {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        verifyCleanAccount ();
+        accountClean = verifyCleanAccount ();
+        if (accountClean) {
+            System.out.println ("\n*************************************************************");
+            System.out.println ("Account " + this.getIdentityDomain() + " is clean...");
+            System.out.println ("*************************************************************\n");                    
+        } else {
+            System.out.println ("\n*************************************************************");
+            System.out.println ("Account " + this.getIdentityDomain() + " is NOT clean...");
+            System.out.println ("*************************************************************\n");                    
+        }
         reviewAccount();
         System.out.println ("\n*************************************************************");
         System.out.println ("Cleanup of OPC Account " + this.getIdentityDomain() + " has completed...");
