@@ -269,7 +269,7 @@ public class ManageCompute {
             resultArray = orchestrationInstances.getJSONArray("result");
             for (int i = 0; i < resultArray.length(); i++) {
                 orchestrationInstance = resultArray.getJSONObject(i);
-                if (orchestrationInstance.getString("status").equals("stopping")) {
+                if (!(orchestrationInstance.getString("status").equals("stopped"))) {
                     orchestrationClean = false;              
                     System.out.println("Not Clean ");
                     System.out.println ("\n*******************************************");

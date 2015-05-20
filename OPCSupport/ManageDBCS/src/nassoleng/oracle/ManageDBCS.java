@@ -138,7 +138,11 @@ public class ManageDBCS {
                 //System.out.println ("\nJob Status = " + output);
 
                 jobResponse = new JSONObject(output);
-                jobStatus = jobResponse.getString("status");
+                try {
+                    jobStatus = jobResponse.getString("status");
+                } catch (JSONException je) {
+                    jobStatus = "Completed";                                    
+                }
             } else if (response.getStatus() == 200) {
                 jobStatus = "Completed";                
             } else  {
@@ -347,15 +351,15 @@ public class ManageDBCS {
         
         try {
             createAlphaDBCS ();
-            System.out.println ("Waiting on Create of AlphaDBCS Instance....");
+            System.out.print ("Waiting on Create of AlphaDBCS Instance....");
             Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
-                System.out.println ("Waiting on Create of AlphaDBCS Instance....");
-                Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+                System.out.print (".");
+                Thread.sleep(1000 * 10);
                 dbcsInstance = getDBCSInstanceInfo("AlphaDBCS");
                 status = dbcsInstance.getString("status");
             }
-            System.out.println ("AlphaDBCS Instance Create finshied....");
+            System.out.println ("\nAlphaDBCS Instance Create finshied....");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -373,15 +377,15 @@ public class ManageDBCS {
         
         try {
             createAlphaDBCS (studentNumber);
-            System.out.println ("Waiting on Create of AlphaDBCS Instance....");
+            System.out.print ("Waiting on Create of AlphaDBCS Instance....");
             Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
-                System.out.println ("Waiting on Create of AlphaDBCS Instance....");
-                Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+                System.out.print (".");
+                Thread.sleep(1000 * 10);
                 dbcsInstance = getDBCSInstanceInfo("Alpha" + studentNumber + "A-DBCS");
                 status = dbcsInstance.getString("status");
             }
-            System.out.println ("AlphaDBCS Instance Create finshied....");
+            System.out.println ("\nAlphaDBCS Instance Create finshied....");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -432,15 +436,15 @@ public class ManageDBCS {
             status = "Terminating";
             System.out.println ("Delete DBCS " + serviceName);
             jobURL = deleteDBCS (serviceName);
-            System.out.println ("Waiting on DBCS to be deleted ....");
+            System.out.print ("Waiting on DBCS to be deleted ....");
             Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
             status = getJobStatus(jobURL);                        
             while (status.equals("Terminating")) {
-                System.out.println ("Waiting on DBCS to be deleted ....");
-                Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                System.out.print (".");
+                Thread.sleep(1000 * 10);
                 status = getJobStatus(jobURL);                        
             }
-            System.out.println ("DBCS " + serviceName + " has been deleted\n");
+            System.out.println ("\nDBCS " + serviceName + " has been deleted\n");
         } catch (InterruptedException e) {
             e.printStackTrace();
         } 
@@ -463,15 +467,15 @@ public class ManageDBCS {
                 status = "Terminating";
                 System.out.println ("Delete DBCS " + serviceName);
                 jobURL = deleteDBCS (serviceName);
-                System.out.println ("Waiting on DBCS to be deleted ....");
+                System.out.print ("Waiting on DBCS to be deleted ....");
                 Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
                 status = getJobStatus(jobURL);                        
                 while (status.equals("Terminating")) {
-                    System.out.println ("Waiting on DBCS to be deleted ....");
-                    Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                    System.out.print (".");
+                    Thread.sleep(1000 * 10);
                     status = getJobStatus(jobURL);                        
                 }
-                System.out.println ("DBCS " + serviceName + " has been deleted\n");
+                System.out.println ("\nDBCS " + serviceName + " has been deleted\n");
             }
         } catch (JSONException e) {
             e.printStackTrace();

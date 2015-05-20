@@ -92,6 +92,8 @@ public class ManageOPC {
         jcsNames = manageJCS.getJCSInstanceNames();
         System.out.println ("JCS Instance Name = " + jcsNames);                
         manageJCS.getJCSInstanceIPs();
+        //System.out.println ("Orchestrations");                
+        //manageCompute.printOrchestrations();
         System.out.println ("\n*************************************************************");
         System.out.println ("Review of OPC Account " + this.getIdentityDomain() + " has completed...");
         System.out.println ("*************************************************************\n");                    

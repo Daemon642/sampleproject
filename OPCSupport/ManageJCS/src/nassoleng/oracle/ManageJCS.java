@@ -188,7 +188,11 @@ public class ManageJCS {
                 //System.out.println ("\nJob Status = " + output);
 
                 jobResponse = new JSONObject(output);
-                jobStatus = jobResponse.getString("status");
+                try {
+                    jobStatus = jobResponse.getString("status");
+                } catch (JSONException je) {
+                    jobStatus = "Completed";                                    
+                }
             } else if (response.getStatus() == 200) {
                 jobStatus = "Completed";                
             } else  {
@@ -299,15 +303,15 @@ public class ManageJCS {
         
         try {
             createAlphaJCS ("01", "A");
-            System.out.println ("Waiting on Create of Alpha01JCS Instance....");
+            System.out.print ("Waiting on Create of Alpha01JCS Instance....");
             Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
-                System.out.println ("Waiting on Create of Alpha01JCS Instance....");
-                Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+                System.out.print (".");
+                Thread.sleep(1000 * 10);
                 jcsInstance = getJCSInstanceInfo("Alpha01JCS");
                 status = jcsInstance.getString("status");
             }
-            System.out.println ("Alpha01JCS Instance Create finshied....");
+            System.out.println ("\nAlpha01JCS Instance Create finshied....");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -325,15 +329,15 @@ public class ManageJCS {
         
         try {
             createAlphaJCS (studentNumber, "A");
-            System.out.println ("Waiting on Create of AlphaJCS Instance....");
+            System.out.print ("Waiting on Create of AlphaJCS Instance....");
             Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
-                System.out.println ("Waiting on Create of AlphaJCS Instance....");
-                Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+                System.out.print (".");
+                Thread.sleep(1000 * 10);
                 jcsInstance = getJCSInstanceInfo("Alpha" + studentNumber + "A-JCS");
                 status = jcsInstance.getString("status");
             }
-            System.out.println ("Alpha01JCS Instance Create finshied....");
+            System.out.println ("\nAlpha01JCS Instance Create finshied....");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -648,15 +652,15 @@ public class ManageJCS {
                 status = "Terminating";
                 System.out.println ("Delete JCS " + serviceName);
                 jobURL = deleteJCS (serviceName);
-                System.out.println ("Waiting on JCS to be deleted ....");
+                System.out.print ("Waiting on JCS to be deleted ....");
                 Thread.sleep(1000 * 60 * 2); // Sleep for 1 minutes
                 status = getJobStatus(jobURL);                        
                 while (status.equals("Terminating")) {
-                    System.out.println ("Waiting on JCS to be deleted ....");
-                    Thread.sleep(1000 * 60 * 1); // Sleep for 1 minutes
+                    System.out.print (".");
+                    Thread.sleep(1000 * 10);
                     status = getJobStatus(jobURL);                        
                 }
-                System.out.println ("JCS " + serviceName + " has been deleted\n");
+                System.out.println ("\nJCS " + serviceName + " has been deleted\n");
             }
         } catch (JSONException e) {
             e.printStackTrace();
