@@ -164,6 +164,7 @@ public class ManageOPC {
         System.out.println ("\n*******************************************");
         System.out.println ("Cleanup of OPC Account " + this.getIdentityDomain());
         System.out.println ("*******************************************\n");     
+        this.manageCompute.deleteSecurityApplicationsAndRules ("8080");
         this.manageJCS.deleteAllJCS();
         this.manageDBCS.deleteAllDBCS();
         this.manageSC.DeleteAllContainers();
