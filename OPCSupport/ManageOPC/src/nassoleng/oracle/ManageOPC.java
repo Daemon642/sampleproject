@@ -164,7 +164,7 @@ public class ManageOPC {
         System.out.println ("\n*******************************************");
         System.out.println ("Cleanup of OPC Account " + this.getIdentityDomain());
         System.out.println ("*******************************************\n");     
-        this.manageCompute.deleteSecurityApplicationsAndRules ("8080");
+        //this.manageCompute.deleteSecurityApplicationsAndRules ("8080");
         this.manageJCS.deleteAllJCS();
         this.manageDBCS.deleteAllDBCS();
         this.manageSC.DeleteAllContainers();
@@ -200,7 +200,8 @@ public class ManageOPC {
         System.out.println ("*******************************************\n");                    
         
         if (studentNumber.equals("01")) {
-            accountClean = verifyCleanAccount();
+            accountClean = true;
+            //accountClean = verifyCleanAccount();
         } else 
             accountClean = true;
         if (!accountClean) {
@@ -234,7 +235,8 @@ public class ManageOPC {
         System.out.println ("*******************************************\n");                    
         
         if (studentNumber.equals("01")) {
-            accountClean = verifyCleanAccount();
+            accountClean = true;
+            //accountClean = verifyCleanAccount();
         } else 
             accountClean = true;
         if (!accountClean) {
