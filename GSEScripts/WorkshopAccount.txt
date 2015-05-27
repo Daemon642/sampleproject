@@ -1,0 +1,42 @@
+Workshop Accounts
+=================
+
+JCS 1 - 10
+==========
+usdevops40552
+usoracleam04611
+usoracleam03756
+usoracleam82569
+usoracleam09373
+usoracleam85039
+usoracleam08813
+usoracleam47561
+usoracleam32349
+usoracleam15239
+
+JCS 11- 19
+==========
+usoracle21884
+usoracle03294
+usoracle45722
+usoracle48514
+usoracle88327
+usoracle54892
+usoracle16340
+usoracle99246
+usoracle32870
+
+DBCS 1 - 10
+===========
+usoracle05758
+usoracle50038
+usoracle71552
+usoracle07819
+usoracle24288
+usoracle46695
+usoracle26336
+usoracle90960
+usoracle50539
+usoracle69275
+
+
