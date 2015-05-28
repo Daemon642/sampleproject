@@ -9,6 +9,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -261,83 +264,79 @@ public class ManageDBCS {
         }
     }
 
-    public void createAlphaDBCS (String studentNumber) {
+    public void createAlphaDBCS (String studentNumber) throws NoSuchAlgorithmException, KeyManagementException {
         ClientResponse response = null;
         String jobURL = null;
         String instanceName = null;
         String domainName = null;
 
-        try {  
-            Client client = ManageDBCSUtil.getClient(getUsername(), getPassword());
+        Client client = ManageDBCSUtil.getClient(getUsername(), getPassword());
     
-            WebResource webResource =
-                client.resource(getOpcDBCSURL() + getIdentityDomain());
+        WebResource webResource =
+            client.resource(getOpcDBCSURL() + getIdentityDomain());
 
-            instanceName = "Alpha" + studentNumber + "A-DBCS";
-            /* 11G
-            String se = new String (
-                "{\n" + 
-                "    \"serviceName\" : \"" + instanceName + "\",\n" + 
-                "    \"version\" : \"11.2.0.4\",\n" + 
-                "    \"level\" : \"PAAS\",\n" + 
-                "    \"description\" : \"Alpha Office Database Cloud Service\",\n" + 
-                "    \"edition\" : \"EE\",\n" + 
-                "    \"subscriptionType\" : \"HOURLY\",\n" + 
-                "    \"shape\" : \"oc3\",\n" + 
-                "\"parameters\" : [\n" + 
-                "    {\n" + 
-                "        \"type\" : \"db\",\n" + 
-                "        \"usableStorage\" : \"10\",\n" + 
-                "        \"adminPassword\" : \"Alpha2014_\",\n" + 
-                "        \"sid\" : \"ORCL\",\n" + 
-                "        \"failoverDatabase\" : \"no\",\n" + 
-                "        \"backupDestination\" : \"BOTH\",\n" + 
-                "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/AlphaDBCS_SC\",\n" + 
-                "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
-                "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
-                "    }],\n" + 
-                "    \"vmPublicKeyText\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
-                "}");
-            */
-            String se = new String (
-                "{\n" + 
-                "    \"serviceName\" : \"" + instanceName + "\",\n" + 
-                "    \"version\" : \"12.1.0.2\",\n" + 
-                "    \"level\" : \"PAAS\",\n" + 
-                "    \"description\" : \"Alpha Office Database Cloud Service\",\n" + 
-                "    \"edition\" : \"EE\",\n" + 
-                "    \"subscriptionType\" : \"HOURLY\",\n" + 
-                "    \"shape\" : \"oc3\",\n" + 
-                "\"parameters\" : [\n" + 
-                "    {\n" + 
-                "        \"type\" : \"db\",\n" + 
-                "        \"usableStorage\" : \"10\",\n" + 
-                "        \"adminPassword\" : \"Alpha2014_\",\n" + 
-                "        \"sid\" : \"ORCL\",\n" + 
-                "        \"pdf\" : \"PDB1\",\n" + 
-                "        \"failoverDatabase\" : \"no\",\n" + 
-                "        \"backupDestination\" : \"BOTH\",\n" + 
-                "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + studentNumber + "A-DBCS-SC\",\n" + 
-                "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
-                "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
-                "    }],\n" + 
-                "    \"vmPublicKeyText\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
-                "}");
+        instanceName = "Alpha" + studentNumber + "A-DBCS";
+        /* 11G
+        String se = new String (
+            "{\n" + 
+            "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+            "    \"version\" : \"11.2.0.4\",\n" + 
+            "    \"level\" : \"PAAS\",\n" + 
+            "    \"description\" : \"Alpha Office Database Cloud Service\",\n" + 
+            "    \"edition\" : \"EE\",\n" + 
+            "    \"subscriptionType\" : \"HOURLY\",\n" + 
+            "    \"shape\" : \"oc3\",\n" + 
+            "\"parameters\" : [\n" + 
+            "    {\n" + 
+            "        \"type\" : \"db\",\n" + 
+            "        \"usableStorage\" : \"10\",\n" + 
+            "        \"adminPassword\" : \"Alpha2014_\",\n" + 
+            "        \"sid\" : \"ORCL\",\n" + 
+            "        \"failoverDatabase\" : \"no\",\n" + 
+            "        \"backupDestination\" : \"BOTH\",\n" + 
+            "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/AlphaDBCS_SC\",\n" + 
+            "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+            "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
+            "    }],\n" + 
+            "    \"vmPublicKeyText\" : \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArn21PGy1SZ6AYFlztFUL1gv63EXMbSb4qo1SzPAwZgcQXjciU8YsettV81YIFzvIedEn4mhD8ebGKK1k8oYB7HYNsSywbXmqisI+75xY37EZT6ah+cxENmVxmzpOjOYH31wj792tf/WpUUpnN8MdIlTW8uAWNIa6Mz9YhAZ0sJILDOlSNr/rorrGYyYLBtJqbVAZlwEfUSgQTkMwBWK4L7aXOLMDFFAi2oEqsjmT3rWX55YzrwXIMvNXjslen6gXqrdoCeakKMbQ788fQqb1P9hgsmHhkERJfwhgFy+R1RUfPMHdZG7P2vNLUZDd54ROCmj2F852HkertpDMFNMWrQ== oracle@oraclelinux6.localdomain\"\n" + 
+            "}");
+        */
+        String se = new String (
+            "{\n" + 
+            "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+            "    \"version\" : \"12.1.0.2\",\n" + 
+            "    \"level\" : \"PAAS\",\n" + 
+            "    \"description\" : \"Alpha Office Database Cloud Service\",\n" + 
+            "    \"edition\" : \"EE\",\n" + 
+            "    \"subscriptionType\" : \"HOURLY\",\n" + 
+            "    \"shape\" : \"oc3\",\n" + 
+            "\"parameters\" : [\n" + 
+            "    {\n" + 
+            "        \"type\" : \"db\",\n" + 
+            "        \"usableStorage\" : \"10\",\n" + 
+            "        \"adminPassword\" : \"Alpha2014_\",\n" + 
+            "        \"sid\" : \"ORCL\",\n" + 
+            "        \"pdf\" : \"PDB1\",\n" + 
+            "        \"failoverDatabase\" : \"no\",\n" + 
+            "        \"backupDestination\" : \"BOTH\",\n" + 
+            "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + studentNumber + "A-DBCS-SC\",\n" + 
+            "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+            "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
+            "    }],\n" + 
+            "    \"vmPublicKeyText\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
+            "}");
             
-            System.out.println ("\nBody = " + se);
-            response = webResource.header("Content-Type", "application/json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+        System.out.println ("\nBody = " + se);
+        response = webResource.header("Content-Type", "application/json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
 
-            if (response.getStatus() != 202) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-            } else {
-                final MultivaluedMap<String,String> headers = response.getHeaders();
-                if (headers != null) {
-                    jobURL = headers.getFirst("Location");
-                }
-                System.out.println("Output from Server .... \n");                
+        if (response.getStatus() != 202) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+        } else {
+            final MultivaluedMap<String,String> headers = response.getHeaders();
+            if (headers != null) {
+                jobURL = headers.getFirst("Location");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Output from Server .... \n");                
         }
     }
 
@@ -392,7 +391,11 @@ public class ManageDBCS {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } 
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
     
     public String deleteDBCS(String instanceName) {

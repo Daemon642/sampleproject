@@ -9,6 +9,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -204,92 +207,85 @@ public class ManageJCS {
         return jobStatus;
     }
 
-    public void createAlphaJCS (String studentNumber, String instanceLetter) {
+    public void createAlphaJCS (String studentNumber, String instanceLetter) throws NoSuchAlgorithmException,
+                                                                                   KeyManagementException {
         ClientResponse response = null;
         String jobURL = null;
         String instanceName = null;
         String domainName = null;
         String dbName = null;
 
-        try {  
-            Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+        Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
  
-            WebResource webResource =
-                client.resource(getOpcJCSURL() + getIdentityDomain());
+        WebResource webResource =
+            client.resource(getOpcJCSURL() + getIdentityDomain());
 
-            instanceName = "Alpha" + studentNumber + instanceLetter + "-JCS";
-            domainName = "Alpha" + studentNumber + instanceLetter + "_domain";
-            dbName = "Alpha" + studentNumber + instanceLetter + "-DBCS";
-            String se = new String (
-                "{\n" + 
-                "    \"serviceName\" : \"" + instanceName + "\",\n" + 
-                "    \"level\" : \"PAAS\",\n" + 
-                "    \"subscriptionType\" : \"HOURLY\",\n" + 
-                "    \"description\" : \"Alpha Office Java Cloud Service\",\n" + 
-                "    \"provisionOTD\" : true,\n" + 
-                "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + studentNumber + instanceLetter +"-JCS-SC\",\n" + 
-                "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
-                "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
-                " \n" + 
-                "\"parameters\" : [\n" + 
-                "    {\n" + 
-                "        \"type\" : \"weblogic\",\n" + 
-                "        \"version\" : \"12.1.3.0.2\",\n" + 
-                "        \"edition\" : \"EE\",\n" + 
-                "        \"domainMode\" : \"PRODUCTION\",\n" + 
-                "        \"managedServerCount\" : \"1\",\n" + 
-                "        \"adminPort\" : \"7001\",\n" + 
-                "        \"deploymentChannelPort\" : \"9001\",\n" + 
-                "        \"securedAdminPort\" : \"7002\",\n" + 
-                "        \"contentPort\" : \"7003\",\n" + 
-                "        \"securedContentPort\" : \"7004\",\n" + 
-                "        \"domainName\" : \"" + domainName + "\",\n" + 
-                "        \"clusterName\" : \"Alpha" + studentNumber + instanceLetter + "_cluster\",\n" + 
-                "        \"adminUserName\" : \"weblogic\",\n" + 
-                "        \"adminPassword\" : \"Alpha2014_\",\n" + 
-                "        \"nodeManagerPort\" : \"5556\",\n" + 
-                "        \"nodeManagerUserName\" : \"weblogic\",\n" + 
-                "        \"nodeManagerPassword\" : \"Alpha2014_\",\n" + 
-                "        \"dbServiceName\" : \"" + dbName + "\",\n" + 
-                "        \"dbaName\" : \"SYS\",\n" + 
-                "        \"dbaPassword\" : \"Alpha2014_\",\n" + 
-                "        \"shape\" : \"oc3\",\n" + 
-                /*
-                "        \"domainVolumeSize\" : \"10240M\",\n" + 
-                "        \"backupVolumeSize\" : \"20480M\",\n" + 
-*/
-                "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
-                "    },\n" + 
-                "    {\n" + 
-                "        \"type\" : \"otd\",\n" + 
-                "        \"adminUserName\" : \"weblogic\",\n" + 
-                "        \"adminPassword\" : \"Alpha2014_\",\n" + 
-                "        \"listenerPortsEnabled\" : \"false\",\n" + 
-                "        \"listenerPort\" : \"8080\",\n" + 
-                "        \"listenerType\" : \"http\",\n" + 
-                "        \"securedListenerPort\" : \"8081\",\n" + 
-                "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
-                "        \"adminPort\" : \"8989\",\n" + 
-                "        \"shape\" : \"oc3\",\n" + 
-                "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
-                "    }\n" + 
-                "]\n" + 
-                "}");
+        instanceName = "Alpha" + studentNumber + instanceLetter + "-JCS";
+        domainName = "Alpha" + studentNumber + instanceLetter + "_domain";
+        dbName = "Alpha" + studentNumber + instanceLetter + "-DBCS";
+        String se = new String (
+            "{\n" + 
+            "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+            "    \"level\" : \"PAAS\",\n" + 
+            "    \"subscriptionType\" : \"HOURLY\",\n" + 
+            "    \"description\" : \"Alpha Office Java Cloud Service\",\n" + 
+            "    \"provisionOTD\" : true,\n" + 
+            "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/Alpha" + studentNumber + instanceLetter +"-JCS-SC\",\n" + 
+            "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+            "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
+            " \n" + 
+            "\"parameters\" : [\n" + 
+            "    {\n" + 
+            "        \"type\" : \"weblogic\",\n" + 
+            "        \"version\" : \"12.1.3.0.2\",\n" + 
+            "        \"edition\" : \"EE\",\n" + 
+            "        \"domainMode\" : \"PRODUCTION\",\n" + 
+            "        \"managedServerCount\" : \"1\",\n" + 
+            "        \"adminPort\" : \"7001\",\n" + 
+            "        \"deploymentChannelPort\" : \"9001\",\n" + 
+            "        \"securedAdminPort\" : \"7002\",\n" + 
+            "        \"contentPort\" : \"7003\",\n" + 
+            "        \"securedContentPort\" : \"7004\",\n" + 
+            "        \"domainName\" : \"" + domainName + "\",\n" + 
+            "        \"clusterName\" : \"Alpha" + studentNumber + instanceLetter + "_cluster\",\n" + 
+            "        \"adminUserName\" : \"weblogic\",\n" + 
+            "        \"adminPassword\" : \"Alpha2014_\",\n" + 
+            "        \"nodeManagerPort\" : \"5556\",\n" + 
+            "        \"nodeManagerUserName\" : \"weblogic\",\n" + 
+            "        \"nodeManagerPassword\" : \"Alpha2014_\",\n" + 
+            "        \"dbServiceName\" : \"" + dbName + "\",\n" + 
+            "        \"dbaName\" : \"SYS\",\n" + 
+            "        \"dbaPassword\" : \"Alpha2014_\",\n" + 
+            "        \"shape\" : \"oc3\",\n" + 
+            "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
+            "    },\n" + 
+            "    {\n" + 
+            "        \"type\" : \"otd\",\n" + 
+            "        \"adminUserName\" : \"weblogic\",\n" + 
+            "        \"adminPassword\" : \"Alpha2014_\",\n" + 
+            "        \"listenerPortsEnabled\" : \"false\",\n" + 
+            "        \"listenerPort\" : \"8080\",\n" + 
+            "        \"listenerType\" : \"http\",\n" + 
+            "        \"securedListenerPort\" : \"8081\",\n" + 
+            "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
+            "        \"adminPort\" : \"8989\",\n" + 
+            "        \"shape\" : \"oc3\",\n" + 
+            "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
+            "    }\n" + 
+            "]\n" + 
+            "}");
             
-            System.out.println ("\nBody = " + se);
-            response = webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+        System.out.println ("\nBody = " + se);
+        response = webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
 
-            if (response.getStatus() != 202) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-            } else {
-                final MultivaluedMap<String,String> headers = response.getHeaders();
-                if (headers != null) {
-                    jobURL = headers.getFirst("Location");
-                }
-                System.out.println("Output from Server .... \n");                
+        if (response.getStatus() != 202) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+        } else {
+            final MultivaluedMap<String,String> headers = response.getHeaders();
+            if (headers != null) {
+                jobURL = headers.getFirst("Location");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Output from Server .... \n");                
         }
     }
 
@@ -317,7 +313,11 @@ public class ManageJCS {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } 
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
     
     public void createAlphaJCSDriver (String studentNumber) {
@@ -344,7 +344,11 @@ public class ManageJCS {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } 
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
     
     public void createMyJCS2Instance () {

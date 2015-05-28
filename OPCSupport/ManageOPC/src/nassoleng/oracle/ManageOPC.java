@@ -199,8 +199,8 @@ public class ManageOPC {
         System.out.println ("*******************************************\n");                    
         
         if (studentNumber.equals("01")) {
-            accountClean = true;
-            //accountClean = verifyCleanAccount();
+            //accountClean = true;
+            accountClean = verifyCleanAccount();
         } else 
             accountClean = true;
         if (!accountClean) {
@@ -234,8 +234,8 @@ public class ManageOPC {
         System.out.println ("*******************************************\n");                    
         
         if (studentNumber.equals("01")) {
-            accountClean = true;
-            //accountClean = verifyCleanAccount();
+            //accountClean = true;
+            accountClean = verifyCleanAccount();
         } else 
             accountClean = true;
         if (!accountClean) {
