@@ -357,7 +357,8 @@ public class ManageDBCS {
                 System.out.print (".");
                 Thread.sleep(1000 * 10);
                 dbcsInstance = getDBCSInstanceInfo("AlphaDBCS");
-                status = dbcsInstance.getString("status");
+                if (dbcsInstance.has("status"))
+                    status = dbcsInstance.getString("status");
             }
             System.out.println ("\nAlphaDBCS Instance Create finshied....");
         } catch (JSONException e) {
@@ -383,7 +384,8 @@ public class ManageDBCS {
                 System.out.print (".");
                 Thread.sleep(1000 * 10);
                 dbcsInstance = getDBCSInstanceInfo("Alpha" + studentNumber + "A-DBCS");
-                status = dbcsInstance.getString("status");
+                if (dbcsInstance.has("status"))
+                    status = dbcsInstance.getString("status");
             }
             System.out.println ("\nAlphaDBCS Instance Create finshied....");
         } catch (JSONException e) {

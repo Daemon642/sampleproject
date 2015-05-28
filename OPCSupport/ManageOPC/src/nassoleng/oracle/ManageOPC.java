@@ -143,8 +143,7 @@ public class ManageOPC {
                             accountClean = manageCompute.verifyOrchestrations();
                         }
                     } catch (JSONException e) {
-                        accountClean = false;
-                        e.printStackTrace();
+                        accountClean = true;
                     } catch (InterruptedException e) {
                         accountClean = false;
                         e.printStackTrace();
