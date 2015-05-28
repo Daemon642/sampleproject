@@ -309,7 +309,7 @@ public class ManageJCS {
                 System.out.print (".");
                 Thread.sleep(1000 * 10);
                 jcsInstance = getJCSInstanceInfo("Alpha01JCS");
-                if (jcsInstance.has("status"))
+                if ((jcsInstance != null) && (jcsInstance.has("status")))
                     status = jcsInstance.getString("status");
             }
             System.out.println ("\nAlpha01JCS Instance Create finshied....");
@@ -336,7 +336,7 @@ public class ManageJCS {
                 System.out.print (".");
                 Thread.sleep(1000 * 10);
                 jcsInstance = getJCSInstanceInfo("Alpha" + studentNumber + "A-JCS");
-                if (jcsInstance.has("status"))
+                if ((jcsInstance != null) && (jcsInstance.has("status")))
                     status = jcsInstance.getString("status");
             }
             System.out.println ("\nAlpha01JCS Instance Create finshied....");
@@ -450,7 +450,7 @@ public class ManageJCS {
                 System.out.println ("Waiting on Create of MyJCS2 Instance....");
                 Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
                 jcsInstance = getJCSInstanceInfo("MyJCS2");
-                if (jcsInstance.has("status"))
+                if ((jcsInstance != null) && (jcsInstance.has("status")))
                     status = jcsInstance.getString("status");
             }
             System.out.println ("MyJCS2 Instance Create finshied....");

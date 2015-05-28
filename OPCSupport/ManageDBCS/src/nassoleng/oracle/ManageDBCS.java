@@ -357,7 +357,7 @@ public class ManageDBCS {
                 System.out.print (".");
                 Thread.sleep(1000 * 10);
                 dbcsInstance = getDBCSInstanceInfo("AlphaDBCS");
-                if (dbcsInstance.has("status"))
+                if ((dbcsInstance !=null) && (dbcsInstance.has("status")))
                     status = dbcsInstance.getString("status");
             }
             System.out.println ("\nAlphaDBCS Instance Create finshied....");
@@ -384,7 +384,7 @@ public class ManageDBCS {
                 System.out.print (".");
                 Thread.sleep(1000 * 10);
                 dbcsInstance = getDBCSInstanceInfo("Alpha" + studentNumber + "A-DBCS");
-                if (dbcsInstance.has("status"))
+                if ((dbcsInstance !=null) && (dbcsInstance.has("status")))
                     status = dbcsInstance.getString("status");
             }
             System.out.println ("\nAlphaDBCS Instance Create finshied....");
