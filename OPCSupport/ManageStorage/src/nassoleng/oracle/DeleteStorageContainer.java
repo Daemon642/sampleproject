@@ -35,6 +35,7 @@ import javax.net.ssl.X509TrustManager;
 import oracle.cloud.storage.CloudStorage;
 import oracle.cloud.storage.CloudStorageConfig;
 import oracle.cloud.storage.CloudStorageFactory;
+import oracle.cloud.storage.exception.SystemException;
 import oracle.cloud.storage.model.Container;
 import oracle.cloud.storage.model.Key;
 
@@ -51,12 +52,28 @@ public class DeleteStorageContainer {
     public CloudStorage getStorageConnection () {
         CloudStorageConfig myConfig = new CloudStorageConfig();
         CloudStorage myConnection = null;
+        int retryCnt = 0;
 
-        try {
-            myConfig.setServiceName("Storage-" + this.getOpcDomain()).setUsername(this.getOpcUsername()).setPassword(this.getOpcPassword().toCharArray()).setServiceUrl("https://storage.us2.oraclecloud.com");
-            myConnection = CloudStorageFactory.getStorage(myConfig);
-        } catch (MalformedURLException me) {
-            me.printStackTrace();
+        if (retryCnt <= 1) {
+            try {
+                myConfig.setServiceName("Storage-" + this.getOpcDomain()).setUsername(this.getOpcUsername()).setPassword(this.getOpcPassword().toCharArray()).setServiceUrl("https://storage.us2.oraclecloud.com");
+                myConnection = CloudStorageFactory.getStorage(myConfig);
+                retryCnt = 2;
+            } catch (MalformedURLException me) {
+                me.printStackTrace();
+            } catch (SystemException se) {
+                se.printStackTrace();
+                retryCnt++;
+                if (retryCnt == 1) {
+                    try {
+                        Thread.sleep(1000 * 30);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    throw se;
+                }
+            }
         }
         return myConnection;
     }
