@@ -190,6 +190,8 @@ public class ManageDBCS {
         String jobURL = null;
         String instanceName = null;
         String domainName = null;
+        String dbcsPassword = "Welcome123#";
+
 
         Client client = ManageDBCSUtil.getClient(getUsername(), getPassword());
     
@@ -210,14 +212,11 @@ public class ManageDBCS {
             "    {\n" + 
             "        \"type\" : \"db\",\n" + 
             "        \"usableStorage\" : \"10\",\n" + 
-            "        \"adminPassword\" : \"Welcome123#\",\n" + 
+            "        \"adminPassword\" : \"" + dbcsPassword + "\",\n" + 
             "        \"sid\" : \"ORCL\",\n" + 
             "        \"pdf\" : \"PDB1\",\n" + 
             "        \"failoverDatabase\" : \"no\",\n" + 
-            "        \"backupDestination\" : \"BOTH\",\n" + 
-            "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/SalesDevCDB-SC\",\n" + 
-            "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
-            "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
+            "        \"backupDestination\" : \"NONE\"\n" + 
             "    }],\n" + 
             "    \"vmPublicKeyText\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
             "}");

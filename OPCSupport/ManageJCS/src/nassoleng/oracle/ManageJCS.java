@@ -295,7 +295,9 @@ public class ManageJCS {
         String instanceName = null;
         String domainName = null;
         String dbName = null;
-        String password = null;
+        String jcsPassword = "oracle12";
+        String dbcsPassword = "Welcome123#";
+
 
         Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
     
@@ -305,18 +307,13 @@ public class ManageJCS {
         instanceName = "SalesDev";
         domainName = "SalesDev_domain";
         dbName = "SalesDevCDB";
-        password = "Welcome123#";
         String se = new String (
             "{\n" + 
             "    \"serviceName\" : \"" + instanceName + "\",\n" + 
             "    \"level\" : \"PAAS\",\n" + 
             "    \"subscriptionType\" : \"HOURLY\",\n" + 
             "    \"description\" : \"SalesDev Java Cloud Service\",\n" + 
-            "    \"provisionOTD\" : true,\n" + 
-            "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/SalesDevCDB-SC\",\n" + 
-            "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
-            "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
-            " \n" + 
+            "    \"provisionOTD\" : false,\n" + 
             "\"parameters\" : [\n" + 
             "    {\n" + 
             "        \"type\" : \"weblogic\",\n" + 
@@ -332,26 +329,13 @@ public class ManageJCS {
             "        \"domainName\" : \"" + domainName + "\",\n" + 
             "        \"clusterName\" : \"SalesDev_cluster\",\n" + 
             "        \"adminUserName\" : \"weblogic\",\n" + 
-            "        \"adminPassword\" : \"" + password + "\",\n" + 
+            "        \"adminPassword\" : \"" + jcsPassword + "\",\n" + 
             "        \"nodeManagerPort\" : \"5556\",\n" + 
             "        \"nodeManagerUserName\" : \"weblogic\",\n" + 
-            "        \"nodeManagerPassword\" : \"" + password + "\",\n" + 
+            "        \"nodeManagerPassword\" : \"" + jcsPassword + "\",\n" + 
             "        \"dbServiceName\" : \"" + dbName + "\",\n" + 
             "        \"dbaName\" : \"SYS\",\n" + 
-            "        \"dbaPassword\" : \"" + password + "\",\n" + 
-            "        \"shape\" : \"oc3\",\n" + 
-            "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
-            "    },\n" + 
-            "    {\n" + 
-            "        \"type\" : \"otd\",\n" + 
-            "        \"adminUserName\" : \"weblogic\",\n" + 
-            "        \"adminPassword\" : \"" + password + "\",\n" + 
-            "        \"listenerPortsEnabled\" : \"false\",\n" + 
-            "        \"listenerPort\" : \"8080\",\n" + 
-            "        \"listenerType\" : \"http\",\n" + 
-            "        \"securedListenerPort\" : \"8081\",\n" + 
-            "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
-            "        \"adminPort\" : \"8989\",\n" + 
+            "        \"dbaPassword\" : \"" + dbcsPassword + "\",\n" + 
             "        \"shape\" : \"oc3\",\n" + 
             "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
             "    }\n" + 

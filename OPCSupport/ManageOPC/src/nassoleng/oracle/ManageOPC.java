@@ -276,8 +276,8 @@ public class ManageOPC {
         if (!accountClean) {
             System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
         } else {
-            containerNames = this.manageSC.opcGenericWorkshopCreateContainers();
-            System.out.println ("\nStorage Container Names = " + containerNames);
+            //containerNames = this.manageSC.opcGenericWorkshopCreateContainers();
+            //System.out.println ("\nStorage Container Names = " + containerNames);
             this.manageDBCS.createGenericDBCSDriver();
             dbcsNames = this.manageDBCS.getDBCSInstanceNames();
             System.out.println ("DBCS Instance Name = " + dbcsNames);      
