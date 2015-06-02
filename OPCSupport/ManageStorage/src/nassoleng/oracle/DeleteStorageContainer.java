@@ -211,6 +211,17 @@ public class DeleteStorageContainer {
         
         return containerNames;
     }
+
+    public List <String> opcGenericWorkshopCreateContainers () {
+        List <String> containerNames = null;
+
+        createContainer ("SalesDevCDB-SC");
+        createContainer ("SalesDev-SC");
+        containerNames = getContainerNames();
+        
+        return containerNames;
+    }
+
     public void setOpcUsername(String opcUsername) {
         this.opcUsername = opcUsername;
     }

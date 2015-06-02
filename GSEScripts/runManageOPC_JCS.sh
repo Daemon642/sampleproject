@@ -6,6 +6,7 @@ then
         echo "Supported Methods:"
         echo "   ReviewAccount"
         echo "   CleanupAccount"
+        echo "   SetupGenericWorkshopAccount"
         echo "   SetupJCSWorkshopAccount"
         echo "   SetupJCSWorkshopOnsiteAccount"
 	exit 1

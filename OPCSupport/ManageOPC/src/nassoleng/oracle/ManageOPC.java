@@ -234,8 +234,8 @@ public class ManageOPC {
         System.out.println ("*******************************************\n");                    
         
         if (studentNumber.equals("01")) {
-            //accountClean = true;
-            accountClean = verifyCleanAccount();
+            accountClean = true;
+            //accountClean = verifyCleanAccount();
         } else 
             accountClean = true;
         if (!accountClean) {
@@ -248,6 +248,40 @@ public class ManageOPC {
             System.out.println ("DBCS Instance Name = " + dbcsNames);      
             setupAlphaSchema ("Alpha" + studentNumber + "A-DBCS");
             this.manageJCS.createAlphaJCSDriver(studentNumber);
+            jcsNames = this.manageJCS.getJCSInstanceNames();
+            System.out.println ("\nJCS Instance Name = " + jcsNames);                
+        }
+        try {
+            Thread.sleep(1000 * 10); // Sleep 10 seconds
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        reviewAccount();
+        System.out.println ("\n*************************************************************");
+        System.out.println ("Setup of OPC Account " + this.getIdentityDomain() + " has completed...");
+        System.out.println ("*************************************************************\n");                    
+    }
+    
+    public void setupGenericWorkshopAccount () {
+        List <String> containerNames = null;
+        List <String> dbcsNames = null;
+        List <String> jcsNames = null;
+        Boolean accountClean;
+
+        System.out.println ("\n*******************************************");
+        System.out.println ("Setup of OPC Account " + this.getIdentityDomain());
+        System.out.println ("*******************************************\n");                    
+        
+        accountClean = verifyCleanAccount();
+        if (!accountClean) {
+            System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
+        } else {
+            containerNames = this.manageSC.opcGenericWorkshopCreateContainers();
+            System.out.println ("\nStorage Container Names = " + containerNames);
+            this.manageDBCS.createGenericDBCSDriver();
+            dbcsNames = this.manageDBCS.getDBCSInstanceNames();
+            System.out.println ("DBCS Instance Name = " + dbcsNames);      
+            this.manageJCS.createGenericJCSDriver();
             jcsNames = this.manageJCS.getJCSInstanceNames();
             System.out.println ("\nJCS Instance Name = " + jcsNames);                
         }
@@ -385,6 +419,8 @@ public class ManageOPC {
                 manageOPC.reviewAccount();
             } else if (method.contains("CleanupAccount")) {
                 manageOPC.cleanupAccount();
+            } else if (method.contains("SetupGenericWorkshopAccount")) {
+                manageOPC.setupGenericWorkshopAccount();
             } else if (method.contains("SetupJCSWorkshopAccount")) {
                 manageOPC.setupJCSWorkshopAccount("01");
             } else if (method.contains("SetupJCSWorkshopOnsiteAccount")) {

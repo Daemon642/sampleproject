@@ -151,6 +151,8 @@ public class ManageDBCS {
             } else  {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             }
+        } catch (RuntimeException re) {
+            jobStatus = "Completed";                
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,6 +185,56 @@ public class ManageDBCS {
         }
     }
 
+    public void createGenericDBCS () throws NoSuchAlgorithmException, KeyManagementException {
+        ClientResponse response = null;
+        String jobURL = null;
+        String instanceName = null;
+        String domainName = null;
+
+        Client client = ManageDBCSUtil.getClient(getUsername(), getPassword());
+    
+        WebResource webResource =
+            client.resource(getOpcDBCSURL() + getIdentityDomain());
+
+        instanceName = "SalesDevCDB";
+        String se = new String (
+            "{\n" + 
+            "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+            "    \"version\" : \"12.1.0.2\",\n" + 
+            "    \"level\" : \"PAAS\",\n" + 
+            "    \"description\" : \"SalesDev Database Cloud Service\",\n" + 
+            "    \"edition\" : \"EE\",\n" + 
+            "    \"subscriptionType\" : \"HOURLY\",\n" + 
+            "    \"shape\" : \"oc3\",\n" + 
+            "\"parameters\" : [\n" + 
+            "    {\n" + 
+            "        \"type\" : \"db\",\n" + 
+            "        \"usableStorage\" : \"10\",\n" + 
+            "        \"adminPassword\" : \"Welcome123#\",\n" + 
+            "        \"sid\" : \"ORCL\",\n" + 
+            "        \"pdf\" : \"PDB1\",\n" + 
+            "        \"failoverDatabase\" : \"no\",\n" + 
+            "        \"backupDestination\" : \"BOTH\",\n" + 
+            "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/SalesDevCDB-SC\",\n" + 
+            "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+            "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
+            "    }],\n" + 
+            "    \"vmPublicKeyText\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
+            "}");
+            
+        System.out.println ("\nBody = " + se);
+        response = webResource.header("Content-Type", "application/json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+
+        if (response.getStatus() != 202) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+        } else {
+            final MultivaluedMap<String,String> headers = response.getHeaders();
+            if (headers != null) {
+                jobURL = headers.getFirst("Location");
+            }
+            System.out.println("Output from Server .... \n");                
+        }
+    }
 
     public void createAlphaDBCS () {
         ClientResponse response = null;
@@ -387,6 +439,37 @@ public class ManageDBCS {
                     status = dbcsInstance.getString("status");
             }
             System.out.println ("\nAlphaDBCS Instance Create finshied....");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void createGenericDBCSDriver () {
+        JSONObject dbcsInstance = null;
+        String status = "In Progress";
+        
+        System.out.println ("\n***************************");
+        System.out.println ("Create SalesDevCDB Instance");
+        System.out.println ("***************************\n");
+        
+        try {
+            createGenericDBCS ();
+            System.out.print ("Waiting on Create of SalesDevCDB Instance....");
+            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+            while (status.contains("In Progress")) {
+                System.out.print (".");
+                Thread.sleep(1000 * 10);
+                dbcsInstance = getDBCSInstanceInfo("SalesDevCDB");
+                if ((dbcsInstance !=null) && (dbcsInstance.has("status")))
+                    status = dbcsInstance.getString("status");
+            }
+            System.out.println ("\nSalesDevCDB Instance Create finshied....");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

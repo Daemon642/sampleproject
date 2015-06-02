@@ -289,6 +289,89 @@ public class ManageJCS {
         }
     }
 
+    public void createGenericJCS () throws NoSuchAlgorithmException, KeyManagementException {
+        ClientResponse response = null;
+        String jobURL = null;
+        String instanceName = null;
+        String domainName = null;
+        String dbName = null;
+        String password = null;
+
+        Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+    
+        WebResource webResource =
+            client.resource(getOpcJCSURL() + getIdentityDomain());
+
+        instanceName = "SalesDev";
+        domainName = "SalesDev_domain";
+        dbName = "SalesDevCDB";
+        password = "Welcome123#";
+        String se = new String (
+            "{\n" + 
+            "    \"serviceName\" : \"" + instanceName + "\",\n" + 
+            "    \"level\" : \"PAAS\",\n" + 
+            "    \"subscriptionType\" : \"HOURLY\",\n" + 
+            "    \"description\" : \"SalesDev Java Cloud Service\",\n" + 
+            "    \"provisionOTD\" : true,\n" + 
+            "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/SalesDevCDB-SC\",\n" + 
+            "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+            "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
+            " \n" + 
+            "\"parameters\" : [\n" + 
+            "    {\n" + 
+            "        \"type\" : \"weblogic\",\n" + 
+            "        \"version\" : \"12.1.3.0.2\",\n" + 
+            "        \"edition\" : \"EE\",\n" + 
+            "        \"domainMode\" : \"PRODUCTION\",\n" + 
+            "        \"managedServerCount\" : \"1\",\n" + 
+            "        \"adminPort\" : \"7001\",\n" + 
+            "        \"deploymentChannelPort\" : \"9001\",\n" + 
+            "        \"securedAdminPort\" : \"7002\",\n" + 
+            "        \"contentPort\" : \"7003\",\n" + 
+            "        \"securedContentPort\" : \"7004\",\n" + 
+            "        \"domainName\" : \"" + domainName + "\",\n" + 
+            "        \"clusterName\" : \"SalesDev_cluster\",\n" + 
+            "        \"adminUserName\" : \"weblogic\",\n" + 
+            "        \"adminPassword\" : \"" + password + "\",\n" + 
+            "        \"nodeManagerPort\" : \"5556\",\n" + 
+            "        \"nodeManagerUserName\" : \"weblogic\",\n" + 
+            "        \"nodeManagerPassword\" : \"" + password + "\",\n" + 
+            "        \"dbServiceName\" : \"" + dbName + "\",\n" + 
+            "        \"dbaName\" : \"SYS\",\n" + 
+            "        \"dbaPassword\" : \"" + password + "\",\n" + 
+            "        \"shape\" : \"oc3\",\n" + 
+            "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
+            "    },\n" + 
+            "    {\n" + 
+            "        \"type\" : \"otd\",\n" + 
+            "        \"adminUserName\" : \"weblogic\",\n" + 
+            "        \"adminPassword\" : \"" + password + "\",\n" + 
+            "        \"listenerPortsEnabled\" : \"false\",\n" + 
+            "        \"listenerPort\" : \"8080\",\n" + 
+            "        \"listenerType\" : \"http\",\n" + 
+            "        \"securedListenerPort\" : \"8081\",\n" + 
+            "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
+            "        \"adminPort\" : \"8989\",\n" + 
+            "        \"shape\" : \"oc3\",\n" + 
+            "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
+            "    }\n" + 
+            "]\n" + 
+            "}");
+            
+        System.out.println ("\nBody = " + se);
+        response = webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+
+        if (response.getStatus() != 202) {
+            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+        } else {
+            final MultivaluedMap<String,String> headers = response.getHeaders();
+            if (headers != null) {
+                jobURL = headers.getFirst("Location");
+            }
+            System.out.println("Output from Server .... \n");                
+        }
+    }
+
     public void createAlpha01JCS () {
         JSONObject jcsInstance = null;
         String status = "In Progress";
@@ -340,6 +423,37 @@ public class ManageJCS {
                     status = jcsInstance.getString("status");
             }
             System.out.println ("\nAlpha01JCS Instance Create finshied....");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void createGenericJCSDriver () {
+        JSONObject jcsInstance = null;
+        String status = "In Progress";
+        
+        System.out.println ("\n***************************");
+        System.out.println ("Create SalesDev Instance");
+        System.out.println ("***************************\n");
+        
+        try {
+            createGenericJCS ();
+            System.out.print ("Waiting on Create of SalesDev Instance....");
+            Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
+            while (status.contains("In Progress")) {
+                System.out.print (".");
+                Thread.sleep(1000 * 10);
+                jcsInstance = getJCSInstanceInfo("SalesDev");
+                if ((jcsInstance != null) && (jcsInstance.has("status")))
+                    status = jcsInstance.getString("status");
+            }
+            System.out.println ("\nSalesDev Instance Create finshied....");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
