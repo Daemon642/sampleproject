@@ -112,10 +112,12 @@ public class ManageJCS {
                 jcsInfo = getJCSInstanceInfo(jcsName);
                 wlsIP = jcsInfo.getString("wls_admin_url").substring(8);
                 wlsIP = wlsIP.substring(0,wlsIP.indexOf(":"));
-                otdIP = jcsInfo.getString("otd_admin_url").substring(8);
-                otdIP = otdIP.substring(0,otdIP.indexOf(":"));
                 System.out.println (jcsName + " WLS IP = " +  wlsIP);
-                System.out.println (jcsName + " OTD IP = " + otdIP);
+                if (jcsInfo.has("otd_admin_url")) {
+                    otdIP = jcsInfo.getString("otd_admin_url").substring(8);
+                    otdIP = otdIP.substring(0,otdIP.indexOf(":"));
+                    System.out.println (jcsName + " OTD IP = " + otdIP);
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -52,7 +52,7 @@ public class DeleteStorageContainer {
     public CloudStorage getStorageConnection () {
         CloudStorageConfig myConfig = new CloudStorageConfig();
         CloudStorage myConnection = null;
-        String serviceURL;
+        String serviceURL = null;
         int retryCnt = 0;
 
         if (retryCnt <= 1) {
@@ -74,7 +74,9 @@ public class DeleteStorageContainer {
                 retryCnt++;
                 if (retryCnt == 1) {
                     try {
-                        Thread.sleep(1000 * 30);
+                        System.out.println ("Sleep before retry of Storage Connection");
+                        System.out.println ("Storage Serivce URL = " + serviceURL);
+                        Thread.sleep(1000 * 60);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
