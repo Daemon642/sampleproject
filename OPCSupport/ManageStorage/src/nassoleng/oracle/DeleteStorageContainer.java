@@ -52,11 +52,19 @@ public class DeleteStorageContainer {
     public CloudStorage getStorageConnection () {
         CloudStorageConfig myConfig = new CloudStorageConfig();
         CloudStorage myConnection = null;
+        String serviceURL;
         int retryCnt = 0;
 
         if (retryCnt <= 1) {
             try {
-                myConfig.setServiceName("Storage-" + this.getOpcDomain()).setUsername(this.getOpcUsername()).setPassword(this.getOpcPassword().toCharArray()).setServiceUrl("https://storage.us2.oraclecloud.com");
+                // Data Center specific URL
+                //serviceURL = new String ("https://storage.us2.oraclecloud.com");
+                ///myConfig.setServiceName("Storage-" + this.getOpcDomain()).setUsername(this.getOpcUsername()).setPassword(this.getOpcPassword().toCharArray()).setServiceUrl(serviceURL);
+                //
+                // Global Namespace URL
+                //
+                serviceURL = new String ("https://" + this.getOpcDomain() + ".storage.oraclecloud.com");
+                myConfig.setServiceName("Storage-" + this.getOpcDomain()).setUsername(this.getOpcUsername()).setPassword(this.getOpcPassword().toCharArray()).setServiceUrl(serviceURL);
                 myConnection = CloudStorageFactory.getStorage(myConfig);
                 retryCnt = 2;
             } catch (MalformedURLException me) {

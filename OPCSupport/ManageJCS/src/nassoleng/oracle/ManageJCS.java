@@ -295,7 +295,7 @@ public class ManageJCS {
         String instanceName = null;
         String domainName = null;
         String dbName = null;
-        String jcsPassword = "oracle12";
+        String jcsPassword = "Welcome123#";
         String dbcsPassword = "Welcome123#";
 
 
@@ -314,6 +314,9 @@ public class ManageJCS {
             "    \"subscriptionType\" : \"HOURLY\",\n" + 
             "    \"description\" : \"SalesDev Java Cloud Service\",\n" + 
             "    \"provisionOTD\" : false,\n" + 
+            "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/SalesDev-SC\",\n" + 
+            "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+            "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
             "\"parameters\" : [\n" + 
             "    {\n" + 
             "        \"type\" : \"weblogic\",\n" + 

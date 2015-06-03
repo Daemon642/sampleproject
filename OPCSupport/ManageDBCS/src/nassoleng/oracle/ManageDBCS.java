@@ -216,7 +216,10 @@ public class ManageDBCS {
             "        \"sid\" : \"ORCL\",\n" + 
             "        \"pdf\" : \"PDB1\",\n" + 
             "        \"failoverDatabase\" : \"no\",\n" + 
-            "        \"backupDestination\" : \"NONE\"\n" + 
+            "        \"backupDestination\" : \"BOTH\",\n" + 
+            "        \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/SalesDevCDB-SC\",\n" + 
+            "        \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
+            "        \"cloudStoragePwd\" : \"" + getPassword() + "\"\n" + 
             "    }],\n" + 
             "    \"vmPublicKeyText\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
             "}");
