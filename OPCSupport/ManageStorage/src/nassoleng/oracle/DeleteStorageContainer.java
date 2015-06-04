@@ -70,7 +70,6 @@ public class DeleteStorageContainer {
             } catch (MalformedURLException me) {
                 me.printStackTrace();
             } catch (SystemException se) {
-                se.printStackTrace();
                 retryCnt++;
                 if (retryCnt == 1) {
                     try {
