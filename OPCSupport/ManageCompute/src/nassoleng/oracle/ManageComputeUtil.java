@@ -27,6 +27,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -86,8 +87,12 @@ public class ManageComputeUtil {
             new String("{\n" + "    \"password\" : \"" + password + "\",\n" +
                        "    \"user\" : \"/Compute-" + domain + "/" + username + "\"\n" + "}");
 
+        HttpHost proxy = new HttpHost("dmz-proxy.oracleads.com", 80, "http");
+        RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
+
         httpclient = HttpClients.createDefault();
         HttpPost httppost = new HttpPost("https://api-" + zone + ".compute.us2.oraclecloud.com/authenticate/");
+        httppost.setConfig(config);
 
         try {
             StringEntity entity = new StringEntity(json);
