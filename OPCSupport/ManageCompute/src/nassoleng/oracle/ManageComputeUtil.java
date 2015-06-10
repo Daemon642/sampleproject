@@ -87,7 +87,9 @@ public class ManageComputeUtil {
             new String("{\n" + "    \"password\" : \"" + password + "\",\n" +
                        "    \"user\" : \"/Compute-" + domain + "/" + username + "\"\n" + "}");
 
-        HttpHost proxy = new HttpHost("dmz-proxy.oracleads.com", 80, "http");
+        String proxyHost = System.getenv("PROXYHOST");
+        System.out.println ("PROXY HOST = " + proxyHost);
+        HttpHost proxy = new HttpHost(proxyHost, 80, "http");
         RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
 
         httpclient = HttpClients.createDefault();
