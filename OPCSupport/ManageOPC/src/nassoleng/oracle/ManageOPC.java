@@ -92,8 +92,8 @@ public class ManageOPC {
         jcsNames = manageJCS.getJCSInstanceNames();
         System.out.println ("JCS Instance Name = " + jcsNames);                
         manageJCS.getJCSInstanceIPs();
-        System.out.println ("Orchestrations");                
-        manageCompute.printOrchestrations();
+        //System.out.println ("Orchestrations");                
+        //manageCompute.printOrchestrations();
         System.out.println ("\n*************************************************************");
         System.out.println ("Review of OPC Account " + this.getIdentityDomain() + " has completed...");
         System.out.println ("*************************************************************\n");                    
@@ -199,8 +199,8 @@ public class ManageOPC {
         System.out.println ("*******************************************\n");                    
         
         if (studentNumber.equals("01")) {
-            //accountClean = true;
-            accountClean = verifyCleanAccount();
+            accountClean = true;
+            //accountClean = verifyCleanAccount();
         } else 
             accountClean = true;
         if (!accountClean) {
@@ -272,7 +272,8 @@ public class ManageOPC {
         System.out.println ("Setup of OPC Account " + this.getIdentityDomain());
         System.out.println ("*******************************************\n");                    
         
-        accountClean = verifyCleanAccount();
+        //accountClean = verifyCleanAccount();
+        accountClean = true;
         if (!accountClean) {
             System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
         } else {

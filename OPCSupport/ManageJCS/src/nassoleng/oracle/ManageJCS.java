@@ -239,7 +239,7 @@ public class ManageJCS {
             "\"parameters\" : [\n" + 
             "    {\n" + 
             "        \"type\" : \"weblogic\",\n" + 
-            "        \"version\" : \"12.1.3.0.2\",\n" + 
+            "        \"version\" : \"12.1.3.0.3\",\n" + 
             "        \"edition\" : \"EE\",\n" + 
             "        \"domainMode\" : \"PRODUCTION\",\n" + 
             "        \"managedServerCount\" : \"1\",\n" + 
@@ -315,14 +315,14 @@ public class ManageJCS {
             "    \"level\" : \"PAAS\",\n" + 
             "    \"subscriptionType\" : \"HOURLY\",\n" + 
             "    \"description\" : \"SalesDev Java Cloud Service\",\n" + 
-            "    \"provisionOTD\" : false,\n" + 
+            "    \"provisionOTD\" : true,\n" + 
             "    \"cloudStorageContainer\" : \"Storage-" + getIdentityDomain() + "/SalesDev-SC\",\n" + 
             "    \"cloudStorageUser\" : \"" + getUsername() + "\",\n" + 
             "    \"cloudStoragePassword\" : \"" + getPassword() + "\",\n" + 
             "\"parameters\" : [\n" + 
             "    {\n" + 
             "        \"type\" : \"weblogic\",\n" + 
-            "        \"version\" : \"12.1.3.0.2\",\n" + 
+            "        \"version\" : \"12.1.3.0.3\",\n" + 
             "        \"edition\" : \"EE\",\n" + 
             "        \"domainMode\" : \"PRODUCTION\",\n" + 
             "        \"managedServerCount\" : \"1\",\n" + 
@@ -341,6 +341,19 @@ public class ManageJCS {
             "        \"dbServiceName\" : \"" + dbName + "\",\n" + 
             "        \"dbaName\" : \"SYS\",\n" + 
             "        \"dbaPassword\" : \"" + dbcsPassword + "\",\n" + 
+            "        \"shape\" : \"oc3\",\n" + 
+            "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
+            "    },\n" + 
+            "    {\n" + 
+            "        \"type\" : \"otd\",\n" + 
+            "        \"adminUserName\" : \"weblogic\",\n" + 
+            "        \"adminPassword\" : \"" + jcsPassword + "\",\n" + 
+            "        \"listenerPortsEnabled\" : \"true\",\n" + 
+            "        \"listenerPort\" : \"8080\",\n" + 
+            "        \"listenerType\" : \"http\",\n" + 
+            "        \"securedListenerPort\" : \"8081\",\n" + 
+            "        \"loadBalancingPolicy\" : \"least_connection_count\",\n" + 
+            "        \"adminPort\" : \"8989\",\n" + 
             "        \"shape\" : \"oc3\",\n" + 
             "        \"VMsPublicKey\" : \"" + this.getConfigProperties().getProperty("publicKey") + "\"\n" + 
             "    }\n" + 
@@ -412,6 +425,7 @@ public class ManageJCS {
                     status = jcsInstance.getString("status");
             }
             System.out.println ("\nAlpha01JCS Instance Create finshied....");
+            setJCSBackup("Alpha" + studentNumber + "A-JCS");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -443,6 +457,7 @@ public class ManageJCS {
                     status = jcsInstance.getString("status");
             }
             System.out.println ("\nSalesDev Instance Create finshied....");
+            setJCSBackup("SalesDev");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -482,7 +497,7 @@ public class ManageJCS {
                 "\"parameters\" : [\n" + 
                 "    {\n" + 
                 "        \"type\" : \"weblogic\",\n" + 
-                "        \"version\" : \"12.1.3.0.2\",\n" + 
+                "        \"version\" : \"12.1.3.0.3\",\n" + 
                 "        \"edition\" : \"EE\",\n" + 
                 "        \"domainMode\" : \"PRODUCTION\",\n" + 
                 "        \"managedServerCount\" : \"1\",\n" + 
@@ -633,6 +648,54 @@ public class ManageJCS {
             e.printStackTrace();
         }
         return inProgress;
+    }
+
+    public void setJCSBackup(String instanceName) {
+        ClientResponse response = null;
+
+        try {
+            Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
+
+            WebResource webResource =
+                client.resource(getOpcJCSURL() + getIdentityDomain() + "/" + instanceName + "/backupconfig");
+
+            String se =
+                new String("{\n" + 
+                "       \"fullBackupSchedule\":\n" + 
+                "       {\n" + 
+                "           \"second\": \"0\",\n" + 
+                "           \"minute\": \"0\",\n" + 
+                "           \"hour\": \"1\",\n" + 
+                "           \"dayOfMonth\": \"*\",\n" + 
+                "           \"month\": \"*\",\n" + 
+                "           \"dayOfWeek\": \"Sun\",\n" + 
+                "           \"year\": \"*\"\n" + 
+                "       },\n" + 
+                "       \"incrementalBackupSchedule\":\n" + 
+                "       {\n" + 
+                "           \"second\": \"0\",\n" + 
+                "           \"minute\": \"0\",\n" + 
+                "           \"hour\": \"1\",\n" + 
+                "           \"dayOfMonth\": \"*\",\n" + 
+                "           \"month\": \"*\",\n" + 
+                "           \"dayOfWeek\": \"Sat\",\n" + 
+                "           \"year\": \"*\"\n" + 
+                "       },\n" + 
+                "    }");
+
+            System.out.println("\nBody = " + se);
+            response =
+                webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+
+            if (response.getStatus() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+            } else {
+                String output = response.getEntity(String.class);
+                System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String deleteJCS(String instanceName) {

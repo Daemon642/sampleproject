@@ -87,14 +87,14 @@ public class ManageComputeUtil {
             new String("{\n" + "    \"password\" : \"" + password + "\",\n" +
                        "    \"user\" : \"/Compute-" + domain + "/" + username + "\"\n" + "}");
 
-        String proxyHost = System.getenv("PROXYHOST");
-        System.out.println ("PROXY HOST = " + proxyHost);
-        HttpHost proxy = new HttpHost(proxyHost, 80, "http");
-        RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
+        //String proxyHost = System.getenv("PROXYHOST");
+        //System.out.println ("PROXY HOST = " + proxyHost);
+        //HttpHost proxy = new HttpHost(proxyHost, 80, "http");
+        //RequestConfig config = RequestConfig.custom().setProxy(proxy).build();
 
         httpclient = HttpClients.createDefault();
         HttpPost httppost = new HttpPost("https://api-" + zone + ".compute.us2.oraclecloud.com/authenticate/");
-        httppost.setConfig(config);
+        //httppost.setConfig(config);
 
         try {
             StringEntity entity = new StringEntity(json);
