@@ -705,7 +705,7 @@ public class ManageJCS {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
             } else {
                 String output = response.getEntity(String.class);
-                System.out.println ("\nDelete PaaS Demo JCS Output = " + output);
+                System.out.println ("\nSet JCS Backup Output = " + output);
             }
         } catch (Exception e) {
             e.printStackTrace();
