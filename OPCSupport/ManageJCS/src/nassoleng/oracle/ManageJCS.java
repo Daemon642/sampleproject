@@ -216,6 +216,7 @@ public class ManageJCS {
         String instanceName = null;
         String domainName = null;
         String dbName = null;
+        int retryCnt = 0;
 
         Client client = ManageJCSUtil.getClient(getUsername(), getPassword());
  
@@ -278,16 +279,29 @@ public class ManageJCS {
             "}");
             
         System.out.println ("\nBody = " + se);
-        response = webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+        while (retryCnt <= 1) {                        
+            response = webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
 
-        if (response.getStatus() != 202) {
-            throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-        } else {
-            final MultivaluedMap<String,String> headers = response.getHeaders();
-            if (headers != null) {
-                jobURL = headers.getFirst("Location");
+            if (response.getStatus() != 202) {
+                retryCnt++;
+                if (retryCnt == 1) {
+                    try {
+                        System.out.println ("Sleep before retry of JCS Create");
+                        Thread.sleep(1000 * 30);
+                    } catch (InterruptedException ie) {
+                        ie.printStackTrace();
+                    }
+                } else {
+                    throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+                }
+            } else {
+                retryCnt = 2;
+                final MultivaluedMap<String,String> headers = response.getHeaders();
+                if (headers != null) {
+                    jobURL = headers.getFirst("Location");
+                }
+                System.out.println("Output from Server .... \n");                
             }
-            System.out.println("Output from Server .... \n");                
         }
     }
 
@@ -685,7 +699,7 @@ public class ManageJCS {
 
             System.out.println("\nBody = " + se);
             response =
-                webResource.header("Content-Type", "application/vnd.com.oracle.oracloud.provisioning.Service+json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
+                webResource.header("Content-Type", "application/json").header("X-ID-TENANT-NAME", getIdentityDomain()).post(ClientResponse.class, se);
 
             if (response.getStatus() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());

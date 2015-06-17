@@ -55,7 +55,7 @@ public class DeleteStorageContainer {
         String serviceURL = null;
         int retryCnt = 0;
 
-        if (retryCnt <= 1) {
+        while (retryCnt <= 1) {
             try {
                 // Data Center specific URL
                 //serviceURL = new String ("https://storage.us2.oraclecloud.com");
@@ -133,7 +133,8 @@ public class DeleteStorageContainer {
         java.util.List<Key> myContainerObjs;
         Container myContainer = null;
         boolean containerEmpty = false;
-        
+        int retryCnt = 0;
+
         myConnection = getStorageConnection ();
 
         myContainers = myConnection.listContainers();
@@ -148,11 +149,47 @@ public class DeleteStorageContainer {
                     }
                     for ( int j = 0; myContainerObjs != null && j < myContainerObjs.size(); j++ ) {
                         //System.out.println ("Object Key = " + myContainerObjs.get(j).getKey());
-                        myConnection.deleteObject(containerName, myContainerObjs.get(j).getKey());
+                        retryCnt = 0;
+                        while (retryCnt <= 1) {                        
+                            try {
+                                myConnection.deleteObject(containerName, myContainerObjs.get(j).getKey());                            
+                                retryCnt = 2;
+                            } catch (Exception e) {
+                                retryCnt++;
+                                if (retryCnt == 1) {
+                                    try {
+                                        System.out.println ("Sleep before retry of Storage Object Delete");
+                                        Thread.sleep(1000 * 10);
+                                    } catch (InterruptedException ie) {
+                                        ie.printStackTrace();
+                                    }
+                                } else {
+                                    throw e;
+                                }
+                            }
+                        }
                     }
                 }
-                myConnection.deleteContainer(containerName);
-                i = myContainers.size();
+                retryCnt = 0;
+                while (retryCnt <= 1) {                        
+                    try {
+                        myConnection.deleteContainer(containerName);
+                        i = myContainers.size();
+                        retryCnt = 2;
+                    } catch (Exception e) {
+                        retryCnt++;
+                        if (retryCnt == 1) {
+                            try {
+                                System.out.println ("Sleep before retry of Storage Container Delete");
+                                Thread.sleep(1000 * 10);
+                            } catch (InterruptedException ie) {
+                                ie.printStackTrace();
+                            }
+                        } else {
+                            throw e;
+                        }
+                    }
+                }
             }
         }
     }
