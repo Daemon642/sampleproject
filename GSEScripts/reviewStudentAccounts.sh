@@ -1,6 +1,6 @@
 # !/bin/sh
 #
-PASSWORD='W3lc@m3PM72'
+PASSWORD='RB79D3$3rt'
 #
 ./runManageOPC_JCS.sh gse_cloud-admin@oracleads.com ${PASSWORD} usdevops40552 z12 ReviewAccount
 ./runManageOPC_JCS.sh gse_cloud-admin@oracleads.com ${PASSWORD} usoracleam04611 z11 ReviewAccount

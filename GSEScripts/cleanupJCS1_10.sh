@@ -8,7 +8,7 @@ fi
 #
 PASSWORD=$1
 #
-./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552 z12 CleanupAccount
+#./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usdevops40552 z12 CleanupAccount
 ./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam04611 z11 CleanupAccount
 ./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam03756 z13 CleanupAccount
 ./runManageOPC_JCS.sh gse_support-admin@oracleads.com ${PASSWORD} usoracleam82569 z11 CleanupAccount
