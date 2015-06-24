@@ -122,9 +122,27 @@ public class DeleteStorageContainer {
     public void createContainer (String containerName) {
         CloudStorage myConnection = null;
         java.util.List<Container> myContainers;
+        int retryCnt = 0;
 
         myConnection = getStorageConnection ();            
-        myConnection.createContainer(containerName);
+        while (retryCnt <= 2) {                        
+            try {
+                myConnection.createContainer(containerName);
+                retryCnt = 3;
+            } catch (Exception e) {
+                retryCnt++;
+                if (retryCnt != 3) {
+                    try {
+                        System.out.println ("Sleep before retry of Storage Container Create");
+                        Thread.sleep(1000 * 20);
+                    } catch (InterruptedException ie) {
+                        ie.printStackTrace();
+                    }
+                } else {
+                    throw e;
+                }
+            }
+        }
     }
 
     public void DeleteContainer (String containerName) {
@@ -150,16 +168,16 @@ public class DeleteStorageContainer {
                     for ( int j = 0; myContainerObjs != null && j < myContainerObjs.size(); j++ ) {
                         //System.out.println ("Object Key = " + myContainerObjs.get(j).getKey());
                         retryCnt = 0;
-                        while (retryCnt <= 1) {                        
+                        while (retryCnt <= 2) {                        
                             try {
                                 myConnection.deleteObject(containerName, myContainerObjs.get(j).getKey());                            
-                                retryCnt = 2;
+                                retryCnt = 3;
                             } catch (Exception e) {
                                 retryCnt++;
-                                if (retryCnt == 1) {
+                                if (retryCnt != 3) {
                                     try {
                                         System.out.println ("Sleep before retry of Storage Object Delete");
-                                        Thread.sleep(1000 * 10);
+                                        Thread.sleep(1000 * 20);
                                     } catch (InterruptedException ie) {
                                         ie.printStackTrace();
                                     }
