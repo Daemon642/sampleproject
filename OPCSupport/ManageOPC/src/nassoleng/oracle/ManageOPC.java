@@ -342,11 +342,14 @@ public class ManageOPC {
             dbcsInstance = this.manageDBCS.getDBCSInstanceInfo(dbcsName);
             dbcsIP = dbcsInstance.getString("em_url").substring(8);
             dbcsIP = dbcsIP.substring(0,dbcsIP.indexOf(":"));
+            System.out.println ("DB IP = " + dbcsIP);
             jcsInstance = this.manageJCS.getJCSInstanceInfo(jcsName);
             jcsIP = jcsInstance.getString("wls_admin_url").substring(8);
             jcsIP = jcsIP.substring(0,jcsIP.indexOf(":"));
+            System.out.println ("JCS IP = " + jcsIP);
             otdIP = jcsInstance.getString("otd_admin_url").substring(8);
             otdIP = otdIP.substring(0,otdIP.indexOf(":"));
+            System.out.println ("OTD IP = " + otdIP);
 
             batchFile = new File(this.getConfigProperties().getProperty("emScriptLocation") + "runEMHybridSetup.sh");
             procBuilder =
@@ -357,6 +360,7 @@ public class ManageOPC {
                 new BufferedReader(new InputStreamReader(procIn));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
+                System.out.println ("InputLine = " + inputLine);
             }
             in.close();
         } catch (JSONException e) {
