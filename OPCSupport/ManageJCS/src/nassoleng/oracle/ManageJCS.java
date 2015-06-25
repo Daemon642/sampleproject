@@ -305,7 +305,7 @@ public class ManageJCS {
         }
     }
 
-    public void createGenericJCS () throws NoSuchAlgorithmException, KeyManagementException {
+    public void createEMHybridJCS () throws NoSuchAlgorithmException, KeyManagementException {
         ClientResponse response = null;
         String jobURL = null;
         String instanceName = null;
@@ -451,7 +451,7 @@ public class ManageJCS {
         }
     }
     
-    public void createGenericJCSDriver () {
+    public void createEMHybridJCSDriver () {
         JSONObject jcsInstance = null;
         String status = "In Progress";
         
@@ -460,7 +460,7 @@ public class ManageJCS {
         System.out.println ("***************************\n");
         
         try {
-            createGenericJCS ();
+            createEMHybridJCS ();
             System.out.print ("Waiting on Create of SalesDev Instance....");
             Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {

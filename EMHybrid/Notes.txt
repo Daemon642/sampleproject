@@ -1,0 +1,16 @@
+#
+# SSH DBCS Image
+#
+ssh -o StrictHostKeyChecking=no -i /u01/OPCWorkshop/lab/labkey oracle@129.152.132.245
+#
+# SSH JCS Image
+#
+ssh -o StrictHostKeyChecking=no -i /u01/OPCWorkshop/lab/labkey oracle@129.152.132.3
+#
+# EM Console
+#
+https://10.146.91.172:7802/em	sysman/oracle12
+#
+# SSH EM Image
+#
+ssh root@10.146.91.172 	pw=oracle12

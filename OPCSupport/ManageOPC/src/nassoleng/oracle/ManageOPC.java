@@ -262,7 +262,7 @@ public class ManageOPC {
         System.out.println ("*************************************************************\n");                    
     }
     
-    public void setupGenericWorkshopAccount () {
+    public void setupEMHybridWorkshopAccount () {
         List <String> containerNames = null;
         List <String> dbcsNames = null;
         List <String> jcsNames = null;
@@ -277,14 +277,15 @@ public class ManageOPC {
         if (!accountClean) {
             System.out.println ("Unable to perform Setup as Account is not clean!!!!");            
         } else {
-            containerNames = this.manageSC.opcGenericWorkshopCreateContainers();
+            containerNames = this.manageSC.opcEMHybridWorkshopCreateContainers();
             System.out.println ("\nStorage Container Names = " + containerNames);
-            this.manageDBCS.createGenericDBCSDriver();
+            this.manageDBCS.createEMHybridDBCSDriver();
             dbcsNames = this.manageDBCS.getDBCSInstanceNames();
             System.out.println ("DBCS Instance Name = " + dbcsNames);      
-            this.manageJCS.createGenericJCSDriver();
+            this.manageJCS.createEMHybridJCSDriver();
             jcsNames = this.manageJCS.getJCSInstanceNames();
-            System.out.println ("\nJCS Instance Name = " + jcsNames);                
+            System.out.println ("\nJCS Instance Name = " + jcsNames);  
+            setupEMHybrid ("SalesDevCDB", "SalesDev");
         }
         try {
             Thread.sleep(1000 * 10); // Sleep 10 seconds
@@ -308,9 +309,48 @@ public class ManageOPC {
             dbcsInstance = this.manageDBCS.getDBCSInstanceInfo(dbcsName);
             dbcsIP = dbcsInstance.getString("em_url").substring(8);
             dbcsIP = dbcsIP.substring(0,dbcsIP.indexOf(":"));
+            
             batchFile = new File(this.getConfigProperties().getProperty("scriptLocation") + "runOPCWorkshopDatabaseSetup.sh");
             procBuilder =
                     new ProcessBuilder(batchFile.getAbsolutePath(), dbcsIP);
+            process = procBuilder.start();
+            InputStream procIn = process.getInputStream();
+            BufferedReader in =
+                new BufferedReader(new InputStreamReader(procIn));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+            }
+            in.close();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setupEMHybrid (String dbcsName, String jcsName) {
+        ProcessBuilder procBuilder;
+        Process process;
+        File batchFile;
+        JSONObject dbcsInstance = null;
+        JSONObject jcsInstance = null;
+        String dbcsIP = null;
+        String jcsIP = null;
+        String otdIP = null;
+
+        try {
+            dbcsInstance = this.manageDBCS.getDBCSInstanceInfo(dbcsName);
+            dbcsIP = dbcsInstance.getString("em_url").substring(8);
+            dbcsIP = dbcsIP.substring(0,dbcsIP.indexOf(":"));
+            jcsInstance = this.manageJCS.getJCSInstanceInfo(jcsName);
+            jcsIP = jcsInstance.getString("wls_admin_url").substring(8);
+            jcsIP = jcsIP.substring(0,jcsIP.indexOf(":"));
+            otdIP = jcsInstance.getString("otd_admin_url").substring(8);
+            otdIP = otdIP.substring(0,otdIP.indexOf(":"));
+
+            batchFile = new File(this.getConfigProperties().getProperty("emScriptLocation") + "runEMHybridSetup.sh");
+            procBuilder =
+                    new ProcessBuilder(batchFile.getAbsolutePath(), dbcsIP, jcsIP, otdIP);
             process = procBuilder.start();
             InputStream procIn = process.getInputStream();
             BufferedReader in =
@@ -420,8 +460,8 @@ public class ManageOPC {
                 manageOPC.reviewAccount();
             } else if (method.contains("CleanupAccount")) {
                 manageOPC.cleanupAccount();
-            } else if (method.contains("SetupGenericWorkshopAccount")) {
-                manageOPC.setupGenericWorkshopAccount();
+            } else if (method.contains("SetupEMHybridWorkshopAccount")) {
+                manageOPC.setupEMHybridWorkshopAccount();
             } else if (method.contains("SetupJCSWorkshopAccount")) {
                 manageOPC.setupJCSWorkshopAccount("01");
             } else if (method.contains("SetupJCSWorkshopOnsiteAccount")) {

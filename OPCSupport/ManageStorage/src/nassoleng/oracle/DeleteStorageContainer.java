@@ -276,7 +276,7 @@ public class DeleteStorageContainer {
         return containerNames;
     }
 
-    public List <String> opcGenericWorkshopCreateContainers () {
+    public List <String> opcEMHybridWorkshopCreateContainers () {
         List <String> containerNames = null;
 
         createContainer ("SalesDevCDB-SC");

@@ -185,7 +185,7 @@ public class ManageDBCS {
         }
     }
 
-    public void createGenericDBCS () throws NoSuchAlgorithmException, KeyManagementException {
+    public void createEMHybridDBCS () throws NoSuchAlgorithmException, KeyManagementException {
         ClientResponse response = null;
         String jobURL = null;
         String instanceName = null;
@@ -452,7 +452,7 @@ public class ManageDBCS {
         }
     }
     
-    public void createGenericDBCSDriver () {
+    public void createEMHybridDBCSDriver () {
         JSONObject dbcsInstance = null;
         String status = "In Progress";
         
@@ -461,7 +461,7 @@ public class ManageDBCS {
         System.out.println ("***************************\n");
         
         try {
-            createGenericDBCS ();
+            createEMHybridDBCS ();
             System.out.print ("Waiting on Create of SalesDevCDB Instance....");
             Thread.sleep(1000 * 60 * 2); // Sleep for 2 minutes
             while (status.contains("In Progress")) {
