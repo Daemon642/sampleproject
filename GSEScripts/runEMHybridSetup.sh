@@ -15,11 +15,12 @@ echo "************************************************"
 scp -o "StrictHostKeyChecking no" -i ../labkey ../labkey.pub opc@${JCS_IP}:/home/opc/.
 scp -o "StrictHostKeyChecking no" -i ../labkey ../EMHybrid/oracleSudo.txt opc@${JCS_IP}:/home/opc/.
 scp -o "StrictHostKeyChecking no" -i ../labkey ../EMHybrid/setupJCS.sh opc@${JCS_IP}:/home/opc/.
+ssh -t -o "StrictHostKeyChecking no" -i ../labkey opc@${JCS_IP} "sudo -i /home/opc/setupJCS.sh"
 #
 echo "************************************************"
 echo "* Setup ssh for oracle user on OTD VM ...."
 echo "************************************************"
-scp -o "StrictHostKeyChecking no" -i ../labkey ../lab/labkey.pub opc@${OTD_IP}:/home/opc/.
+scp -o "StrictHostKeyChecking no" -i ../labkey ../labkey.pub opc@${OTD_IP}:/home/opc/.
 scp -o "StrictHostKeyChecking no" -i ../labkey ../EMHybrid/oracleSudo.txt opc@${JCS_IP}:/home/opc/.
 scp -o "StrictHostKeyChecking no" -i ../labkey ../EMHybrid/setupOTD.sh opc@${OTD_IP}:/home/opc/.
 ssh -t -o "StrictHostKeyChecking no" -i ../labkey opc@${OTD_IP} "sudo -i /home/opc/setupOTD.sh"

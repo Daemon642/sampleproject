@@ -351,7 +351,7 @@ public class ManageOPC {
             otdIP = otdIP.substring(0,otdIP.indexOf(":"));
             System.out.println ("OTD IP = " + otdIP);
 
-            batchFile = new File(this.getConfigProperties().getProperty("emScriptLocation") + "runEMHybridSetup.sh");
+            batchFile = new File(this.getConfigProperties().getProperty("scriptLocation") + "runEMHybridSetup.sh");
             procBuilder =
                     new ProcessBuilder(batchFile.getAbsolutePath(), dbcsIP, jcsIP, otdIP);
             process = procBuilder.start();
