@@ -31,7 +31,7 @@ public class dbUtilities {
         
         try {
             ic = new InitialContext();
-            dataSource = (DataSource) ic.lookup("jdbc/AlphaOfficeAccessDS");
+            dataSource = (DataSource) ic.lookup("jdbc/AlphaOfficeAccessDS"); // JNDI a modifier
         } catch (NamingException e) {
         }
         System.out.println("lookup dataSource returned " + dataSource);
