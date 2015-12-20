@@ -252,6 +252,17 @@
       <value n="j2eeWebAppName" v="ProductCatalog-AlphaOfficeAccess-webapp"/>
       <value n="j2eeWebContextRoot" v="ProductCatalog-AlphaOfficeAccess-context-root"/>
    </hash>
+   <hash n="oracle.jdeveloper.model.PathsConfiguration">
+      <hash n="javaContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="src/"/>
+            <url protocol="file" path="/home/oracle/jdeveloper/mywork/Devcs/"/>
+         </list>
+      </hash>
+   </hash>
    <hash n="oracle.jdevimpl.config.JProjectLibraries">
       <list n="exportedReferences">
          <hash>
