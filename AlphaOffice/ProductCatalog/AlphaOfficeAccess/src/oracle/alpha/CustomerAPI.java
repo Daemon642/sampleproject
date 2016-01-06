@@ -8,8 +8,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name="CustomerAPI")
+       
+@XmlRootElement(name="CustomerAPI ")
 public class CustomerAPI {   
     private Long customerId;
     private String principalName;
@@ -56,7 +56,7 @@ public class CustomerAPI {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName;  
     }
 
     public String getFirstName() {
